@@ -1,0 +1,26 @@
+baseURL = "https://robamu.github.io"
+languageCode = 'en-us'
+title = 'robs blog'
+theme = "beautifulhugo"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
+[params]
+  title = "robs blog"
+  keyword = "coding, rust, c++, python, aerospace, satellites"
+  about_me = true
+  omit_categories = false
+
+  [[params.addtional_menus]]
+  sidebar_about_description = "Aerospace engineer and software developer"
+  title =  "ABOUT"
+  href =  "/top/about/"
+
+  [params.social]
+  rss            = true
+  email          = "robin.mueller.m@gmail.com"
+  linkedin       = "https://www.linkedin.com/in/robin-mueller-m/"
+  github         = "https://github.com/robamu"
