@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Bringing Rust to Space - Setting up a Rust ecosystem for the VA108XX MCU family - robs blog</title>
+  <meta name="description" content="The last few weeks I have been busy diving into the Rust ecosystem and learning the language through practical projects. After finishing the excellent Rust book , Rust Embedded Book and tinkering with Rust on some STM32 MCUs I was looking for practical projects to further learn the language. I&rsquo;ve tried to combine this with the usual activities at the research institute I work now as well.
+Working at an insitute which builds small satellites also gives me access to unique hardware like the radiation hardened Vorago MCUs.">
+  <meta name="author" content="Robin Mueller"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "robs blog",
+    
+    "url": "https:\/\/robamu.github.io"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/robamu.github.io"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/robamu.github.io",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/robamu.github.io\/post\/rust-ecosystem\/",
+          "name": "Bringing rust to space setting up a rust ecosystem for the va108 xx MC u family"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "Robin Mueller"
+  },
+  "headline": "Bringing Rust to Space - Setting up a Rust ecosystem for the VA108XX MCU family",
+  "description" : "The last few weeks I have been busy diving into the Rust ecosystem and learning the language through practical projects. After finishing the excellent Rust book , Rust Embedded Book and tinkering with Rust on some STM32 MCUs I was looking for practical projects to further learn the language. I\u0026rsquo;ve tried to combine this with the usual activities at the research institute I work now as well.\nWorking at an insitute which builds small satellites also gives me access to unique hardware like the radiation hardened Vorago MCUs.",
+  "inLanguage" : "en",
+  "wordCount":  1264 ,
+  "datePublished" : "2021-12-15T23:31:00",
+  "dateModified" : "2021-12-15T23:31:00",
+  "image" : "https:\/\/robamu.github.io",
+  "keywords" : [ "" ],
+  "mainEntityOfPage" : "https:\/\/robamu.github.io\/post\/rust-ecosystem\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/robamu.github.io",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/robamu.github.io",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+<meta property="og:title" content="Bringing Rust to Space - Setting up a Rust ecosystem for the VA108XX MCU family" />
+<meta property="og:description" content="The last few weeks I have been busy diving into the Rust ecosystem and learning the language through practical projects. After finishing the excellent Rust book , Rust Embedded Book and tinkering with Rust on some STM32 MCUs I was looking for practical projects to further learn the language. I&rsquo;ve tried to combine this with the usual activities at the research institute I work now as well.
+Working at an insitute which builds small satellites also gives me access to unique hardware like the radiation hardened Vorago MCUs.">
+<meta property="og:url" content="https://robamu.github.io/post/rust-ecosystem/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="robs blog" />
+
+  <meta name="twitter:title" content="Bringing Rust to Space - Setting up a Rust ecosystem for the VA108XX …" />
+  <meta name="twitter:description" content="The last few weeks I have been busy diving into the Rust ecosystem and learning the language through practical projects. After finishing the excellent Rust book , Rust Embedded Book and tinkering with …">
+  <meta name="twitter:card" content="summary" />
+  <meta name="generator" content="Hugo 0.90.1" />
+  <link rel="alternate" href="https://robamu.github.io/index.xml" type="application/rss+xml" title="robs blog"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><link rel="stylesheet" href="https://robamu.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" /><link rel="stylesheet" href="https://robamu.github.io/css/syntax.css" /><link rel="stylesheet" href="https://robamu.github.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://robamu.github.io">robs blog</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Home" href="/">Home</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about">About</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Contact" href="/contact">Contact</a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    
+
+  </div>
+</nav>
+
+
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+  
+  
+  
+
+
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+              
+                <h1>Bringing Rust to Space - Setting up a Rust ecosystem for the VA108XX MCU family</h1>
+              
+              
+              
+              
+                <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on December 15, 2021
+  
+  
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Robin Mueller
+    
+  
+  
+</span>
+
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <p>The last few weeks I have been busy diving into the Rust ecosystem and learning the language
+through practical projects. After finishing the excellent <a href="https://doc.rust-lang.org/book/">Rust book</a>
+, <a href="https://docs.rust-embedded.org/book/">Rust Embedded Book</a> and tinkering with Rust on some STM32
+MCUs I was looking for practical projects to further learn the language. I&rsquo;ve tried to combine this
+with the usual activities at the research institute I work now as well.</p>
+<p>Working at an insitute which builds small satellites also gives me access to unique hardware like
+the radiation hardened Vorago MCUs. Some of these MCUs are used in our CubeSat projects and I was
+curious whether I could set up Rust for some of the MCUs, namely the VA10820 Cortex-M0 based MCU.
+Vorago sells some of their chips on a Vorago development board named REB1.</p>
+<p>Browsing the internet a bit, I quickly found out that nobody attempted to create supporting
+libraries for these MCUs yet. I thought this was an excellent opportunity to learn a lot of
+aspects of Rust. The Rust book had an excellent picture of what a ecosystem for a particular
+MCU family or board might look like</p>
+<p>
+  <img src="/img/rust-ecosystem/crates.png" alt="rust embedded ecosystem">
+
+</p>
+<p>I started with the lowest necessary level to build higher level abstractions:
+The Peripheral Access Crate (PAC). After a few tweaks to the vendor supplied SVD file and the
+<code>svd2rust</code> tool, I was able to generate my first own PAC.</p>
+<p>I then set up the blinky application as the classical first application for a new MCU to test
+my PAC. This is what it looks like</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rs" data-lang="rs"><span style="color:#75715e">#![no_main]</span>
+<span style="color:#75715e">#![no_std]</span>
+
+<span style="color:#66d9ef">use</span> cortex_m_rt::entry;
+<span style="color:#66d9ef">use</span> panic_halt <span style="color:#66d9ef">as</span> _;
+<span style="color:#66d9ef">use</span> va108xx <span style="color:#66d9ef">as</span> pac;
+
+<span style="color:#75715e">// REB LED pin definitions. All on port A
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> LED_D2: <span style="color:#66d9ef">u32</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">10</span>;
+<span style="color:#66d9ef">const</span> LED_D3: <span style="color:#66d9ef">u32</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">7</span>;
+<span style="color:#66d9ef">const</span> LED_D4: <span style="color:#66d9ef">u32</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">6</span>;
+
+<span style="color:#75715e">#[entry]</span>
+<span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() -&gt; <span style="color:#f92672">!</span> {
+    <span style="color:#66d9ef">let</span> dp <span style="color:#f92672">=</span> pac::Peripherals::take().unwrap();
+    <span style="color:#75715e">// Enable all peripheral clocks
+</span><span style="color:#75715e"></span>    dp.SYSCONFIG
+        .peripheral_clk_enable
+        .modify(<span style="color:#f92672">|</span>_, w<span style="color:#f92672">|</span> <span style="color:#66d9ef">unsafe</span> { w.bits(<span style="color:#ae81ff">0xffffffff</span>) });
+    dp.PORTA
+        .dir()
+        .modify(<span style="color:#f92672">|</span>_, w<span style="color:#f92672">|</span> <span style="color:#66d9ef">unsafe</span> { w.bits(LED_D2 <span style="color:#f92672">|</span> LED_D3 <span style="color:#f92672">|</span> LED_D4) });
+    dp.PORTA
+        .datamask()
+        .modify(<span style="color:#f92672">|</span>_, w<span style="color:#f92672">|</span> <span style="color:#66d9ef">unsafe</span> { w.bits(LED_D2 <span style="color:#f92672">|</span> LED_D3 <span style="color:#f92672">|</span> LED_D4) });
+    <span style="color:#66d9ef">for</span> _ <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">..</span><span style="color:#ae81ff">10</span> {
+        dp.PORTA
+            .clrout()
+            .write(<span style="color:#f92672">|</span>w<span style="color:#f92672">|</span> <span style="color:#66d9ef">unsafe</span> { w.bits(LED_D2 <span style="color:#f92672">|</span> LED_D3 <span style="color:#f92672">|</span> LED_D4) });
+        cortex_m::asm::delay(<span style="color:#ae81ff">5_000_000</span>);
+        dp.PORTA
+            .setout()
+            .write(<span style="color:#f92672">|</span>w<span style="color:#f92672">|</span> <span style="color:#66d9ef">unsafe</span> { w.bits(LED_D2 <span style="color:#f92672">|</span> LED_D3 <span style="color:#f92672">|</span> LED_D4) });
+        cortex_m::asm::delay(<span style="color:#ae81ff">5_000_000</span>);
+    }
+    <span style="color:#66d9ef">loop</span> {
+        dp.PORTA
+            .togout()
+            .write(<span style="color:#f92672">|</span>w<span style="color:#f92672">|</span> <span style="color:#66d9ef">unsafe</span> { w.bits(LED_D2 <span style="color:#f92672">|</span> LED_D3 <span style="color:#f92672">|</span> LED_D4) });
+        cortex_m::asm::delay(<span style="color:#ae81ff">25_000_000</span>);
+    }
+}
+</code></pre></div><p>With the JLink tools installed and a few helper files in place you can find in my
+<a href="https://egit.irs.uni-stuttgart.de/rust/va108xx-workspace">workspace</a>, I started the <code>JLinkGDBServer</code>
+and then flashed the board with</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">cargo run -p va108xx-hal --example blinky-pac
+</code></pre></div><p>
+  <img src="/gif/vor-blinky.gif" alt="">
+
+</p>
+<p>Now, the next challenge was to write the next level of abstraction: A Hardware Abstraction
+Layer (HAL) crate. I started browsing some of the HALs like the
+<a href="https://github.com/stm32-rs/stm32f1xx-hal/blob/master/src/gpio.rs">stm32f1xx-hal</a> and intially
+felt overwhelmed by all the new syntax, macros and ways to write Rust code I have not seen before.
+But I also thought that implementing this for a new MCU family would be an excellent way to learn
+a lot.</p>
+<p>You can find the first version I eventually was able to hack together
+<a href="https://github.com/robamu-org/va108xx-hal-rs/blob/v0.1.0/src/gpio.rs">here</a>.
+The most challenging task was to wrap around my head around the typesystem and the macro system.
+Since then, I refactored the GPIO library to use even more type-level features based on the
+excellent <a href="https://docs.rs/atsamd-hal/latest/atsamd_hal/gpio/v2/index.html">atsamd HAL</a>.</p>
+<p>The blinky example using the hardware abstraction layer looks like this</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rs" data-lang="rs"><span style="color:#75715e">#![no_main]</span>
+<span style="color:#75715e">#![no_std]</span>
+<span style="color:#66d9ef">use</span> cortex_m_rt::entry;
+<span style="color:#66d9ef">use</span> embedded_hal::digital::v2::ToggleableOutputPin;
+<span style="color:#66d9ef">use</span> panic_halt <span style="color:#66d9ef">as</span> _;
+<span style="color:#66d9ef">use</span> va108xx_hal::{gpio::PinsA, pac, prelude::<span style="color:#f92672">*</span>};
+<span style="color:#75715e">#[entry]</span>
+<span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() -&gt; <span style="color:#f92672">!</span> {
+    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> dp <span style="color:#f92672">=</span> pac::Peripherals::take().unwrap();
+    <span style="color:#66d9ef">let</span> porta <span style="color:#f92672">=</span> PinsA::new(<span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> dp.SYSCONFIG, Some(dp.IOCONFIG), dp.PORTA);
+    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> led1 <span style="color:#f92672">=</span> porta.pa10.into_push_pull_output();
+    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> led2 <span style="color:#f92672">=</span> porta.pa7.into_push_pull_output();
+    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> led3 <span style="color:#f92672">=</span> porta.pa6.into_push_pull_output();
+    <span style="color:#66d9ef">for</span> _ <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">..</span><span style="color:#ae81ff">10</span> {
+        led1.set_low().ok();
+        led2.set_low().ok();
+        led3.set_low().ok();
+        cortex_m::asm::delay(<span style="color:#ae81ff">5_000_000</span>);
+        led1.set_high().ok();
+        led2.set_high().ok();
+        led3.set_high().ok();
+        cortex_m::asm::delay(<span style="color:#ae81ff">5_000_000</span>);
+    }
+    <span style="color:#66d9ef">loop</span> {
+        led1.toggle().ok();
+        cortex_m::asm::delay(<span style="color:#ae81ff">5_000_000</span>);
+        led2.toggle().ok();
+        cortex_m::asm::delay(<span style="color:#ae81ff">5_000_000</span>);
+        led3.toggle().ok();
+        cortex_m::asm::delay(<span style="color:#ae81ff">5_000_000</span>);
+    }
+}
+</code></pre></div><p>A lot more readble and neat that the low level PAC version :-)</p>
+<p>Equipped with a lot more knowledge, I implemented a HAL for all other peripherals, using
+what I saw in different HALs like the ATSAMD HAL or the STM32 HALs. Writing the basic blocking API
+was mostly straighforward once I got more familiar with  writing HAL code. I still have to
+write code which is able to use interrupts to efficiently clear the various FIFOs the VA10820 uses
+to perform IO with a minimum of CPU intervention.</p>
+<p>As a final step, I also implemented a Board Support Package targeted towards the REB1 development
+board. This also was an excellent way for me to test the I2C implementation because that board
+was equiped with a simple ADT75 I2C temperature sensor device.</p>
+<p>The example application looks like this now</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rs" data-lang="rs"><span style="color:#75715e">#![no_main]</span>
+<span style="color:#75715e">#![no_std]</span>
+<span style="color:#66d9ef">use</span> cortex_m_rt::entry;
+<span style="color:#66d9ef">use</span> panic_rtt_target <span style="color:#66d9ef">as</span> _;
+<span style="color:#66d9ef">use</span> rtt_target::{rprintln, rtt_init_print};
+<span style="color:#66d9ef">use</span> va108xx_hal::{
+    pac::{self, interrupt},
+    prelude::<span style="color:#f92672">*</span>,
+    timer::{default_ms_irq_handler, set_up_ms_timer, Delay},
+};
+<span style="color:#66d9ef">use</span> vorago_reb1::temp_sensor::Adt75TempSensor;
+
+<span style="color:#75715e">#[entry]</span>
+<span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() -&gt; <span style="color:#f92672">!</span> {
+    rtt_init_print<span style="color:#f92672">!</span>();
+    rprintln<span style="color:#f92672">!</span>(<span style="color:#e6db74">&#34;-- Vorago Temperature Sensor and I2C Example --&#34;</span>);
+    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> dp <span style="color:#f92672">=</span> pac::Peripherals::take().unwrap();
+    <span style="color:#66d9ef">let</span> tim0 <span style="color:#f92672">=</span> set_up_ms_timer(
+        <span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> dp.SYSCONFIG,
+        <span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> dp.IRQSEL,
+        <span style="color:#ae81ff">50.</span>mhz().into(),
+        dp.TIM0,
+        interrupt::OC0,
+    );
+    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> delay <span style="color:#f92672">=</span> Delay::new(tim0);
+    <span style="color:#66d9ef">unsafe</span> {
+        cortex_m::peripheral::NVIC::unmask(pac::Interrupt::OC0);
+    }
+    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> temp_sensor <span style="color:#f92672">=</span> Adt75TempSensor::new(dp.I2CA, <span style="color:#ae81ff">50.</span>mhz(), Some(<span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> dp.SYSCONFIG))
+        .expect(<span style="color:#e6db74">&#34;Creating temperature sensor struct failed&#34;</span>);
+    <span style="color:#66d9ef">loop</span> {
+        <span style="color:#66d9ef">let</span> temp <span style="color:#f92672">=</span> temp_sensor
+            .read_temperature()
+            .expect(<span style="color:#e6db74">&#34;Failed reading temperature&#34;</span>);
+        rprintln<span style="color:#f92672">!</span>(<span style="color:#e6db74">&#34;Temperature in Celcius: {}&#34;</span>, temp);
+        delay.delay_ms(<span style="color:#ae81ff">500</span>);
+    }
+}
+
+<span style="color:#75715e">#[interrupt]</span>
+<span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">OC0</span>() {
+    default_ms_irq_handler();
+}
+</code></pre></div><p>In my opinion, all the abstractions made this code really neat a brief. In this example, one
+can also see a few more features being used:</p>
+<ol>
+<li>The RTT logger, which worked more or less out of the box. Really useful to get debugging output</li>
+<li>An interrupt being used to get a MS timer tick. The Cortex-M0 does not really have
+a SysTick peripheral suitable for this task, but the 24 TIM peripherals can be set up to generate
+millisecond or second interrupts without issues. For something common like a millisecond counter,
+I set up default setup functions and IRQ handlers like seen in the code above.</li>
+<li>A temperature sensor abstraction provided by the BSP, which makes this example application really
+concise.</li>
+</ol>
+<p>And this is what the output looks like after flashing the board with</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rs" data-lang="rs">cargo run <span style="color:#f92672">--</span>example adt75<span style="color:#f92672">-</span>temp<span style="color:#f92672">-</span>sensor
+</code></pre></div><p>
+  <figure>
+    <img src="/img/rust-ecosystem/temp-sensor.png" alt="Reading a temperature sensor in Rust
+">
+    <figcaption>Reading a temperature sensor in Rust</figcaption>
+  </figure>
+
+</p>
+<p>I also want to write a bit about the development workflow I am using. It is possible doing
+debugging using a graphical user interface which is important for any application which is more
+complex in my opinion. I am using VS code for this and I&rsquo;m really happy with the development
+workflow. All that is required is the <code>Cortex-Debug</code> plugin.</p>
+<p>An example <code>launch.json</code> file for VS code looks like this</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+    <span style="color:#f92672">&#34;version&#34;</span>: <span style="color:#e6db74">&#34;0.2.0&#34;</span>,
+    <span style="color:#f92672">&#34;configurations&#34;</span>: [
+        {
+            <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;cortex-debug&#34;</span>,
+            <span style="color:#f92672">&#34;request&#34;</span>: <span style="color:#e6db74">&#34;launch&#34;</span>,
+            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Debug Blinky&#34;</span>,
+            <span style="color:#f92672">&#34;servertype&#34;</span>: <span style="color:#e6db74">&#34;jlink&#34;</span>,
+            <span style="color:#f92672">&#34;cwd&#34;</span>: <span style="color:#e6db74">&#34;${workspaceRoot}&#34;</span>,
+            <span style="color:#f92672">&#34;device&#34;</span>: <span style="color:#e6db74">&#34;VA10820&#34;</span>,
+            <span style="color:#f92672">&#34;svdFile&#34;</span>: <span style="color:#e6db74">&#34;../va108xx-rs/va108xx.svd&#34;</span>,
+            <span style="color:#f92672">&#34;preLaunchTask&#34;</span>: <span style="color:#e6db74">&#34;rust: cargo build minimal blinky&#34;</span>,
+            <span style="color:#f92672">&#34;executable&#34;</span>: <span style="color:#e6db74">&#34;${workspaceFolder}/target/thumbv6m-none-eabi/debug/examples/blinky-leds&#34;</span>,
+            <span style="color:#f92672">&#34;interface&#34;</span>: <span style="color:#e6db74">&#34;jtag&#34;</span>,
+            <span style="color:#f92672">&#34;runToMain&#34;</span>: <span style="color:#66d9ef">true</span>,
+        },
+    ]
+}
+</code></pre></div><p>and an example <code>tasks.json</code> file like this</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+    <span style="color:#f92672">&#34;version&#34;</span>: <span style="color:#e6db74">&#34;2.0.0&#34;</span>,
+    <span style="color:#f92672">&#34;tasks&#34;</span>: [
+        {
+            <span style="color:#f92672">&#34;label&#34;</span>: <span style="color:#e6db74">&#34;rust: cargo build blinky&#34;</span>,
+            <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;shell&#34;</span>,
+            <span style="color:#f92672">&#34;command&#34;</span>: <span style="color:#e6db74">&#34;~/.cargo/bin/cargo&#34;</span>, <span style="color:#75715e">// note: full path to the cargo
+</span><span style="color:#75715e"></span>            <span style="color:#f92672">&#34;args&#34;</span>: [
+                <span style="color:#e6db74">&#34;build&#34;</span>, <span style="color:#e6db74">&#34;--example&#34;</span>, <span style="color:#e6db74">&#34;blinky-leds&#34;</span>,
+            ],
+            <span style="color:#f92672">&#34;group&#34;</span>: {
+                <span style="color:#f92672">&#34;kind&#34;</span>: <span style="color:#e6db74">&#34;build&#34;</span>,
+                <span style="color:#f92672">&#34;isDefault&#34;</span>: <span style="color:#66d9ef">true</span>
+            }
+        },
+    ]
+}
+</code></pre></div><p>with this, we can soon use the Run &amp; Debug tab of VS code to debug our applications</p>
+<p>
+  <img src="/img/rust-ecosystem/vs-code.png" alt="Debugging with VS Code">
+
+</p>
+<p>Implementing a full Rust ecosystem for the VA10820 has been a challenging but satisfying task. I
+think Rust offers excellent features which are really useful to write safe code for space
+applications and I hope that some of the code I&rsquo;ve written will be used to run awesome missions
+soon.</p>
+<p>In the meantime, I also managed to procure a
+<a href="https://www.voragotech.com/products/peb1va416x0-development-kit">PEB1 development board</a> for
+the <a href="https://www.voragotech.com/products/va416xx/bga">VA416xx familyof devices</a> and I am also
+trying to get the industry version of
+the <a href="http://ww1.microchip.com/downloads/en/DeviceDoc/00003161A.pdf">SAMRH71</a> MCU. Time to write more
+Rust code!</p>
+
+
+        
+
+        
+
+        
+      </article>
+
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://robamu.github.io/post/gsoc-post/" data-toggle="tooltip" data-placement="top" title="Throwback - GSoC 2020 | Device handler development for the SOURCE project">&larr; Previous Post</a>
+            </li>
+          
+          
+        </ul>
+      
+
+
+      
+
+    </div>
+  </div>
+</div>
+
+      
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="https://github.com/robamu" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/robin-mueller-m" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              Robin Mueller
+            
+          
+
+          &nbsp;&bull;&nbsp;&copy;
+          
+            2021
+          
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://robamu.github.io">robs blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="https://gohugo.io">Hugo v0.90.1</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer><script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.js" integrity="sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/contrib/auto-render.min.js" integrity="sha384-kmZOZB5ObwgQnS/DuDg6TScgOiWWBiVt0plIRkZCmE6rDZGrEOQeHM5PcHi+nyqe" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script src="https://robamu.github.io/js/main.js"></script><script> renderMathInElement(document.body); </script><script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script src="https://robamu.github.io/js/load-photoswipe.js"></script>
+
+
+
+
+
+
+
+
+
+    
+  </body>
+</html>
+

@@ -6,7 +6,17 @@
     <description>Recent content in Posts on robs blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 14 Dec 2021 19:29:58 +0100</lastBuildDate><atom:link href="https://robamu.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 15 Dec 2021 23:31:00 +0100</lastBuildDate><atom:link href="https://robamu.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Bringing Rust to Space - Setting up a Rust ecosystem for the VA108XX MCU family</title>
+      <link>https://robamu.github.io/post/rust-ecosystem/</link>
+      <pubDate>Wed, 15 Dec 2021 23:31:00 +0100</pubDate>
+      
+      <guid>https://robamu.github.io/post/rust-ecosystem/</guid>
+      <description>The last few weeks I have been busy diving into the Rust ecosystem and learning the language through practical projects. After finishing the excellent Rust book , Rust Embedded Book and tinkering with Rust on some STM32 MCUs I was looking for practical projects to further learn the language. I&amp;rsquo;ve tried to combine this with the usual activities at the research institute I work now as well.
+Working at an insitute which builds small satellites also gives me access to unique hardware like the radiation hardened Vorago MCUs.</description>
+    </item>
+    
     <item>
       <title>Throwback - GSoC 2020 | Device handler development for the SOURCE project</title>
       <link>https://robamu.github.io/post/gsoc-post/</link>
