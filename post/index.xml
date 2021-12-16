@@ -13,8 +13,7 @@
       <pubDate>Wed, 15 Dec 2021 23:31:00 +0100</pubDate>
       
       <guid>https://robamu.github.io/post/rust-ecosystem/</guid>
-      <description>The last few weeks I have been busy diving into the Rust ecosystem and learning the language through practical projects. After finishing the excellent Rust book , Rust Embedded Book and tinkering with Rust on some STM32 MCUs I was looking for practical projects to further learn the language. I&amp;rsquo;ve tried to combine this with the usual activities at the research institute I work now as well.
-Working at an insitute which builds small satellites also gives me access to unique hardware like the radiation hardened Vorago MCUs.</description>
+      <description>The last few weeks I have been busy diving into the Rust ecosystem and learning the language through practical projects. I finishing the excellent Rust book and the Rust Embedded Book first and then tinkered with Rust on some STM32 MCUs. As a next step, I was looking for practical projects to further learn the language. I&amp;rsquo;ve tried to combine this with the usual activities at the research institute I work now as well.</description>
     </item>
     
     <item>
