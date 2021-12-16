@@ -6,7 +6,17 @@
     <description>Recent content in Posts on robs blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 15 Dec 2021 23:31:00 +0100</lastBuildDate><atom:link href="https://robamu.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 16 Dec 2021 22:51:15 +0100</lastBuildDate><atom:link href="https://robamu.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Rust driver for the 10-bit MAX11619 ADCs</title>
+      <link>https://robamu.github.io/post/max11619-driver-rust/</link>
+      <pubDate>Thu, 16 Dec 2021 22:51:15 +0100</pubDate>
+      
+      <guid>https://robamu.github.io/post/max11619-driver-rust/</guid>
+      <description>In my last blog post, I described how I set up a small Rust ecosystem for the Vorago REB1 development board. This development board also has a MAX11619 10-bit ADC device by Maxim devices. I thought this was a good opportunity to develop my first device driver crate because there isn&amp;rsquo;t one for this device yet.
+The REB1 development board also has a 2K potentiometer connected directly to a channel of the ADC which makes testing convenient.</description>
+    </item>
+    
     <item>
       <title>Bringing Rust to Space - Setting up a Rust ecosystem for the VA108XX MCU family</title>
       <link>https://robamu.github.io/post/rust-ecosystem/</link>
