@@ -60,7 +60,7 @@ The REB1 development board also has a 2K potentiometer connected directly to a c
   "headline": "Rust driver for the 10-bit MAX11619 ADCs",
   "description" : "In my last blog post, I described how I set up a small Rust ecosystem for the Vorago REB1 development board. This development board also has a MAX11619 10-bit ADC device by Maxim devices. I thought this was a good opportunity to develop my first device driver crate because there isn\u0026rsquo;t one for this device yet.\nThe REB1 development board also has a 2K potentiometer connected directly to a channel of the ADC which makes testing convenient.",
   "inLanguage" : "en",
-  "wordCount":  891 ,
+  "wordCount":  931 ,
   "datePublished" : "2021-12-16T22:51:15",
   "dateModified" : "2021-12-16T22:51:15",
   "image" : "https:\/\/robamu.github.io",
@@ -288,7 +288,7 @@ which makes testing convenient.</p>
 </div>
 
 </center>
-<p>From the schematic, we can see that the CNVST pin is not connected so we can not test
+<p>From the schematic, I saw that the CNVST pin is not connected so I could not really test
 any of the ADC functions using that pin, but everything else should work.</p>
 <p>I used the knowledge I gained from programming type-safe APIs for the VA108xx HAL and BSP to
 code a type-safe API for the MAX116xx device. The ADC device has different modes and configuration
@@ -317,7 +317,12 @@ correct automatically, which can prevent some errors like specifying an invalid 
 as well.</p>
 <p>This is the example function to use the first shown configuration and using different API
 options to read the channels. The full example can be found
-<a href="https://egit.irs.uni-stuttgart.de/rust/vorago-reb1/src/branch/main/examples/max11619-adc.rs">here</a>.</p>
+<a href="https://egit.irs.uni-stuttgart.de/rust/vorago-reb1/src/branch/main/examples/max11619-adc.rs">here</a>.
+Provided that a <code>JLinkGDBServer</code> is running, flashing the software can be done with this simple
+command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">cargo run --example max11619-adc --release
+</code></pre></div><p>I also used <code>release</code> here because I checked the correct timing and an optimized build is best for
+that.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rs" data-lang="rs"><span style="color:#e6db74">/// Use the SPI clock as the conversion clock
 </span><span style="color:#e6db74"></span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">adc_example_externally_clocked</span>(spi: <span style="color:#a6e22e">SpiBase</span><span style="color:#f92672">&lt;</span>SPIB<span style="color:#f92672">&gt;</span>, <span style="color:#66d9ef">mut</span> delay: <span style="color:#a6e22e">Delay</span>) -&gt; <span style="color:#f92672">!</span> {
     <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> adc <span style="color:#f92672">=</span> max11619_externally_clocked_no_wakeup(spi)
