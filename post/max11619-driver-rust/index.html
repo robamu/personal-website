@@ -60,7 +60,7 @@ The REB1 development board also has a 2K potentiometer connected directly to a c
   "headline": "Rust driver for the 10-bit MAX11619 ADCs",
   "description" : "In my last blog post, I described how I set up a small Rust ecosystem for the Vorago REB1 development board. This development board also has a MAX11619 10-bit ADC device by Maxim devices. I thought this was a good opportunity to develop my first device driver crate because there isn\u0026rsquo;t one for this device yet.\nThe REB1 development board also has a 2K potentiometer connected directly to a channel of the ADC which makes testing convenient.",
   "inLanguage" : "en",
-  "wordCount":  931 ,
+  "wordCount":  932 ,
   "datePublished" : "2021-12-16T22:51:15",
   "dateModified" : "2021-12-16T22:51:15",
   "image" : "https:\/\/robamu.github.io",
@@ -89,7 +89,7 @@ The REB1 development board also has a 2K potentiometer connected directly to a c
   <meta name="twitter:title" content="Rust driver for the 10-bit MAX11619 ADCs" />
   <meta name="twitter:description" content="In my last blog post, I described how I set up a small Rust ecosystem for the Vorago REB1 development board. This development board also has a MAX11619 10-bit ADC device by Maxim devices. I thought …">
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.90.1" />
+  <meta name="generator" content="Hugo 0.91.0" />
   <link rel="alternate" href="https://robamu.github.io/index.xml" type="application/rss+xml" title="robs blog"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><link rel="stylesheet" href="https://robamu.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
@@ -302,9 +302,9 @@ delay becomes necessary.</li>
 </ol>
 <p>There are a lot other configurations, and the Rust typesystem prevents using a wrong API for a
 given configuration. <a href="https://docs.rs/max116xx-10bit/latest/max116xx_10bit/struct.Max116xx10Bit.html"><code>Max116xx10Bit</code></a>
-is now initially create as an externally clocked device with an external voltage reference.
-This is also a valid configuration to read the ADC
-on our board as the reference is pin is tied to the system voltage.</p>
+is now initially created as an externally clocked device with an external voltage reference.
+This is also a valid configuration to read the ADC on the REB1 board,
+as the reference is pin is tied to the system voltage.</p>
 <p>If another configuration is desired, the device struct needs to be converted into a different
 configuration using the <code>into_*()</code> API common to Rust. The <a href="https://docs.rs/max116xx-10bit/latest/max116xx_10bit/">driver docs</a>
 specify some of these functions. To achieve the second configuration shown above, one would
@@ -546,7 +546,7 @@ a device driver crate for those as well soon.</p>
         </p>
         
         <p class="credits theme-by text-muted">
-          <a href="https://gohugo.io">Hugo v0.90.1</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          <a href="https://gohugo.io">Hugo v0.91.0</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
           
         </p>
       </div>
