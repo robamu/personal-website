@@ -177,15 +177,16 @@ compilation, compiling the primary software on the board becomes unfeasable.</li
 Flight Model which remains packaged until satellite asembly while the other one is the
 Engineering Model which has to stay in the clean room. Allowing convenient development
 requires remote deployment of the application. Otherwise, one would have to go
-into the cleanroom for every small test and change I want to introduce.</li>
+into the cleanroom for every small test or change to the software.</li>
 <li>The software is complex and debugging can become complex too. Printouts and LEDs
 are not sufficient anymore to debug the software, a full debugger is required additionally.</li>
 </ol>
-<p>For that reason, convenient cross-compilation and debugging is a must for me when considering
-Rust as an alternative to C/C++ on systems like the <a href=https://xiphos.com/products/q7-processor/>Q7S</a>.
-I have only found bits and pieces in the Internet on how to properly do this. Therefore, I have
-created a <a href=https://github.com/robamu-org/rpi-rs-crosscompile>template repository</a> which gathers
-all those bits and pieces into one package.
+<p>For that reason, convenient cross-compilation and debugging are very important for me when
+considering Rust as an alternative to C/C++ on systems like the
+<a href=https://xiphos.com/products/q7-processor/>Q7S</a>.
+I have only found bits and pieces in the Internet on how to properly do these tasks. Therefore, I
+have created a <a href=https://github.com/robamu-org/rpi-rs-crosscompile>template repository</a> which
+gathers all those bits and pieces into one package.
 I specifically targeted debugging with the command line and with VS Code as those tools are most
 commonly used in Rust development from what I have seen so far.
 The instrutions provided here have been tested on Linux (Ubuntu 21.04) and Windows 10, but I really
@@ -638,7 +639,7 @@ Robin Mueller
 </p>
 <p class="credits theme-by text-muted">
 <a href=https://gohugo.io>Hugo v0.91.2</a> powered &nbsp;&bull;&nbsp; Theme <a href=https://github.com/halogenica/beautifulhugo>Beautiful Hugo</a> adapted from <a href=https://deanattali.com/beautiful-jekyll/>Beautiful Jekyll</a>
-&nbsp;&bull;&nbsp;[<a href=falsed58d1685fc95da37cd507c3cc1877eb2171f4a87>d58d1685</a>]
+&nbsp;&bull;&nbsp;[<a href=falseff6f36637540027599a47e5bd7390168b5a1c641>ff6f3663</a>]
 </p>
 </div>
 </div>
