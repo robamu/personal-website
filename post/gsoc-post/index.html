@@ -47,10 +47,31 @@ At that point of time, I was an aerospace engineer doing my graduate studies at 
 <li>
 <a title=Contact href=/contact>Contact</a>
 </li>
+<li>
+<a href=#modalSearch data-toggle=modal data-target=#modalSearch style=outline:none>
+<span class="hidden-sm hidden-md hidden-lg">Search</span> <span id=searchGlyph class="glyphicon glyphicon-search"></span>
+</a>
+</li>
 </ul>
 </div>
 </div>
 </nav>
+<div id=modalSearch class="modal fade" role=dialog>
+<div class=modal-dialog>
+<div class=modal-content>
+<div class=modal-header>
+<button type=button class=close data-dismiss=modal>&#215;</button>
+<h4 class=modal-title>Search robs blog</h4>
+</div>
+<div class=modal-body>
+<gcse:search></gcse:search>
+</div>
+<div class=modal-footer>
+<button type=button class="btn btn-default" data-dismiss=modal>Close</button>
+</div>
+</div>
+</div>
+</div>
 <div class=pswp tabindex=-1 role=dialog aria-hidden=true>
 <div class=pswp__bg></div>
 <div class=pswp__scroll-wrap>
@@ -96,6 +117,7 @@ At that point of time, I was an aerospace engineer doing my graduate studies at 
 <h1>Throwback - GSoC 2020 | Device handler development for the SOURCE project</h1>
 <span class=post-meta>
 <i class="fas fa-calendar"></i>&nbsp;Posted on December 14, 2021
+&nbsp;(Last modified on December 27, 2021)
 &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Robin Mueller
 </span>
 </div>
@@ -337,12 +359,56 @@ system (in therms of hardware).</p>
 <a href=https://robamu.github.io/tags/sensors/>sensors</a>&nbsp;
 <a href=https://robamu.github.io/tags/eclipse/>eclipse</a>&nbsp;
 </div>
+<hr>
+<section id=social-share>
+<div class="list-inline footer-links">
+<div class=share-box aria-hidden=true>
+<ul class=share>
+<li>
+<a href="//twitter.com/share?url=https%3a%2f%2frobamu.github.io%2fpost%2fgsoc-post%2f&text=Throwback%20-%20GSoC%202020%20%7c%20Device%20handler%20development%20for%20the%20SOURCE%20project&via=" target=_blank title="Share on Twitter">
+<i class="fab fa-twitter"></i>
+</a>
+</li>
+<li>
+<a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2frobamu.github.io%2fpost%2fgsoc-post%2f" target=_blank title="Share on Facebook">
+<i class="fab fa-facebook"></i>
+</a>
+</li>
+<li>
+<a href="//reddit.com/submit?url=https%3a%2f%2frobamu.github.io%2fpost%2fgsoc-post%2f&title=Throwback%20-%20GSoC%202020%20%7c%20Device%20handler%20development%20for%20the%20SOURCE%20project" target=_blank title="Share on Reddit">
+<i class="fab fa-reddit"></i>
+</a>
+</li>
+<li>
+<a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2frobamu.github.io%2fpost%2fgsoc-post%2f&title=Throwback%20-%20GSoC%202020%20%7c%20Device%20handler%20development%20for%20the%20SOURCE%20project" target=_blank title="Share on LinkedIn">
+<i class="fab fa-linkedin"></i>
+</a>
+</li>
+<li>
+<a href="//www.stumbleupon.com/submit?url=https%3a%2f%2frobamu.github.io%2fpost%2fgsoc-post%2f&title=Throwback%20-%20GSoC%202020%20%7c%20Device%20handler%20development%20for%20the%20SOURCE%20project" target=_blank title="Share on StumbleUpon">
+<i class="fab fa-stumbleupon"></i>
+</a>
+</li>
+<li>
+<a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2frobamu.github.io%2fpost%2fgsoc-post%2f&description=Throwback%20-%20GSoC%202020%20%7c%20Device%20handler%20development%20for%20the%20SOURCE%20project" target=_blank title="Share on Pinterest">
+<i class="fab fa-pinterest"></i>
+</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
 </article>
 <ul class="pager blog-pager">
 <li class=next>
 <a href=https://robamu.github.io/post/rust-ecosystem/ data-toggle=tooltip data-placement=top title="Bringing Rust to Space - Setting up a Rust ecosystem for the VA108XX MCU family">Next Post &rarr;</a>
 </li>
 </ul>
+<div class=disqus-comments>
+<button id=show-comments class="btn btn-default" type=button>Show <span class=disqus-comment-count data-disqus-url=https://robamu.github.io/post/gsoc-post>comments</span></button>
+<div id=disqus_thread></div>
+<script type=text/javascript>var disqus_config=function(){this.page.url='https://robamu.github.io/post/gsoc-post'}</script>
+</div>
 </div>
 </div>
 </div>
@@ -377,6 +443,7 @@ Robin Mueller
 </p>
 <p class="credits theme-by text-muted">
 <a href=https://gohugo.io>Hugo v0.91.2</a> powered &nbsp;&bull;&nbsp; Theme <a href=https://github.com/halogenica/beautifulhugo>Beautiful Hugo</a> adapted from <a href=https://deanattali.com/beautiful-jekyll/>Beautiful Jekyll</a>
+&nbsp;&bull;&nbsp;[<a href=false91f3d9b9a0efbf1bc8886d95e1c94f0c68d0f923>91f3d9b9</a>]
 </p>
 </div>
 </div>
@@ -387,5 +454,8 @@ Robin Mueller
 <script src=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js integrity=sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa crossorigin=anonymous></script>
 <script src=https://robamu.github.io/js/main.js></script><script>renderMathInElement(document.body)</script><script src=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js integrity=sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy crossorigin=anonymous></script>
 <script src=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js integrity=sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q crossorigin=anonymous></script><script src=https://robamu.github.io/js/load-photoswipe.js></script>
+<script>(function(){var c='49f27010d1fda4554',a=document.createElement('script'),b;a.type='text/javascript',a.async=!0,a.src='https://cse.google.com/cse.js?cx='+c,b=document.getElementsByTagName('script')[0],b.parentNode.insertBefore(a,b)})()</script>
+<script type=text/javascript>$(function(){$('#show-comments').on('click',function(){var a='https-robamu-github-io';(function(){var b=document.createElement('script');b.type='text/javascript',b.async=!0,b.src='//'+a+'.disqus.com/embed.js',(document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(b)})(),$(this).hide()})})</script>
+<script id=dsq-count-scr src=//https-robamu-github-io.disqus.com/count.js async></script>
 </body>
 </html>

@@ -7,7 +7,7 @@
 <meta name=description content="In my last blog post, I described how I set up a small Rust ecosystem for the Vorago REB1 development board. This development board also has a MAX11619 10-bit ADC device by Maxim devices. I thought this was a good opportunity to develop my first device driver crate because there isn&rsquo;t one for this device yet.
 The REB1 development board also has a 2K potentiometer connected directly to a channel of the ADC which makes testing convenient.">
 <meta name=author content="Robin Mueller"><script type=application/ld+json>{"@context":"http://schema.org","@type":"WebSite","name":"robs blog","url":"https:\/\/robamu.github.io"}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"Organization","name":"","url":"https:\/\/robamu.github.io"}</script>
-<script type=application/ld+json>{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"https:\/\/robamu.github.io","name":"home"}},{"@type":"ListItem","position":3,"item":{"@id":"https:\/\/robamu.github.io\/post\/max11619-driver-rust\/","name":"Rust driver for the 10 bit max11619 adcs"}}]}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"Article","author":{"name":"Robin Mueller"},"headline":"Rust driver for the 10-bit MAX11619 ADCs","description":"In my last blog post, I described how I set up a small Rust ecosystem for the Vorago REB1 development board. This development board also has a MAX11619 10-bit ADC device by Maxim devices. I thought this was a good opportunity to develop my first device driver crate because there isn\u0026rsquo;t one for this device yet.\nThe REB1 development board also has a 2K potentiometer connected directly to a channel of the ADC which makes testing convenient.","inLanguage":"en","wordCount":932,"datePublished":"2021-12-16T22:51:15","dateModified":"2021-12-16T22:51:15","image":"https:\/\/robamu.github.io","keywords":["rust, driver, adc, max11619"],"mainEntityOfPage":"https:\/\/robamu.github.io\/post\/max11619-driver-rust\/","publisher":{"@type":"Organization","name":"https:\/\/robamu.github.io","logo":{"@type":"ImageObject","url":"https:\/\/robamu.github.io","height":60,"width":60}}}</script>
+<script type=application/ld+json>{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"https:\/\/robamu.github.io","name":"home"}},{"@type":"ListItem","position":3,"item":{"@id":"https:\/\/robamu.github.io\/post\/max11619-driver-rust\/","name":"Rust driver for the 10 bit max11619 adcs"}}]}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"Article","author":{"name":"Robin Mueller"},"headline":"Rust driver for the 10-bit MAX11619 ADCs","description":"In my last blog post, I described how I set up a small Rust ecosystem for the Vorago REB1 development board. This development board also has a MAX11619 10-bit ADC device by Maxim devices. I thought this was a good opportunity to develop my first device driver crate because there isn\u0026rsquo;t one for this device yet.\nThe REB1 development board also has a 2K potentiometer connected directly to a channel of the ADC which makes testing convenient.","inLanguage":"en","wordCount":819,"datePublished":"2021-12-16T22:51:15","dateModified":"2021-12-16T22:51:15","image":"https:\/\/robamu.github.io","keywords":["rust, driver, adc, max11619"],"mainEntityOfPage":"https:\/\/robamu.github.io\/post\/max11619-driver-rust\/","publisher":{"@type":"Organization","name":"https:\/\/robamu.github.io","logo":{"@type":"ImageObject","url":"https:\/\/robamu.github.io","height":60,"width":60}}}</script>
 <meta property="og:title" content="Rust driver for the 10-bit MAX11619 ADCs">
 <meta property="og:description" content="In my last blog post, I described how I set up a small Rust ecosystem for the Vorago REB1 development board. This development board also has a MAX11619 10-bit ADC device by Maxim devices. I thought this was a good opportunity to develop my first device driver crate because there isn&rsquo;t one for this device yet.
 The REB1 development board also has a 2K potentiometer connected directly to a channel of the ADC which makes testing convenient.">
@@ -47,10 +47,31 @@ The REB1 development board also has a 2K potentiometer connected directly to a c
 <li>
 <a title=Contact href=/contact>Contact</a>
 </li>
+<li>
+<a href=#modalSearch data-toggle=modal data-target=#modalSearch style=outline:none>
+<span class="hidden-sm hidden-md hidden-lg">Search</span> <span id=searchGlyph class="glyphicon glyphicon-search"></span>
+</a>
+</li>
 </ul>
 </div>
 </div>
 </nav>
+<div id=modalSearch class="modal fade" role=dialog>
+<div class=modal-dialog>
+<div class=modal-content>
+<div class=modal-header>
+<button type=button class=close data-dismiss=modal>&#215;</button>
+<h4 class=modal-title>Search robs blog</h4>
+</div>
+<div class=modal-body>
+<gcse:search></gcse:search>
+</div>
+<div class=modal-footer>
+<button type=button class="btn btn-default" data-dismiss=modal>Close</button>
+</div>
+</div>
+</div>
+</div>
 <div class=pswp tabindex=-1 role=dialog aria-hidden=true>
 <div class=pswp__bg></div>
 <div class=pswp__scroll-wrap>
@@ -96,6 +117,7 @@ The REB1 development board also has a 2K potentiometer connected directly to a c
 <h1>Rust driver for the 10-bit MAX11619 ADCs</h1>
 <span class=post-meta>
 <i class="fas fa-calendar"></i>&nbsp;Posted on December 16, 2021
+&nbsp;(Last modified on December 27, 2021)
 &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Robin Mueller
 </span>
 </div>
@@ -173,65 +195,65 @@ options to read the channels. The full example can be found
 <a href=https://egit.irs.uni-stuttgart.de/rust/vorago-reb1/src/branch/main/examples/max11619-adc.rs>here</a>.
 Provided that a <code>JLinkGDBServer</code> is running, flashing the software can be done with this simple
 command:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>cargo run --example max11619-adc --release
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>cargo run --example max11619-adc --release
 </code></pre></div><p>I also used <code>release</code> here because I checked the correct timing and an optimized build is best for
 that.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rs data-lang=rs><span style=color:#e6db74>/// Use the SPI clock as the conversion clock
-</span><span style=color:#e6db74></span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>adc_example_externally_clocked</span>(spi: <span style=color:#a6e22e>SpiBase</span><span style=color:#f92672>&lt;</span>SPIB<span style=color:#f92672>&gt;</span>, <span style=color:#66d9ef>mut</span> delay: <span style=color:#a6e22e>Delay</span>) -&gt; <span style=color:#f92672>!</span> {
-    <span style=color:#66d9ef>let</span> <span style=color:#66d9ef>mut</span> adc <span style=color:#f92672>=</span> max11619_externally_clocked_no_wakeup(spi)
-        .expect(<span style=color:#e6db74>&#34;Creating externally clocked MAX11619 device failed&#34;</span>);
-    <span style=color:#66d9ef>if</span> READ_MODE <span style=color:#f92672>==</span> ReadMode::AverageN {
-        adc.averaging(
-            AveragingConversions::FourConversions,
-            AveragingResults::FourResults,
-        )
-        .expect(<span style=color:#e6db74>&#34;Error setting up averaging register&#34;</span>);
-    }
-    <span style=color:#66d9ef>let</span> <span style=color:#66d9ef>mut</span> cmd_buf: [<span style=color:#66d9ef>u8</span>; <span style=color:#ae81ff>32</span>] <span style=color:#f92672>=</span> [<span style=color:#ae81ff>0</span>; <span style=color:#ae81ff>32</span>];
-    <span style=color:#66d9ef>let</span> <span style=color:#66d9ef>mut</span> counter <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
-    <span style=color:#66d9ef>loop</span> {
-        rprintln<span style=color:#f92672>!</span>(<span style=color:#e6db74>&#34;-- Measurement {} --&#34;</span>, counter);
-
-        <span style=color:#66d9ef>match</span> READ_MODE {
-            ReadMode::Single <span style=color:#f92672>=&gt;</span> {
-                rprintln<span style=color:#f92672>!</span>(<span style=color:#e6db74>&#34;Reading single potentiometer channel&#34;</span>);
-                <span style=color:#66d9ef>let</span> pot_val <span style=color:#f92672>=</span> adc
-                    .read_single_channel(<span style=color:#f92672>&amp;</span><span style=color:#66d9ef>mut</span> cmd_buf, POTENTIOMETER_CHANNEL)
-                    .expect(<span style=color:#e6db74>&#34;Creating externally clocked MAX11619 ADC failed&#34;</span>);
-                rprintln<span style=color:#f92672>!</span>(<span style=color:#e6db74>&#34;Single channel read:&#34;</span>);
-                rprintln<span style=color:#f92672>!</span>(<span style=color:#e6db74>&#34;\tPotentiometer value: {}&#34;</span>, pot_val);
-            }
-            ReadMode::Multiple <span style=color:#f92672>=&gt;</span> {
-                <span style=color:#66d9ef>let</span> <span style=color:#66d9ef>mut</span> res_buf: [<span style=color:#66d9ef>u16</span>; <span style=color:#ae81ff>4</span>] <span style=color:#f92672>=</span> [<span style=color:#ae81ff>0</span>; <span style=color:#ae81ff>4</span>];
-                adc.read_multiple_channels_0_to_n(
-                    <span style=color:#f92672>&amp;</span><span style=color:#66d9ef>mut</span> cmd_buf,
-                    <span style=color:#f92672>&amp;</span><span style=color:#66d9ef>mut</span> res_buf.iter_mut(),
-                    POTENTIOMETER_CHANNEL,
-                )
-                .expect(<span style=color:#e6db74>&#34;Multi-Channel read failed&#34;</span>);
-                print_res_buf(<span style=color:#f92672>&amp;</span>res_buf);
-            }
-            ReadMode::MultipleNToHighest <span style=color:#f92672>=&gt;</span> {
-                <span style=color:#66d9ef>let</span> <span style=color:#66d9ef>mut</span> res_buf: [<span style=color:#66d9ef>u16</span>; <span style=color:#ae81ff>2</span>] <span style=color:#f92672>=</span> [<span style=color:#ae81ff>0</span>; <span style=color:#ae81ff>2</span>];
-                adc.read_multiple_channels_n_to_highest(
-                    <span style=color:#f92672>&amp;</span><span style=color:#66d9ef>mut</span> cmd_buf,
-                    <span style=color:#f92672>&amp;</span><span style=color:#66d9ef>mut</span> res_buf.iter_mut(),
-                    AN2_CHANNEL,
-                )
-                .expect(<span style=color:#e6db74>&#34;Multi-Channel read failed&#34;</span>);
-                rprintln<span style=color:#f92672>!</span>(<span style=color:#e6db74>&#34;Multi channel read from 2 to 3:&#34;</span>);
-                rprintln<span style=color:#f92672>!</span>(<span style=color:#e6db74>&#34;\tAN2 value: {}&#34;</span>, res_buf[<span style=color:#ae81ff>0</span>]);
-                rprintln<span style=color:#f92672>!</span>(<span style=color:#e6db74>&#34;\tAN3 / Potentiometer value: {}&#34;</span>, res_buf[<span style=color:#ae81ff>1</span>]);
-            }
-            ReadMode::AverageN <span style=color:#f92672>=&gt;</span> {
-                rprintln<span style=color:#f92672>!</span>(<span style=color:#e6db74>&#34;Scanning and averaging not possible for externally clocked mode&#34;</span>);
-            }
-        }
-        counter <span style=color:#f92672>+=</span> <span style=color:#ae81ff>1</span>;
-        delay.delay_ms(<span style=color:#ae81ff>500</span>);
-    }
-}
-</code></pre></div><p>There is also an example mode which uses the averaging functionality of the ADC. This can be used
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-rs data-lang=rs><span class=sd>/// Use the SPI clock as the conversion clock
+</span><span class=sd></span><span class=k>fn</span> <span class=nf>adc_example_externally_clocked</span><span class=p>(</span><span class=n>spi</span>: <span class=nc>SpiBase</span><span class=o>&lt;</span><span class=n>SPIB</span><span class=o>&gt;</span><span class=p>,</span><span class=w> </span><span class=k>mut</span><span class=w> </span><span class=n>delay</span>: <span class=nc>Delay</span><span class=p>)</span><span class=w> </span>-&gt; <span class=o>!</span><span class=w> </span><span class=p>{</span><span class=w>
+</span><span class=w>    </span><span class=kd>let</span><span class=w> </span><span class=k>mut</span><span class=w> </span><span class=n>adc</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>max11619_externally_clocked_no_wakeup</span><span class=p>(</span><span class=n>spi</span><span class=p>)</span><span class=w>
+</span><span class=w>        </span><span class=p>.</span><span class=n>expect</span><span class=p>(</span><span class=s>&#34;Creating externally clocked MAX11619 device failed&#34;</span><span class=p>);</span><span class=w>
+</span><span class=w>    </span><span class=k>if</span><span class=w> </span><span class=n>READ_MODE</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=n>ReadMode</span>::<span class=n>AverageN</span><span class=w> </span><span class=p>{</span><span class=w>
+</span><span class=w>        </span><span class=n>adc</span><span class=p>.</span><span class=n>averaging</span><span class=p>(</span><span class=w>
+</span><span class=w>            </span><span class=n>AveragingConversions</span>::<span class=n>FourConversions</span><span class=p>,</span><span class=w>
+</span><span class=w>            </span><span class=n>AveragingResults</span>::<span class=n>FourResults</span><span class=p>,</span><span class=w>
+</span><span class=w>        </span><span class=p>)</span><span class=w>
+</span><span class=w>        </span><span class=p>.</span><span class=n>expect</span><span class=p>(</span><span class=s>&#34;Error setting up averaging register&#34;</span><span class=p>);</span><span class=w>
+</span><span class=w>    </span><span class=p>}</span><span class=w>
+</span><span class=w>    </span><span class=kd>let</span><span class=w> </span><span class=k>mut</span><span class=w> </span><span class=n>cmd_buf</span>: <span class=p>[</span><span class=kt>u8</span><span class=p>;</span><span class=w> </span><span class=mi>32</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>[</span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=mi>32</span><span class=p>];</span><span class=w>
+</span><span class=w>    </span><span class=kd>let</span><span class=w> </span><span class=k>mut</span><span class=w> </span><span class=n>counter</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w>
+</span><span class=w>    </span><span class=k>loop</span><span class=w> </span><span class=p>{</span><span class=w>
+</span><span class=w>        </span><span class=n>rprintln</span><span class=o>!</span><span class=p>(</span><span class=s>&#34;-- Measurement {} --&#34;</span><span class=p>,</span><span class=w> </span><span class=n>counter</span><span class=p>);</span><span class=w>
+</span><span class=w>
+</span><span class=w>        </span><span class=k>match</span><span class=w> </span><span class=n>READ_MODE</span><span class=w> </span><span class=p>{</span><span class=w>
+</span><span class=w>            </span><span class=n>ReadMode</span>::<span class=n>Single</span><span class=w> </span><span class=o>=&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
+</span><span class=w>                </span><span class=n>rprintln</span><span class=o>!</span><span class=p>(</span><span class=s>&#34;Reading single potentiometer channel&#34;</span><span class=p>);</span><span class=w>
+</span><span class=w>                </span><span class=kd>let</span><span class=w> </span><span class=n>pot_val</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>adc</span><span class=w>
+</span><span class=w>                    </span><span class=p>.</span><span class=n>read_single_channel</span><span class=p>(</span><span class=o>&amp;</span><span class=k>mut</span><span class=w> </span><span class=n>cmd_buf</span><span class=p>,</span><span class=w> </span><span class=n>POTENTIOMETER_CHANNEL</span><span class=p>)</span><span class=w>
+</span><span class=w>                    </span><span class=p>.</span><span class=n>expect</span><span class=p>(</span><span class=s>&#34;Creating externally clocked MAX11619 ADC failed&#34;</span><span class=p>);</span><span class=w>
+</span><span class=w>                </span><span class=n>rprintln</span><span class=o>!</span><span class=p>(</span><span class=s>&#34;Single channel read:&#34;</span><span class=p>);</span><span class=w>
+</span><span class=w>                </span><span class=n>rprintln</span><span class=o>!</span><span class=p>(</span><span class=s>&#34;\tPotentiometer value: {}&#34;</span><span class=p>,</span><span class=w> </span><span class=n>pot_val</span><span class=p>);</span><span class=w>
+</span><span class=w>            </span><span class=p>}</span><span class=w>
+</span><span class=w>            </span><span class=n>ReadMode</span>::<span class=n>Multiple</span><span class=w> </span><span class=o>=&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
+</span><span class=w>                </span><span class=kd>let</span><span class=w> </span><span class=k>mut</span><span class=w> </span><span class=n>res_buf</span>: <span class=p>[</span><span class=kt>u16</span><span class=p>;</span><span class=w> </span><span class=mi>4</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>[</span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=mi>4</span><span class=p>];</span><span class=w>
+</span><span class=w>                </span><span class=n>adc</span><span class=p>.</span><span class=n>read_multiple_channels_0_to_n</span><span class=p>(</span><span class=w>
+</span><span class=w>                    </span><span class=o>&amp;</span><span class=k>mut</span><span class=w> </span><span class=n>cmd_buf</span><span class=p>,</span><span class=w>
+</span><span class=w>                    </span><span class=o>&amp;</span><span class=k>mut</span><span class=w> </span><span class=n>res_buf</span><span class=p>.</span><span class=n>iter_mut</span><span class=p>(),</span><span class=w>
+</span><span class=w>                    </span><span class=n>POTENTIOMETER_CHANNEL</span><span class=p>,</span><span class=w>
+</span><span class=w>                </span><span class=p>)</span><span class=w>
+</span><span class=w>                </span><span class=p>.</span><span class=n>expect</span><span class=p>(</span><span class=s>&#34;Multi-Channel read failed&#34;</span><span class=p>);</span><span class=w>
+</span><span class=w>                </span><span class=n>print_res_buf</span><span class=p>(</span><span class=o>&amp;</span><span class=n>res_buf</span><span class=p>);</span><span class=w>
+</span><span class=w>            </span><span class=p>}</span><span class=w>
+</span><span class=w>            </span><span class=n>ReadMode</span>::<span class=n>MultipleNToHighest</span><span class=w> </span><span class=o>=&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
+</span><span class=w>                </span><span class=kd>let</span><span class=w> </span><span class=k>mut</span><span class=w> </span><span class=n>res_buf</span>: <span class=p>[</span><span class=kt>u16</span><span class=p>;</span><span class=w> </span><span class=mi>2</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>[</span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=mi>2</span><span class=p>];</span><span class=w>
+</span><span class=w>                </span><span class=n>adc</span><span class=p>.</span><span class=n>read_multiple_channels_n_to_highest</span><span class=p>(</span><span class=w>
+</span><span class=w>                    </span><span class=o>&amp;</span><span class=k>mut</span><span class=w> </span><span class=n>cmd_buf</span><span class=p>,</span><span class=w>
+</span><span class=w>                    </span><span class=o>&amp;</span><span class=k>mut</span><span class=w> </span><span class=n>res_buf</span><span class=p>.</span><span class=n>iter_mut</span><span class=p>(),</span><span class=w>
+</span><span class=w>                    </span><span class=n>AN2_CHANNEL</span><span class=p>,</span><span class=w>
+</span><span class=w>                </span><span class=p>)</span><span class=w>
+</span><span class=w>                </span><span class=p>.</span><span class=n>expect</span><span class=p>(</span><span class=s>&#34;Multi-Channel read failed&#34;</span><span class=p>);</span><span class=w>
+</span><span class=w>                </span><span class=n>rprintln</span><span class=o>!</span><span class=p>(</span><span class=s>&#34;Multi channel read from 2 to 3:&#34;</span><span class=p>);</span><span class=w>
+</span><span class=w>                </span><span class=n>rprintln</span><span class=o>!</span><span class=p>(</span><span class=s>&#34;\tAN2 value: {}&#34;</span><span class=p>,</span><span class=w> </span><span class=n>res_buf</span><span class=p>[</span><span class=mi>0</span><span class=p>]);</span><span class=w>
+</span><span class=w>                </span><span class=n>rprintln</span><span class=o>!</span><span class=p>(</span><span class=s>&#34;\tAN3 / Potentiometer value: {}&#34;</span><span class=p>,</span><span class=w> </span><span class=n>res_buf</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span><span class=w>
+</span><span class=w>            </span><span class=p>}</span><span class=w>
+</span><span class=w>            </span><span class=n>ReadMode</span>::<span class=n>AverageN</span><span class=w> </span><span class=o>=&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
+</span><span class=w>                </span><span class=n>rprintln</span><span class=o>!</span><span class=p>(</span><span class=s>&#34;Scanning and averaging not possible for externally clocked mode&#34;</span><span class=p>);</span><span class=w>
+</span><span class=w>            </span><span class=p>}</span><span class=w>
+</span><span class=w>        </span><span class=p>}</span><span class=w>
+</span><span class=w>        </span><span class=n>counter</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=mi>1</span><span class=p>;</span><span class=w>
+</span><span class=w>        </span><span class=n>delay</span><span class=p>.</span><span class=n>delay_ms</span><span class=p>(</span><span class=mi>500</span><span class=p>);</span><span class=w>
+</span><span class=w>    </span><span class=p>}</span><span class=w>
+</span><span class=w></span><span class=p>}</span><span class=w>
+</span></code></pre></div><p>There is also an example mode which uses the averaging functionality of the ADC. This can be used
 for something like filtering a noisy signal.</p>
 <p>The <code>SpiBase&lt;SPIB></code> struct is VA10820 specific, but any SPI instance which implements the
 <a href=https://docs.rs/embedded-hal/latest/embedded_hal/><code>embedded-hal</code></a> can be used to
@@ -310,12 +332,60 @@ a device driver crate for those as well soon.</p>
 <a href=https://robamu.github.io/tags/adc/>adc</a>&nbsp;
 <a href=https://robamu.github.io/tags/max11619/>max11619</a>&nbsp;
 </div>
+<hr>
+<section id=social-share>
+<div class="list-inline footer-links">
+<div class=share-box aria-hidden=true>
+<ul class=share>
+<li>
+<a href="//twitter.com/share?url=https%3a%2f%2frobamu.github.io%2fpost%2fmax11619-driver-rust%2f&text=Rust%20driver%20for%20the%2010-bit%20MAX11619%20ADCs&via=" target=_blank title="Share on Twitter">
+<i class="fab fa-twitter"></i>
+</a>
+</li>
+<li>
+<a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2frobamu.github.io%2fpost%2fmax11619-driver-rust%2f" target=_blank title="Share on Facebook">
+<i class="fab fa-facebook"></i>
+</a>
+</li>
+<li>
+<a href="//reddit.com/submit?url=https%3a%2f%2frobamu.github.io%2fpost%2fmax11619-driver-rust%2f&title=Rust%20driver%20for%20the%2010-bit%20MAX11619%20ADCs" target=_blank title="Share on Reddit">
+<i class="fab fa-reddit"></i>
+</a>
+</li>
+<li>
+<a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2frobamu.github.io%2fpost%2fmax11619-driver-rust%2f&title=Rust%20driver%20for%20the%2010-bit%20MAX11619%20ADCs" target=_blank title="Share on LinkedIn">
+<i class="fab fa-linkedin"></i>
+</a>
+</li>
+<li>
+<a href="//www.stumbleupon.com/submit?url=https%3a%2f%2frobamu.github.io%2fpost%2fmax11619-driver-rust%2f&title=Rust%20driver%20for%20the%2010-bit%20MAX11619%20ADCs" target=_blank title="Share on StumbleUpon">
+<i class="fab fa-stumbleupon"></i>
+</a>
+</li>
+<li>
+<a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2frobamu.github.io%2fpost%2fmax11619-driver-rust%2f&description=Rust%20driver%20for%20the%2010-bit%20MAX11619%20ADCs" target=_blank title="Share on Pinterest">
+<i class="fab fa-pinterest"></i>
+</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+<h4 class=see-also>See also</h4>
+<ul>
+<li><a href=/post/rust-ecosystem/>Bringing Rust to Space - Setting up a Rust ecosystem for the VA108XX MCU family</a></li>
+</ul>
 </article>
 <ul class="pager blog-pager">
 <li class=previous>
 <a href=https://robamu.github.io/post/rust-ecosystem/ data-toggle=tooltip data-placement=top title="Bringing Rust to Space - Setting up a Rust ecosystem for the VA108XX MCU family">&larr; Previous Post</a>
 </li>
 </ul>
+<div class=disqus-comments>
+<button id=show-comments class="btn btn-default" type=button>Show <span class=disqus-comment-count data-disqus-url=https://robamu.github.io/post/max11619-driver-rust>comments</span></button>
+<div id=disqus_thread></div>
+<script type=text/javascript>var disqus_config=function(){this.page.url='https://robamu.github.io/post/max11619-driver-rust'}</script>
+</div>
 </div>
 </div>
 </div>
@@ -350,6 +420,7 @@ Robin Mueller
 </p>
 <p class="credits theme-by text-muted">
 <a href=https://gohugo.io>Hugo v0.91.2</a> powered &nbsp;&bull;&nbsp; Theme <a href=https://github.com/halogenica/beautifulhugo>Beautiful Hugo</a> adapted from <a href=https://deanattali.com/beautiful-jekyll/>Beautiful Jekyll</a>
+&nbsp;&bull;&nbsp;[<a href=false91f3d9b9a0efbf1bc8886d95e1c94f0c68d0f923>91f3d9b9</a>]
 </p>
 </div>
 </div>
@@ -360,5 +431,8 @@ Robin Mueller
 <script src=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js integrity=sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa crossorigin=anonymous></script>
 <script src=https://robamu.github.io/js/main.js></script><script>renderMathInElement(document.body)</script><script src=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js integrity=sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy crossorigin=anonymous></script>
 <script src=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js integrity=sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q crossorigin=anonymous></script><script src=https://robamu.github.io/js/load-photoswipe.js></script>
+<script>(function(){var c='49f27010d1fda4554',a=document.createElement('script'),b;a.type='text/javascript',a.async=!0,a.src='https://cse.google.com/cse.js?cx='+c,b=document.getElementsByTagName('script')[0],b.parentNode.insertBefore(a,b)})()</script>
+<script type=text/javascript>$(function(){$('#show-comments').on('click',function(){var a='https-robamu-github-io';(function(){var b=document.createElement('script');b.type='text/javascript',b.async=!0,b.src='//'+a+'.disqus.com/embed.js',(document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(b)})(),$(this).hide()})})</script>
+<script id=dsq-count-scr src=//https-robamu-github-io.disqus.com/count.js async></script>
 </body>
 </html>
