@@ -7,7 +7,7 @@
 <meta name=description content="After exploring Rust for smaller bare-metal systems like Cortex-M based microcontrollers, I am trying to learn using Rust when using a Linux runtime. The most common example for this is the Raspberry Pi, but there are a lot of other boards out there which support Embedded Linux, for example the Beagle Bone Black or Xilinx hybrid CPU / FPGA solutions like the Zynq 7020.
     Embedded Linux Boards: Raspberry Pi">
 <meta name=author content="Robin Mueller"><script type=application/ld+json>{"@context":"http://schema.org","@type":"WebSite","name":"robs blog","url":"https:\/\/robamu.github.io"}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"Organization","name":"","url":"https:\/\/robamu.github.io"}</script>
-<script type=application/ld+json>{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"https:\/\/robamu.github.io","name":"home"}},{"@type":"ListItem","position":3,"item":{"@id":"https:\/\/robamu.github.io\/post\/cross-compile-rust-rpi\/","name":"Cross compile and debug rust applications for the raspberry pi"}}]}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"Article","author":{"name":"Robin Mueller"},"headline":"Cross-Compile and Debug Rust Applications for the Raspberry Pi","description":"After exploring Rust for smaller bare-metal systems like Cortex-M based microcontrollers, I am trying to learn using Rust when using a Linux runtime. The most common example for this is the Raspberry Pi, but there are a lot of other boards out there which support Embedded Linux, for example the Beagle Bone Black or Xilinx hybrid CPU \/ FPGA solutions like the Zynq 7020.\n    Embedded Linux Boards: Raspberry Pi","inLanguage":"en","wordCount":2611,"datePublished":"2021-12-27T12:31:51","dateModified":"2021-12-27T12:31:51","image":"https:\/\/robamu.github.io","keywords":["rust, cross-compile, vscode, cli, raspberrypi"],"mainEntityOfPage":"https:\/\/robamu.github.io\/post\/cross-compile-rust-rpi\/","publisher":{"@type":"Organization","name":"https:\/\/robamu.github.io","logo":{"@type":"ImageObject","url":"https:\/\/robamu.github.io","height":60,"width":60}}}</script>
+<script type=application/ld+json>{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"https:\/\/robamu.github.io","name":"home"}},{"@type":"ListItem","position":3,"item":{"@id":"https:\/\/robamu.github.io\/post\/cross-compile-rust-rpi\/","name":"Cross compile and debug rust applications for the raspberry pi"}}]}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"Article","author":{"name":"Robin Mueller"},"headline":"Cross-Compile and Debug Rust Applications for the Raspberry Pi","description":"After exploring Rust for smaller bare-metal systems like Cortex-M based microcontrollers, I am trying to learn using Rust when using a Linux runtime. The most common example for this is the Raspberry Pi, but there are a lot of other boards out there which support Embedded Linux, for example the Beagle Bone Black or Xilinx hybrid CPU \/ FPGA solutions like the Zynq 7020.\n    Embedded Linux Boards: Raspberry Pi","inLanguage":"en","wordCount":2616,"datePublished":"2021-12-27T12:31:51","dateModified":"2021-12-27T12:31:51","image":"https:\/\/robamu.github.io","keywords":["rust, cross-compile, vscode, cli, raspberrypi"],"mainEntityOfPage":"https:\/\/robamu.github.io\/post\/cross-compile-rust-rpi\/","publisher":{"@type":"Organization","name":"https:\/\/robamu.github.io","logo":{"@type":"ImageObject","url":"https:\/\/robamu.github.io","height":60,"width":60}}}</script>
 <meta property="og:title" content="Cross-Compile and Debug Rust Applications for the Raspberry Pi">
 <meta property="og:description" content="After exploring Rust for smaller bare-metal systems like Cortex-M based microcontrollers, I am trying to learn using Rust when using a Linux runtime. The most common example for this is the Raspberry Pi, but there are a lot of other boards out there which support Embedded Linux, for example the Beagle Bone Black or Xilinx hybrid CPU / FPGA solutions like the Zynq 7020.
     Embedded Linux Boards: Raspberry Pi">
@@ -372,7 +372,7 @@ automatically:</p>
 </span><span class=go>Reading symbols from target/armv7-unknown-linux-gnueabihf/debug/rpi-rs-crosscompile...
 </span><span class=go>warning: Missing auto-load script at offset 0 in section .debug_gdb_scripts
 </span><span class=go>of file /home/rmueller/Rust/rpi-rs-crosscompile/target/armv7-unknown-linux-gnueabihf/debug/rpi-rs-crosscompile.
-</span><span class=go>Use `info auto-load python-scripts [REGEXP]&#39; to list them.
+</span><span class=go>Use `info auto-load python-scripts [REGEXP]` to list them.
 </span><span class=go>Remote debugging from host 127.0.0.1
 </span><span class=go>Reading /lib/ld-linux-armhf.so.3 from remote target...
 </span><span class=go>warning: File transfers from remote targets can be slow. Use &#34;set sysroot&#34; to access files locally instead.
@@ -489,7 +489,7 @@ in VS Code. The result should look something like the following:</p>
 <h3 id=gdb-server-started-externally>GDB server started externally</h3>
 <p>The only difference is that the GDB server is now started in an external shell
 instance, which also allows to see debug output produced by the application.
-Configuring <code>.cargo/config.toml</code> correctlys allows simply using <code>cargo run</code>:</p>
+Configuring <code>.cargo/config.toml</code> correctly allows simply using <code>cargo run</code> to start the GDB server:</p>
 <div class=highlight><pre tabindex=0 class=chroma><code class=language-toml data-lang=toml><span class=c># Requires Python3 installation. Takes care of transferring and running the application</span>
 <span class=c># to the Raspberry Pi</span>
 <span class=c># runner = &#34;py bld-deploy-remote.py -t -r --source&#34;</span>
@@ -506,11 +506,11 @@ configuration in VS Code. The result should look something like the following:</
 <div class=box>
 <figure itemprop=associatedMedia itemscope itemtype=http://schema.org/ImageObject>
 <div class=img>
-<img itemprop=thumbnail src=/img/rpi-rs-crosscompile/debug-vscode-external-server.png alt="Debugging with VS Code with externally startred GDB server">
+<img itemprop=thumbnail src=/img/rpi-rs-crosscompile/debug-vscode-external-server.png alt="Debugging with VS Code with externally started GDB server">
 </div>
 <a href=/img/rpi-rs-crosscompile/debug-vscode-external-server.png itemprop=contentUrl></a>
 <figcaption>
-<p>Debugging with VS Code with externally startred GDB server</p>
+<p>Debugging with VS Code with externally started GDB server</p>
 </figcaption>
 </figure>
 </div>
@@ -639,7 +639,7 @@ Robin Mueller
 </p>
 <p class="credits theme-by text-muted">
 <a href=https://gohugo.io>Hugo v0.91.2</a> powered &nbsp;&bull;&nbsp; Theme <a href=https://github.com/halogenica/beautifulhugo>Beautiful Hugo</a> adapted from <a href=https://deanattali.com/beautiful-jekyll/>Beautiful Jekyll</a>
-&nbsp;&bull;&nbsp;[<a href=falseff6f36637540027599a47e5bd7390168b5a1c641>ff6f3663</a>]
+&nbsp;&bull;&nbsp;[<a href=false8c2185c78005caaaa983fae7c09ca7e13bae6247>8c2185c7</a>]
 </p>
 </div>
 </div>
