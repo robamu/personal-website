@@ -7,7 +7,7 @@
 <meta name=description content="After exploring Rust for smaller bare-metal systems like Cortex-M based microcontrollers, I am trying to learn using Rust when using a Linux runtime. The most common example for this is the Raspberry Pi, but there are a lot of other boards out there which support Embedded Linux, for example the Beagle Bone Black or Xilinx hybrid CPU / FPGA solutions like the Zynq 7020.
     Embedded Linux Boards: Raspberry Pi">
 <meta name=author content="Robin Mueller"><script type=application/ld+json>{"@context":"http://schema.org","@type":"WebSite","name":"robs blog","url":"https:\/\/robamu.github.io"}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"Organization","name":"","url":"https:\/\/robamu.github.io"}</script>
-<script type=application/ld+json>{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"https:\/\/robamu.github.io","name":"home"}},{"@type":"ListItem","position":3,"item":{"@id":"https:\/\/robamu.github.io\/post\/cross-compile-rust-rpi\/","name":"Cross compile and debug rust applications for the raspberry pi"}}]}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"Article","author":{"name":"Robin Mueller"},"headline":"Cross-Compile and Debug Rust Applications for the Raspberry Pi","description":"After exploring Rust for smaller bare-metal systems like Cortex-M based microcontrollers, I am trying to learn using Rust when using a Linux runtime. The most common example for this is the Raspberry Pi, but there are a lot of other boards out there which support Embedded Linux, for example the Beagle Bone Black or Xilinx hybrid CPU \/ FPGA solutions like the Zynq 7020.\n    Embedded Linux Boards: Raspberry Pi","inLanguage":"en","wordCount":2610,"datePublished":"2021-12-27T12:31:51","dateModified":"2021-12-27T12:31:51","image":"https:\/\/robamu.github.io","keywords":["rust, cross-compile, vscode, cli, raspberrypi"],"mainEntityOfPage":"https:\/\/robamu.github.io\/post\/cross-compile-rust-rpi\/","publisher":{"@type":"Organization","name":"https:\/\/robamu.github.io","logo":{"@type":"ImageObject","url":"https:\/\/robamu.github.io","height":60,"width":60}}}</script>
+<script type=application/ld+json>{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"https:\/\/robamu.github.io","name":"home"}},{"@type":"ListItem","position":3,"item":{"@id":"https:\/\/robamu.github.io\/post\/cross-compile-rust-rpi\/","name":"Cross compile and debug rust applications for the raspberry pi"}}]}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"Article","author":{"name":"Robin Mueller"},"headline":"Cross-Compile and Debug Rust Applications for the Raspberry Pi","description":"After exploring Rust for smaller bare-metal systems like Cortex-M based microcontrollers, I am trying to learn using Rust when using a Linux runtime. The most common example for this is the Raspberry Pi, but there are a lot of other boards out there which support Embedded Linux, for example the Beagle Bone Black or Xilinx hybrid CPU \/ FPGA solutions like the Zynq 7020.\n    Embedded Linux Boards: Raspberry Pi","inLanguage":"en","wordCount":2611,"datePublished":"2021-12-27T12:31:51","dateModified":"2021-12-27T12:31:51","image":"https:\/\/robamu.github.io","keywords":["rust, cross-compile, vscode, cli, raspberrypi"],"mainEntityOfPage":"https:\/\/robamu.github.io\/post\/cross-compile-rust-rpi\/","publisher":{"@type":"Organization","name":"https:\/\/robamu.github.io","logo":{"@type":"ImageObject","url":"https:\/\/robamu.github.io","height":60,"width":60}}}</script>
 <meta property="og:title" content="Cross-Compile and Debug Rust Applications for the Raspberry Pi">
 <meta property="og:description" content="After exploring Rust for smaller bare-metal systems like Cortex-M based microcontrollers, I am trying to learn using Rust when using a Linux runtime. The most common example for this is the Raspberry Pi, but there are a lot of other boards out there which support Embedded Linux, for example the Beagle Bone Black or Xilinx hybrid CPU / FPGA solutions like the Zynq 7020.
     Embedded Linux Boards: Raspberry Pi">
@@ -153,15 +153,15 @@ Xilinx hybrid CPU / FPGA solutions like the
 </div>
 </center>
 <p><a href=https://en.wikipedia.org/wiki/Raspberry_Pi#/media/File:Raspberry_Pi_4_Model_B_-_Side.jpg>Image Source</a></p>
-<p>I am especially interested in potential of Rust to develop more complex applications and allow
-remote development for Linux boards. All of this generally requires cross-compiling. For most
+<p>I am especially interested in the potential of Rust to develop more complex applications and allow
+remote development on Linux boards. All of this generally requires cross-compiling. For most
 use-cases and simpler projects, compiling and running the applications on the Linux boards directly
 is a lot simpler then the effort of setting up a cross-compiling environment on a host machine.</p>
 <h2 id=some-background-information>Some Background Information</h2>
 <p>If you&rsquo;re only interested in the result and on how to quickly cross-develop applications for your
 Linux board, go to the <a href=#crossbuild>next section</a>.</p>
 <p>My experiences when developing something like satellite software for an Embedded Linux Software
-is the following:</p>
+are the following:</p>
 <ol>
 <li>Even though there is a Linux runtime, it might not support compiling
 applications on the board directly. For example, the
@@ -638,7 +638,7 @@ Robin Mueller
 </p>
 <p class="credits theme-by text-muted">
 <a href=https://gohugo.io>Hugo v0.91.2</a> powered &nbsp;&bull;&nbsp; Theme <a href=https://github.com/halogenica/beautifulhugo>Beautiful Hugo</a> adapted from <a href=https://deanattali.com/beautiful-jekyll/>Beautiful Jekyll</a>
-&nbsp;&bull;&nbsp;[<a href=false70e72ac1f1446d8000f51af541868916df3d1926>70e72ac1</a>]
+&nbsp;&bull;&nbsp;[<a href=falsed58d1685fc95da37cd507c3cc1877eb2171f4a87>d58d1685</a>]
 </p>
 </div>
 </div>
