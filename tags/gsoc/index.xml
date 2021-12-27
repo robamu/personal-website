@@ -1,21 +1,2 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>gsoc on robs blog</title>
-    <link>https://robamu.github.io/tags/gsoc/</link>
-    <description>Recent content in gsoc on robs blog</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Tue, 14 Dec 2021 19:29:58 +0100</lastBuildDate><atom:link href="https://robamu.github.io/tags/gsoc/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Throwback - GSoC 2020 | Device handler development for the SOURCE project</title>
-      <link>https://robamu.github.io/post/gsoc-post/</link>
-      <pubDate>Tue, 14 Dec 2021 19:29:58 +0100</pubDate>
-      
-      <guid>https://robamu.github.io/post/gsoc-post/</guid>
-      <description>This is an adapted version of a blog post initially posted on Wordpress as part of my GSoC project. It&amp;rsquo;s a perfect way for me to set up my own first blog which is based on this excellent guide.
-At that point of time, I was an aerospace engineer doing my graduate studies at the University of Stuttgart. I&amp;rsquo;m still active in the small satellite society KSat but I am doing more of a supporting role now that I started working the University as a PhD student.</description>
-    </item>
-    
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>gsoc on robs blog</title><link>https://robamu.github.io/tags/gsoc/</link><description>Recent content in gsoc on robs blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 14 Dec 2021 19:29:58 +0100</lastBuildDate><atom:link href="https://robamu.github.io/tags/gsoc/index.xml" rel="self" type="application/rss+xml"/><item><title>Throwback - GSoC 2020 | Device handler development for the SOURCE project</title><link>https://robamu.github.io/post/gsoc-post/</link><pubDate>Tue, 14 Dec 2021 19:29:58 +0100</pubDate><guid>https://robamu.github.io/post/gsoc-post/</guid><description>This is an adapted version of a blog post initially posted on Wordpress as part of my GSoC project. It&amp;rsquo;s a perfect way for me to set up my own first blog which is based on this excellent guide.
+At that point of time, I was an aerospace engineer doing my graduate studies at the University of Stuttgart. I&amp;rsquo;m still active in the small satellite society KSat but I am doing more of a supporting role now that I started working the University as a PhD student.</description></item></channel></rss>

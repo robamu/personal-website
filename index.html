@@ -11,7 +11,7 @@
 <meta property="og:site_name" content="robs blog">
 <meta name=twitter:title content="robs blog">
 <meta name=twitter:card content="summary">
-<meta name=generator content="Hugo 0.91.0">
+<meta name=generator content="Hugo 0.91.2">
 <link rel=alternate href=https://robamu.github.io/index.xml type=application/rss+xml title="robs blog"><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css integrity=sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y crossorigin=anonymous>
 <link rel=stylesheet href=https://use.fontawesome.com/releases/v5.5.0/css/all.css integrity=sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU crossorigin=anonymous>
 <link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css integrity=sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u crossorigin=anonymous><link rel=stylesheet href=https://robamu.github.io/css/main.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic">
@@ -99,6 +99,71 @@
 <div class=row>
 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
 <div class=posts-list>
+<article class=post-preview>
+<a href=https://robamu.github.io/post/max11619-driver-rust/>
+<h2 class=post-title>Rust driver for the 10-bit MAX11619 ADCs</h2>
+</a>
+<p class=post-meta>
+<span class=post-meta>
+<i class="fas fa-calendar"></i>&nbsp;Posted on December 16, 2021
+&nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Robin Mueller
+</span>
+</p>
+<div class=post-entry>
+In my last blog post, I described how I set up a small Rust ecosystem for the Vorago REB1 development board. This development board also has a MAX11619 10-bit ADC device by Maxim devices. I thought this was a good opportunity to develop my first device driver crate because there isn&rsquo;t one for this device yet.
+The REB1 development board also has a 2K potentiometer connected directly to a channel of the ADC which makes testing convenient.
+<a href=https://robamu.github.io/post/max11619-driver-rust/ class=post-read-more>[Read More]</a>
+</div>
+<div class=blog-tags>
+<a href=https://robamu.github.io/tags/rust/>rust</a>&nbsp;
+<a href=https://robamu.github.io/tags/driver/>driver</a>&nbsp;
+<a href=https://robamu.github.io/tags/adc/>adc</a>&nbsp;
+<a href=https://robamu.github.io/tags/max11619/>max11619</a>&nbsp;
+</div>
+</article>
+<article class=post-preview>
+<a href=https://robamu.github.io/post/rust-ecosystem/>
+<h2 class=post-title>Bringing Rust to Space - Setting up a Rust ecosystem for the VA108XX MCU family</h2>
+</a>
+<p class=post-meta>
+<span class=post-meta>
+<i class="fas fa-calendar"></i>&nbsp;Posted on December 15, 2021
+&nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Robin Mueller
+</span>
+</p>
+<div class=post-entry>
+The last few weeks I have been busy diving into the Rust ecosystem and learning the language through practical projects. I finishing the excellent Rust book and the Rust Embedded Book first and then tinkered with Rust on some STM32 MCUs. As a next step, I was looking for practical projects to further learn the language. I&rsquo;ve tried to combine this with the usual activities at the research institute I work now as well.
+<a href=https://robamu.github.io/post/rust-ecosystem/ class=post-read-more>[Read More]</a>
+</div>
+<div class=blog-tags>
+<a href=https://robamu.github.io/tags/rust/>rust</a>&nbsp;
+<a href=https://robamu.github.io/tags/embedded/>embedded</a>&nbsp;
+<a href=https://robamu.github.io/tags/space/>space</a>&nbsp;
+<a href=https://robamu.github.io/tags/va10820/>va10820</a>&nbsp;
+</div>
+</article>
+<article class=post-preview>
+<a href=https://robamu.github.io/post/gsoc-post/>
+<h2 class=post-title>Throwback - GSoC 2020 | Device handler development for the SOURCE project</h2>
+</a>
+<p class=post-meta>
+<span class=post-meta>
+<i class="fas fa-calendar"></i>&nbsp;Posted on December 14, 2021
+&nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Robin Mueller
+</span>
+</p>
+<div class=post-entry>
+This is an adapted version of a blog post initially posted on Wordpress as part of my GSoC project. It&rsquo;s a perfect way for me to set up my own first blog which is based on this excellent guide.
+At that point of time, I was an aerospace engineer doing my graduate studies at the University of Stuttgart. I&rsquo;m still active in the small satellite society KSat but I am doing more of a supporting role now that I started working the University as a PhD student.
+<a href=https://robamu.github.io/post/gsoc-post/ class=post-read-more>[Read More]</a>
+</div>
+<div class=blog-tags>
+<a href=https://robamu.github.io/tags/gsoc/>gsoc</a>&nbsp;
+<a href=https://robamu.github.io/tags/device-handler/>device-handler</a>&nbsp;
+<a href=https://robamu.github.io/tags/sensors/>sensors</a>&nbsp;
+<a href=https://robamu.github.io/tags/eclipse/>eclipse</a>&nbsp;
+</div>
+</article>
 </div>
 </div>
 </div>
@@ -130,12 +195,12 @@
 <p class="credits copyright text-muted">
 Robin Mueller
 &nbsp;&bull;&nbsp;&copy;
-0001
+2021
 &nbsp;&bull;&nbsp;
 <a href=https://robamu.github.io>robs blog</a>
 </p>
 <p class="credits theme-by text-muted">
-<a href=https://gohugo.io>Hugo v0.91.0</a> powered &nbsp;&bull;&nbsp; Theme <a href=https://github.com/halogenica/beautifulhugo>Beautiful Hugo</a> adapted from <a href=https://deanattali.com/beautiful-jekyll/>Beautiful Jekyll</a>
+<a href=https://gohugo.io>Hugo v0.91.2</a> powered &nbsp;&bull;&nbsp; Theme <a href=https://github.com/halogenica/beautifulhugo>Beautiful Hugo</a> adapted from <a href=https://deanattali.com/beautiful-jekyll/>Beautiful Jekyll</a>
 </p>
 </div>
 </div>
