@@ -1,297 +1,171 @@
-<!DOCTYPE html>
-<html lang="en" itemscope itemtype="http://schema.org/WebPage">
-  <head>
-    
-
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-
-  <title>Cross-Compile Rust for the Raspberry Pi - robs blog</title>
-  <meta name="description" content="After exploring Rust for smaller bare-metal systems like Cortex-M based microcontrollers, I am trying to learn using Rust when using a Linux runtime. The most common example for this is the Raspberry Pi, but there are a lot of other boards out there which support Embedded Linux, for example the Beagle Bone Black or Xilinx hybrid CPU / FPGA solutions like the Zynq 7020.
-Some Background Information If you&rsquo;re only interested in the result and on how to quickly cross-develop applications for your Linux board, go to the next section.">
-  <meta name="author" content="Robin Mueller"/><script type="application/ld+json">
-{
-    "@context": "http://schema.org",
-    "@type": "WebSite",
-    "name": "robs blog",
-    
-    "url": "https:\/\/robamu.github.io"
-}
-</script><script type="application/ld+json">
-{
-  "@context": "http://schema.org",
-  "@type": "Organization",
-  "name": "",
-  "url": "https:\/\/robamu.github.io"
-  
-  
-  
-  
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "http://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [{
-        "@type": "ListItem",
-        "position": 1,
-        "item": {
-          "@id": "https:\/\/robamu.github.io",
-          "name": "home"
-        }
-    },{
-        "@type": "ListItem",
-        "position": 3,
-        "item": {
-          "@id": "https:\/\/robamu.github.io\/post\/cross-compile-rust-rpi\/",
-          "name": "Cross compile rust for the raspberry pi"
-        }
-    }]
-}
-</script><script type="application/ld+json">
-{
-  "@context": "http://schema.org",
-  "@type": "Article",
-  "author": {
-    "name" : "Robin Mueller"
-  },
-  "headline": "Cross-Compile Rust for the Raspberry Pi",
-  "description" : "After exploring Rust for smaller bare-metal systems like Cortex-M based microcontrollers, I am trying to learn using Rust when using a Linux runtime. The most common example for this is the Raspberry Pi, but there are a lot of other boards out there which support Embedded Linux, for example the Beagle Bone Black or Xilinx hybrid CPU \/ FPGA solutions like the Zynq 7020.\nSome Background Information If you\u0026rsquo;re only interested in the result and on how to quickly cross-develop applications for your Linux board, go to the next section.",
-  "inLanguage" : "en",
-  "wordCount":  1134 ,
-  "datePublished" : "2021-12-27T12:31:51",
-  "dateModified" : "2021-12-27T12:31:51",
-  "image" : "https:\/\/robamu.github.io",
-  "keywords" : [ "rust, cross-compile, vscode, cli, raspberrypi" ],
-  "mainEntityOfPage" : "https:\/\/robamu.github.io\/post\/cross-compile-rust-rpi\/",
-  "publisher" : {
-    "@type": "Organization",
-    "name" : "https:\/\/robamu.github.io",
-    "logo" : {
-        "@type" : "ImageObject",
-        "url" : "https:\/\/robamu.github.io",
-        "height" :  60 ,
-        "width" :  60
-    }
-  }
-}
-</script>
-
-<meta property="og:title" content="Cross-Compile Rust for the Raspberry Pi" />
+<!doctype html><html lang=en itemscope itemtype=http://schema.org/WebPage>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Cross-Compile and Debug Rust Applications for the Raspberry Pi - robs blog</title>
+<meta name=description content="After exploring Rust for smaller bare-metal systems like Cortex-M based microcontrollers, I am trying to learn using Rust when using a Linux runtime. The most common example for this is the Raspberry Pi, but there are a lot of other boards out there which support Embedded Linux, for example the Beagle Bone Black or Xilinx hybrid CPU / FPGA solutions like the Zynq 7020.
+    Embedded Linux Boards: Raspberry Pi">
+<meta name=author content="Robin Mueller"><script type=application/ld+json>{"@context":"http://schema.org","@type":"WebSite","name":"robs blog","url":"https:\/\/robamu.github.io"}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"Organization","name":"","url":"https:\/\/robamu.github.io"}</script>
+<script type=application/ld+json>{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"https:\/\/robamu.github.io","name":"home"}},{"@type":"ListItem","position":3,"item":{"@id":"https:\/\/robamu.github.io\/post\/cross-compile-rust-rpi\/","name":"Cross compile and debug rust applications for the raspberry pi"}}]}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"Article","author":{"name":"Robin Mueller"},"headline":"Cross-Compile and Debug Rust Applications for the Raspberry Pi","description":"After exploring Rust for smaller bare-metal systems like Cortex-M based microcontrollers, I am trying to learn using Rust when using a Linux runtime. The most common example for this is the Raspberry Pi, but there are a lot of other boards out there which support Embedded Linux, for example the Beagle Bone Black or Xilinx hybrid CPU \/ FPGA solutions like the Zynq 7020.\n    Embedded Linux Boards: Raspberry Pi","inLanguage":"en","wordCount":2605,"datePublished":"2021-12-27T12:31:51","dateModified":"2021-12-27T12:31:51","image":"https:\/\/robamu.github.io","keywords":["rust, cross-compile, vscode, cli, raspberrypi"],"mainEntityOfPage":"https:\/\/robamu.github.io\/post\/cross-compile-rust-rpi\/","publisher":{"@type":"Organization","name":"https:\/\/robamu.github.io","logo":{"@type":"ImageObject","url":"https:\/\/robamu.github.io","height":60,"width":60}}}</script>
+<meta property="og:title" content="Cross-Compile and Debug Rust Applications for the Raspberry Pi">
 <meta property="og:description" content="After exploring Rust for smaller bare-metal systems like Cortex-M based microcontrollers, I am trying to learn using Rust when using a Linux runtime. The most common example for this is the Raspberry Pi, but there are a lot of other boards out there which support Embedded Linux, for example the Beagle Bone Black or Xilinx hybrid CPU / FPGA solutions like the Zynq 7020.
-Some Background Information If you&rsquo;re only interested in the result and on how to quickly cross-develop applications for your Linux board, go to the next section.">
-<meta property="og:url" content="https://robamu.github.io/post/cross-compile-rust-rpi/" />
-<meta property="og:type" content="website" />
-<meta property="og:site_name" content="robs blog" />
-
-  <meta name="twitter:title" content="Cross-Compile Rust for the Raspberry Pi" />
-  <meta name="twitter:description" content="After exploring Rust for smaller bare-metal systems like Cortex-M based microcontrollers, I am trying to learn using Rust when using a Linux runtime. The most common example for this is the Raspberry …">
-  <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.91.2" />
-  <link rel="alternate" href="https://robamu.github.io/index.xml" type="application/rss+xml" title="robs blog"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><link rel="stylesheet" href="https://robamu.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" /><link rel="stylesheet" href="https://robamu.github.io/css/syntax.css" /><link rel="stylesheet" href="https://robamu.github.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
-
-
-
-  </head>
-  <body>
-    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="https://robamu.github.io">robs blog</a>
-    </div>
-
-    <div class="collapse navbar-collapse" id="main-navbar">
-      <ul class="nav navbar-nav navbar-right">
-        
-          
-            <li>
-              <a title="Home" href="/">Home</a>
-            </li>
-          
-        
-          
-            <li>
-              <a title="About" href="/about">About</a>
-            </li>
-          
-        
-          
-            <li>
-              <a title="Contact" href="/contact">Contact</a>
-            </li>
-          
-        
-
-        
-
-        
-          <li>
-            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
-              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
-            </a>
-          </li>
-        
-      </ul>
-    </div>
-
-    
-
-  </div>
-</nav>
-
-
-
-  <div id="modalSearch" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Search robs blog</h4>
-        </div>
-        <div class="modal-body">
-          <gcse:search></gcse:search>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-    
-
-
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-<div class="pswp__bg"></div>
-
-<div class="pswp__scroll-wrap">
-    
-    <div class="pswp__container">
-      <div class="pswp__item"></div>
-      <div class="pswp__item"></div>
-      <div class="pswp__item"></div>
-    </div>
-    
-    <div class="pswp__ui pswp__ui--hidden">
-    <div class="pswp__top-bar">
-      
-      <div class="pswp__counter"></div>
-      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-      <button class="pswp__button pswp__button--share" title="Share"></button>
-      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-      
-      
-      <div class="pswp__preloader">
-        <div class="pswp__preloader__icn">
-          <div class="pswp__preloader__cut">
-            <div class="pswp__preloader__donut"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-      <div class="pswp__share-tooltip"></div>
-    </div>
-    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-    </button>
-    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-    </button>
-    <div class="pswp__caption">
-      <div class="pswp__caption__center"></div>
-    </div>
-    </div>
-    </div>
+    Embedded Linux Boards: Raspberry Pi">
+<meta property="og:url" content="https://robamu.github.io/post/cross-compile-rust-rpi/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="robs blog">
+<meta name=twitter:title content="Cross-Compile and Debug Rust Applications for the Raspberry Pi">
+<meta name=twitter:description content="After exploring Rust for smaller bare-metal systems like Cortex-M based microcontrollers, I am trying to learn using Rust when using a Linux runtime. The most common example for this is the Raspberry …">
+<meta name=twitter:card content="summary">
+<meta name=generator content="Hugo 0.91.2">
+<link rel=alternate href=https://robamu.github.io/index.xml type=application/rss+xml title="robs blog"><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css integrity=sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y crossorigin=anonymous>
+<link rel=stylesheet href=https://use.fontawesome.com/releases/v5.5.0/css/all.css integrity=sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU crossorigin=anonymous>
+<link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css integrity=sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u crossorigin=anonymous><link rel=stylesheet href=https://robamu.github.io/css/main.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic">
+<link rel=stylesheet href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800">
+<link rel=stylesheet href=https://robamu.github.io/css/highlight.min.css><link rel=stylesheet href=https://robamu.github.io/css/codeblock.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css integrity=sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh crossorigin=anonymous>
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css integrity=sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R crossorigin=anonymous>
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+<div class=container-fluid>
+<div class=navbar-header>
+<button type=button class=navbar-toggle data-toggle=collapse data-target=#main-navbar>
+<span class=sr-only>Toggle navigation</span>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+</button>
+<a class=navbar-brand href=https://robamu.github.io>robs blog</a>
 </div>
-
-
-  
-  
-  
-
-
-
-
-
-
-  
-
-  <header class="header-section ">
-    
-    <div class="intro-header no-img">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            <div class="post-heading">
-              
-                <h1>Cross-Compile Rust for the Raspberry Pi</h1>
-              
-              
-              
-              
-                <span class="post-meta">
-  
-  
-  <i class="fas fa-calendar"></i>&nbsp;Posted on December 27, 2021
-  
-  
-    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;6&nbsp;minutes
-  
-  
-  
-    
-      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Robin Mueller
-    
-  
-  
+<div class="collapse navbar-collapse" id=main-navbar>
+<ul class="nav navbar-nav navbar-right">
+<li>
+<a title=Home href=/>Home</a>
+</li>
+<li>
+<a title=About href=/about>About</a>
+</li>
+<li>
+<a title=Contact href=/contact>Contact</a>
+</li>
+<li>
+<a href=#modalSearch data-toggle=modal data-target=#modalSearch style=outline:none>
+<span class="hidden-sm hidden-md hidden-lg">Search</span> <span id=searchGlyph class="glyphicon glyphicon-search"></span>
+</a>
+</li>
+</ul>
+</div>
+</div>
+</nav>
+<div id=modalSearch class="modal fade" role=dialog>
+<div class=modal-dialog>
+<div class=modal-content>
+<div class=modal-header>
+<button type=button class=close data-dismiss=modal>&#215;</button>
+<h4 class=modal-title>Search robs blog</h4>
+</div>
+<div class=modal-body>
+<gcse:search></gcse:search>
+</div>
+<div class=modal-footer>
+<button type=button class="btn btn-default" data-dismiss=modal>Close</button>
+</div>
+</div>
+</div>
+</div>
+<div class=pswp tabindex=-1 role=dialog aria-hidden=true>
+<div class=pswp__bg></div>
+<div class=pswp__scroll-wrap>
+<div class=pswp__container>
+<div class=pswp__item></div>
+<div class=pswp__item></div>
+<div class=pswp__item></div>
+</div>
+<div class="pswp__ui pswp__ui--hidden">
+<div class=pswp__top-bar>
+<div class=pswp__counter></div>
+<button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+<div class=pswp__preloader>
+<div class=pswp__preloader__icn>
+<div class=pswp__preloader__cut>
+<div class=pswp__preloader__donut></div>
+</div>
+</div>
+</div>
+</div>
+<div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+<div class=pswp__share-tooltip></div>
+</div>
+<button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+</button>
+<div class=pswp__caption>
+<div class=pswp__caption__center></div>
+</div>
+</div>
+</div>
+</div>
+<header class=header-section>
+<div class="intro-header no-img">
+<div class=container>
+<div class=row>
+<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+<div class=post-heading>
+<h1>Cross-Compile and Debug Rust Applications for the Raspberry Pi</h1>
+<span class=post-meta>
+<i class="fas fa-calendar"></i>&nbsp;Posted on December 27, 2021
+&nbsp;(Last modified on December 28, 2021)
+&nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;13&nbsp;minutes
+&nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Robin Mueller
 </span>
-
-
-              
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
-
-
-    
-<div class="container" role="main">
-  <div class="row">
-    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-      <article role="main" class="blog-post">
-        <p>After exploring Rust for smaller bare-metal systems like Cortex-M based microcontrollers, I am
+</div>
+</div>
+</div>
+</div>
+</div>
+</header>
+<div class=container role=main>
+<div class=row>
+<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+<article role=main class=blog-post>
+<p>After exploring Rust for smaller bare-metal systems like Cortex-M based microcontrollers, I am
 trying to learn using Rust when using a Linux runtime. The most common example for this is the
-Raspberry Pi, but there are a lot of other boards out there which support Embedded Linux, for
-example the Beagle Bone Black or Xilinx hybrid CPU / FPGA solutions like the Zynq 7020.</p>
-<h2 id="some-background-information">Some Background Information</h2>
-<p>If you&rsquo;re only interested in the result and on how to quickly cross-develop applications for your
-Linux board, go to the next section.</p>
+<a href=https://www.raspberrypi.org/>Raspberry Pi</a>, but there are a lot of other boards out there
+which support Embedded Linux, for example the <a href=https://beagleboard.org/black>Beagle Bone Black</a> or
+Xilinx hybrid CPU / FPGA solutions like the
+<a href=https://www.xilinx.com/products/silicon-devices/soc/zynq-7000.html>Zynq 7020</a>.</p>
+<center>
+<link rel=stylesheet href=https://robamu.github.io/css/hugo-easy-gallery.css>
+<div class=box>
+<figure itemprop=associatedMedia itemscope itemtype=http://schema.org/ImageObject>
+<div class=img>
+<img itemprop=thumbnail src=/img/rpi-rs-crosscompile/RPI.jpg alt="Embedded Linux Boards: Raspberry Pi">
+</div>
+<a href=/img/rpi-rs-crosscompile/RPI.jpg itemprop=contentUrl></a>
+<figcaption>
+<p>Embedded Linux Boards: Raspberry Pi</p>
+</figcaption>
+</figure>
+</div>
+</center>
+<p><a href=https://en.wikipedia.org/wiki/Raspberry_Pi#/media/File:Raspberry_Pi_4_Model_B_-_Side.jpg>Image Source</a></p>
 <p>I am especially interested in potential of Rust to develop more complex applications and allow
 remote development for Linux boards. All of this generally requires cross-compiling. For most
 use-cases and simpler projects, compiling and running the applications on the Linux boards directly
 is a lot simpler then the effort of setting up a cross-compiling environment on a host machine.</p>
-<p>However, my experiences when developing something like satellite software
+<h2 id=some-background-information>Some Background Information</h2>
+<p>If you&rsquo;re only interested in the result and on how to quickly cross-develop applications for your
+Linux board, go to the <a href=#crossbuild>next section</a>.</p>
+<p>My experiences when developing something like satellite software for an Embedded Linux Software
 is the following:</p>
 <ol>
 <li>Even though there is a Linux runtime, it might not support compiling
 applications on the board directly. For example, the
-<a href="https://xiphos.com/products/q7-processor/">Q7S</a> used in one of our
+<a href=https://xiphos.com/products/q7-processor/>Q7S</a> used in one of our
 projects has a root file system limit of 32 MB, so it does not even
 contain something like header files.</li>
 <li>There is generally one monolithic software written in C or C++ and which
@@ -300,348 +174,485 @@ for example on libraries for a certain device like a Star Tracker. This means
 the compilation times are long. Even if the Linux boards support
 compilation, compiling the primary software on the board becomes unfeasable.</li>
 <li>There are only 1-2 of the On-Board Computers available. For example, one is a
-Flight Model which remains packaged, the other one is the Engineering Model
-which has to stay in the clean room. Allowing convenient development
-requires remote deployment of the application. Otherwise, I&rsquo;d have to go
+Flight Model which remains packaged until satellite asembly while the other one is the
+Engineering Model which has to stay in the clean room. Allowing convenient development
+requires remote deployment of the application. Otherwise, one would have to go
 into the cleanroom for every small test and change I want to introduce.</li>
 <li>The software is complex and debugging can become complex too. Printouts and LEDs
-are not sufficient anymore to debug the software, a full debugger is required.</li>
+are not sufficient anymore to debug the software, a full debugger is required additionally.</li>
 </ol>
 <p>For that reason, convenient cross-compilation and debugging is a must for me when considering
-Rust as an alternative to C/C++ on systems like the <a href="https://xiphos.com/products/q7-processor/">Q7S</a>.
+Rust as an alternative to C/C++ on systems like the <a href=https://xiphos.com/products/q7-processor/>Q7S</a>.
 I have only found bits and pieces in the Internet on how to properly do this. Therefore, I have
-created a template repository which gathers all those bits and pieces into one package.
-I specifically targetted debugging with the command line and with VS Code as those tools are most
-commonly used in Rust development. The instrutions provided here have been tested on
-Linux (Ubuntu 21.04) and Windows 10, but I really recommend to use a Linux development hosted when
-developing anything for an Embedded Linux board.</p>
-<h2 id="cross-building-a-rust-application-for-the-raspberry-pi">Cross-Building a Rust application for the Raspberry Pi</h2>
+created a <a href=https://github.com/robamu-org/rpi-rs-crosscompile>template repository</a> which gathers
+all those bits and pieces into one package.
+I specifically targeted debugging with the command line and with VS Code as those tools are most
+commonly used in Rust development from what I have seen so far.
+The instrutions provided here have been tested on Linux (Ubuntu 21.04) and Windows 10, but I really
+recommend to use a Linux development hosted when developing anything for an Embedded Linux board.</p>
+<h2 id=a-namecrossbuilda--cross-building-a-rust-application-for-the-raspberry-pi><a name=crossbuild></a> Cross-Building a Rust application for the Raspberry Pi</h2>
 <p>The instructions here are based on
-<a href="https://chacin.dev/blog/cross-compiling-rust-for-the-raspberry-pi/">this excellent guide</a>.</p>
+<a href=https://chacin.dev/blog/cross-compiling-rust-for-the-raspberry-pi/>this excellent guide</a>.</p>
 <p>Clone the template repository first:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh">git clone https://github.com/robamu-org/rpi-rs-crosscompile.git
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>git clone https://github.com/robamu-org/rpi-rs-crosscompile.git
 </code></pre></div><p>You can also use the template functionality of GitHub to create your own custom repository.
 Cross-Building an application for the Raspberry Pi still requires a C/C++ cross-toolchain to compile
 Rust with an ARM linker.
 Make sure to download a suitable cross-compiler. Most of the automation
 performed by the repository is done in a Python script, so it is recommended
-to <a href="https://www.python.org/downloads/">install Python</a> as well.</p>
+to <a href=https://www.python.org/downloads/>install Python</a> as well.</p>
 <p>Make sure you can call it from the command line</p>
 <p><strong>Linux</strong>:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">[Raspberry Pi 4] rmueller@power-pinguin:~/Rust/rpi-rs-crosscompile(main)$ python3 --version
-</span><span class="go">Python 3.9.7
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=go>[Raspberry Pi 4] rmueller@power-pinguin:~/Rust/rpi-rs-crosscompile(main)$ python3 --version
+</span><span class=go>Python 3.9.7
 </span></code></pre></div><p><strong>Windows</strong>:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"></code></pre></div><h3 id="setting-up-the-raspberry-pi">Setting up the Raspberry Pi</h3>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=go>Robin@DESKTOP-7KSTH01 MSYS ~/Documents/Rust/rpi-rs-crosscompile (main)
+</span><span class=go></span><span class=gp>$ </span>py --version
+<span class=go>Python 3.9.0
+</span></code></pre></div><p>You need to install <code>scp</code> and <code>ssh</code> for the Python script to work. There are different ways to
+do this, for example by installing Puttty or by installing these tools with MinGW64.</p>
+<h3 id=setting-up-the-raspberry-pi>Setting up the Raspberry Pi</h3>
 <p>There are different ways to avoid having to retype the password everytime
 when tranferring an application to the Raspberry Pi or running an application
 remotely. On Linux, you can use <code>sshpass</code> for this.</p>
 <p>The most easiest way and the one I recommend is to install your SSH key
 on the Raspberry Pi with <code>ssh-copy-id</code>. This works on Linux and Windows.
-You can follow the steps specified <a href="https://www.ssh.com/academy/ssh/copy-id">here</a> to do this.</p>
+You can follow the steps specified <a href=https://www.ssh.com/academy/ssh/copy-id>here</a> to do this.</p>
 <p>Another way is to use a SSH key file by supplying the <code>-f SSHFILE</code> flag
 to the <code>bld-deploy-remote.py</code> application in your <code>.cargo/config.toml</code>
 or as an environmental variable <code>SSHPASS</code> with the <code>-e</code> flag.</p>
-<h3 id="setup-linux">Setup Linux</h3>
+<h3 id=setup-linux>Setup Linux</h3>
 <p>You can create a cross-compiler built with crosstool-ng
 from <a href="https://www.dropbox.com/sh/hkn4lw87zr002fh/AAAO-HxFQzfmmPQQ9KVmoooGa?dl=0">here</a>. There is one
 available for the Raspberry Pi 3 and the Raspberry Pi 4.</p>
 <p>Following command should get the job done, assuming you
 installed the cross-compiler shown above into the <code>$HOME/x-tools</code> folder:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:<span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">/x-tools/armv8-rpi4-linux-gnueabihf/bin&#34;</span>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=nb>export</span> <span class=nv>PATH</span><span class=o>=</span><span class=nv>$PATH</span>:<span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>/x-tools/armv8-rpi4-linux-gnueabihf/bin&#34;</span>
 </code></pre></div><p>You can also put this in a script named <code>rpi4-path.sh</code> and source it
 with <code>. rpi4-path.sh</code> or your can put it in your <code>.bashrc</code> file to add it
 to <code>$PATH</code> permanently.</p>
 <p>Test with <code>armv8-rpi4-linux-gnueabihf-gcc --version</code>:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">[Raspberry Pi 4] rmueller@power-pinguin:~/Rust$ armv8-rpi4-linux-gnueabihf-gcc --version
-</span><span class="go">armv8-rpi4-linux-gnueabihf-gcc (crosstool-NG 1.24.0.390_62e9db2) 8.5.0
-</span><span class="go">Copyright (C) 2018 Free Software Foundation, Inc.
-</span><span class="go">This is free software; see the source for copying conditions.  There is NO
-</span><span class="go">warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-</span></code></pre></div><p>Now you are ready to build the first application for the Raspberry Pi.
-The <code>.cargo/def-config.toml</code> file is a template for a Cargo configuration
-to perform flashing conveniently. Copy it to <code>.cargo/config.toml</code> first:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">cd</span> .cargo
-cp def-config.toml config.toml
-</code></pre></div><p>Then open the <code>config.toml</code> with a text editor of your choice and select
-the correct linker first, for example with <code>armv8-rpi4-linux-gnueabihf-gcc</code>:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-toml" data-lang="toml"><span class="c"># If you use a different cross-compiler, adapt this flag accordingly.</span>
-<span class="nx">linker</span> <span class="p">=</span> <span class="s2">&#34;armv8-rpi4-linux-gnueabihf-gcc&#34;</span>
-<span class="c"># linker = &#34;arm-linux-gnueabihf-gcc&#34;</span>
-<span class="c"># linker = &#34;arm-none-linux-gnueabihf-gcc&#34;</span>
-</code></pre></div><p>Then select the correct runner to run the application instead of debugging it</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-toml" data-lang="toml"><span class="c"># Requires Python3 installation. Takes care of transferring and running the application</span>
-<span class="c"># to the Raspberry Pi</span>
-<span class="nx">runner</span> <span class="p">=</span> <span class="s2">&#34;py bld-deploy-remote.py -t -r --source&#34;</span>
-<span class="c"># runner = &#34;python3 bld-deploy-remote.py -t -r --source&#34;</span>
-<span class="p">...</span>
-<span class="c"># runner = &#34;py bld-deploy-remote.py -t -d --source&#34;</span>
-<span class="c"># runner = &#34;python3 bld-deploy-remote.py -t -d --source&#34;</span>
-<span class="p">...</span>
-<span class="c"># runner = &#34;py bld-deploy-remote.py -t -d -s --gdb arm-linux-gnueabihf-gdb --source&#34;</span>
-<span class="c"># runner = &#34;python3 bld-deploy-remote.py -t -d --source&#34;</span>
-</code></pre></div><p>Finally select the correct builder depending on whether you have a Raspberry Pi 0/1
-or a Raspberry Pi 2/3/4</p>
-<h3 id="setup-windows">Setup Windows</h3>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=go>[Raspberry Pi 4] rmueller@power-pinguin:~/Rust$ armv8-rpi4-linux-gnueabihf-gcc --version
+</span><span class=go>armv8-rpi4-linux-gnueabihf-gcc (crosstool-NG 1.24.0.390_62e9db2) 8.5.0
+</span><span class=go>Copyright (C) 2018 Free Software Foundation, Inc.
+</span><span class=go>This is free software; see the source for copying conditions.  There is NO
+</span><span class=go>warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+</span></code></pre></div><p>Proceed with the generic setup.</p>
+<h3 id=setup-windows>Setup Windows</h3>
 <p>It is recommended to install the cross-toolchain provided by
-<a href="https://gnutoolchains.com/raspberry/">SysProgs</a>.</p>
+<a href=https://gnutoolchains.com/raspberry/>SysProgs</a>.</p>
 <p>Add the binary path of your installed cross-toolchain for your path.</p>
 <p>You can add the toolchain binary path to your system environmental variables
-permanently, for example like shown in the following picture:</p>
-<p>Image here</p>
-<p>If you use <code>git bash</code>, you can also use the Linux way shown above.</p>
-<p>blablabla</p>
-<h3 id="running-the-application">Running the application</h3>
-<p>Everything should be ready to run the application remotely now.
-Running the application is very simple now: Use <code>cargo run</code></p>
-<p><strong>Linux</strong>:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">[Raspberry Pi 4] rmueller@power-pinguin:~/Rust/rpi-rs-crosscompile(main)$ cargo run
-</span><span class="go">    Finished dev [unoptimized + debuginfo] target(s) in 0.00s
-</span><span class="go">     Running `python3 bld-deploy-remote.py -t -r --source target/armv7-unknown-linux-gnueabihf/debug/rpi-rs-crosscompile`
-</span><span class="go">Running transfer command: sshpass  scp target/armv7-unknown-linux-gnueabihf/debug/rpi-rs-crosscompile pi@raspberrypi.local:&#34;/tmp/rpi-rs-crosscompile&#34;
-</span><span class="go">Running target application: sshpass  ssh pi@raspberrypi.local /tmp/rpi-rs-crosscompile
-</span><span class="go"> __________________________
-</span><span class="go">&lt; Hello fellow Rustaceans! &gt;
-</span><span class="go"> --------------------------
-</span><span class="go">        \
-</span><span class="go">         \
-</span><span class="go">            _~^~^~_
-</span><span class="go">        \) /  o o  \ (/
-</span><span class="go">          &#39;_   -   _&#39;
-</span><span class="go">          / &#39;-----&#39; \
-</span><span class="go"></span><span class="err">
-</span></code></pre></div><p><strong>Windows</strong>:</p>
-<h2 id="debugging-the-application-on-the-command-line">Debugging the application on the Command Line</h2>
-
-
-        
-          <div class="blog-tags">
-            
-              <a href="https://robamu.github.io/tags/rust/">rust</a>&nbsp;
-            
-              <a href="https://robamu.github.io/tags/cross-compile/">cross-compile</a>&nbsp;
-            
-              <a href="https://robamu.github.io/tags/vscode/">vscode</a>&nbsp;
-            
-              <a href="https://robamu.github.io/tags/cli/">cli</a>&nbsp;
-            
-              <a href="https://robamu.github.io/tags/raspberrypi/">raspberrypi</a>&nbsp;
-            
-          </div>
-        
-
-        
-            <hr/>
-            <section id="social-share">
-              <div class="list-inline footer-links">
-                
-
-<div class="share-box" aria-hidden="true">
-    <ul class="share">
-      
-      <li>
-        <a href="//twitter.com/share?url=https%3a%2f%2frobamu.github.io%2fpost%2fcross-compile-rust-rpi%2f&amp;text=Cross-Compile%20Rust%20for%20the%20Raspberry%20Pi&amp;via=" target="_blank" title="Share on Twitter">
-          <i class="fab fa-twitter"></i>
-        </a>
-      </li>
-  
-      
-      <li>
-        <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2frobamu.github.io%2fpost%2fcross-compile-rust-rpi%2f" target="_blank" title="Share on Facebook">
-          <i class="fab fa-facebook"></i>
-        </a>
-      </li>
-  
-      
-      <li>
-        <a href="//reddit.com/submit?url=https%3a%2f%2frobamu.github.io%2fpost%2fcross-compile-rust-rpi%2f&amp;title=Cross-Compile%20Rust%20for%20the%20Raspberry%20Pi" target="_blank" title="Share on Reddit">
-          <i class="fab fa-reddit"></i>
-        </a>
-      </li>
-  
-      
-      <li>
-        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2frobamu.github.io%2fpost%2fcross-compile-rust-rpi%2f&amp;title=Cross-Compile%20Rust%20for%20the%20Raspberry%20Pi" target="_blank" title="Share on LinkedIn">
-          <i class="fab fa-linkedin"></i>
-        </a>
-      </li>
-  
-      
-      <li>
-        <a href="//www.stumbleupon.com/submit?url=https%3a%2f%2frobamu.github.io%2fpost%2fcross-compile-rust-rpi%2f&amp;title=Cross-Compile%20Rust%20for%20the%20Raspberry%20Pi" target="_blank" title="Share on StumbleUpon">
-          <i class="fab fa-stumbleupon"></i>
-        </a>
-      </li>
-  
-      
-      <li>
-        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2frobamu.github.io%2fpost%2fcross-compile-rust-rpi%2f&amp;description=Cross-Compile%20Rust%20for%20the%20Raspberry%20Pi" target="_blank" title="Share on Pinterest">
-          <i class="fab fa-pinterest"></i>
-        </a>
-      </li>
-    </ul>
-  </div>
-  
-
-              </div>
-            </section>
-        
-
-        
-          
-            
-          
-
-          
-                  <h4 class="see-also">See also</h4>
-                  <ul>
-                
-                
-                    <li><a href="/post/max11619-driver-rust/">Rust driver for the 10-bit MAX11619 ADCs</a></li>
-                
-                    <li><a href="/post/rust-ecosystem/">Bringing Rust to Space - Setting up a Rust ecosystem for the VA108XX MCU family</a></li>
-                
-              </ul>
-
-          
-        
-      </article>
-
-      
-        <ul class="pager blog-pager">
-          
-            <li class="previous">
-              <a href="https://robamu.github.io/post/max11619-driver-rust/" data-toggle="tooltip" data-placement="top" title="Rust driver for the 10-bit MAX11619 ADCs">&larr; Previous Post</a>
-            </li>
-          
-          
-        </ul>
-      
-
-
-      
-        
-          
-          <div class="disqus-comments">                  
-            <button id="show-comments" class="btn btn-default" type="button">Show <span class="disqus-comment-count" data-disqus-url="https://robamu.github.io/post/cross-compile-rust-rpi">comments</span></button>
-            <div id="disqus_thread"></div>
-
-            <script type="text/javascript">
-              var disqus_config = function () {
-              this.page.url = 'https:\/\/robamu.github.io\/post\/cross-compile-rust-rpi';
-            };
-
-          </script>
-          </div>
-          
-        
-        
-      
-
-    </div>
-  </div>
+permanently, for example like shown here:</p>
+<center>
+<div class=box>
+<figure itemprop=associatedMedia itemscope itemtype=http://schema.org/ImageObject>
+<div class=img>
+<img itemprop=thumbnail src=/img/rpi-rs-crosscompile/win-path.png alt="Windows Environmental Variables Example">
 </div>
-
-      
+<a href=/img/rpi-rs-crosscompile/win-path.png itemprop=contentUrl></a>
+<figcaption>
+<p>Windows Environmental Variables Example</p>
+</figcaption>
+</figure>
+</div>
+</center>
+<p>If you use <code>git bash</code>, you can also use the Linux way shown above.
+Test with <code>arm-linux-gnueabihf-gcc --version</code>:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-ps data-lang=ps><span class=nf>C:\Users\Robin\Documents\Rust\rpi-rs-crosscompile</span> <span class=p>[</span><span class=nf>main</span> <span class=nf>≡</span><span class=p>]&gt;</span> <span class=nf>arm-linux-gnueabihf-gcc</span> <span class=nf>--version</span>
+<span class=nf>arm-linux-gnueabihf-gcc.exe</span> <span class=s>(Raspbian 8.3.0-6+rpi1)</span> <span class=nf>8.3.0</span>
+<span class=nf>Copyright</span> <span class=s>(C)</span> <span class=mf>2018</span> <span class=nf>Free</span> <span class=nf>Software</span> <span class=nf>Foundation,</span> <span class=nf>Inc.</span>
+<span class=nf>This</span> <span class=nf>is</span> <span class=nf>free</span> <span class=nf>software;</span> <span class=nf>see</span> <span class=nf>the</span> <span class=nf>source</span> <span class=nf>for</span> <span class=nf>copying</span> <span class=nf>conditions.</span>  <span class=nf>There</span> <span class=nf>is</span> <span class=nf>NO</span>
+<span class=nf>warranty;</span> <span class=nf>not</span> <span class=nf>even</span> <span class=nf>for</span> <span class=nf>MERCHANTABILITY</span> <span class=nf>or</span> <span class=nf>FITNESS</span> <span class=nf>FOR</span> <span class=nf>A</span> <span class=nf>PARTICULAR</span> <span class=nf>PURPOSE.</span>
+</code></pre></div><p>Proceed with the generic setup.</p>
+<h3 id=generic-setup>Generic Setup</h3>
+<p>Now you are ready to build the first application for the Raspberry Pi.
+The <code>.cargo/def-config.toml</code> file is a template for a Cargo configuration
+to perform flashing conveniently. Copy it to <code>.cargo/config.toml</code> first:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=nb>cd</span> .cargo
+cp def-config.toml config.toml
+</code></pre></div><p>Then open the <code>config.toml</code> with a text editor of your choice and select
+the correct linker first, for example with <code>armv8-rpi4-linux-gnueabihf-gcc</code> on Linux or
+<code>arm-linux-gnueabihf-gcc</code> on Windows:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-toml data-lang=toml><span class=c># If you use a different cross-compiler, adapt this flag accordingly.</span>
+<span class=c># linker = &#34;armv8-rpi4-linux-gnueabihf-gcc&#34;</span>
+<span class=c># linker = &#34;arm-linux-gnueabihf-gcc&#34;</span>
+<span class=c># linker = &#34;arm-none-linux-gnueabihf-gcc&#34;</span>
+</code></pre></div><p>Then select the correct runner to run the application instead of debugging it. For Windows,
+select a runner using <code>py</code>.</p>
+<p><strong>Linux</strong>:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-toml data-lang=toml><span class=c># Requires Python3 installation. Takes care of transferring and running the application</span>
+<span class=c># to the Raspberry Pi</span>
+<span class=c># runner = &#34;py bld-deploy-remote.py -t -r --source&#34;</span>
+<span class=nx>runner</span> <span class=p>=</span> <span class=s2>&#34;python3 bld-deploy-remote.py -t -r --source&#34;</span>
+<span class=p>...</span>
+<span class=c># runner = &#34;py bld-deploy-remote.py -t -d --source&#34;</span>
+<span class=c># runner = &#34;python3 bld-deploy-remote.py -t -d --source&#34;</span>
+<span class=p>...</span>
+<span class=c># runner = &#34;py bld-deploy-remote.py -t -d -s --gdb arm-linux-gnueabihf-gdb --source&#34;</span>
+<span class=c># runner = &#34;python3 bld-deploy-remote.py -t -d --source&#34;</span>
+</code></pre></div><p><strong>Windows</strong>:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-toml data-lang=toml><span class=c># Requires Python3 installation. Takes care of transferring and running the application</span>
+<span class=c># to the Raspberry Pi</span>
+<span class=nx>runner</span> <span class=p>=</span> <span class=s2>&#34;py bld-deploy-remote.py -t -r --source&#34;</span>
+<span class=c># runner = &#34;python3 bld-deploy-remote.py -t -r --source&#34;</span>
+<span class=p>...</span>
+<span class=c># runner = &#34;py bld-deploy-remote.py -t -d --source&#34;</span>
+<span class=c># runner = &#34;python3 bld-deploy-remote.py -t -d --source&#34;</span>
+<span class=p>...</span>
+<span class=c># runner = &#34;py bld-deploy-remote.py -t -d -s --gdb arm-linux-gnueabihf-gdb --source&#34;</span>
+<span class=c># runner = &#34;python3 bld-deploy-remote.py -t -d --source&#34;</span>
+</code></pre></div><p>Finally select the correct builder depending on whether you have a Raspberry Pi 0/1
+or a Raspberry Pi 2/3/4</p>
+<h3 id=building-the-application>Building the application</h3>
+<p>Everything should be ready to build the application.
+Simply use <code>cargo build</code>.</p>
+<h3 id=running-the-application>Running the application</h3>
+<p>Everything should be ready to run the application remotely now.
+Running the application is very simple now: Use <code>cargo run</code>, which will also build the application
+automatically:</p>
+<p><strong>Linux</strong>:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=go>[Raspberry Pi 4] rmueller@power-pinguin:~/Rust/rpi-rs-crosscompile(main)$ cargo run
+</span><span class=go>    Finished dev [unoptimized + debuginfo] target(s) in 0.00s
+</span><span class=go>     Running `python3 bld-deploy-remote.py -t -r --source target/armv7-unknown-linux-gnueabihf/debug/rpi-rs-crosscompile`
+</span><span class=go>Running transfer command: sshpass  scp target/armv7-unknown-linux-gnueabihf/debug/rpi-rs-crosscompile pi@raspberrypi.local:&#34;/tmp/rpi-rs-crosscompile&#34;
+</span><span class=go>Running target application: sshpass  ssh pi@raspberrypi.local /tmp/rpi-rs-crosscompile
+</span><span class=go> __________________________
+</span><span class=go>&lt; Hello fellow Rustaceans! &gt;
+</span><span class=go> --------------------------
+</span><span class=go>        \
+</span><span class=go>         \
+</span><span class=go>            _~^~^~_
+</span><span class=go>        \) /  o o  \ (/
+</span><span class=go>          &#39;_   -   _&#39;
+</span><span class=go>          / &#39;-----&#39; \
+</span><span class=go></span><span class=err>
+</span></code></pre></div><p><strong>Windows</strong>:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=go>C:\Users\Robin\Documents\Rust\rpi-rs-crosscompile [main ≡]&gt; cargo run
+</span><span class=go>    Finished dev [unoptimized + debuginfo] target(s) in 0.01s
+</span><span class=go>     Running `python3 bld-deploy-remote.py -t -r --source target\armv7-unknown-linux-gnueabihf\debug\rpi-rs-crosscompile`
+</span><span class=go>Running transfer command:  scp target\armv7-unknown-linux-gnueabihf\debug\rpi-rs-crosscompile pi@raspberrypi.local:&#34;/tmp/rpi-rs-crosscompile&#34;
+</span><span class=go>Warning: Permanently added the ED25519 host key for IP address &#39;...&#39; to the list of known hosts.
+</span><span class=go>rpi-rs-crosscompile                                                                   100% 4448KB  10.2MB/s   00:00
+</span><span class=go>Running target application:  ssh pi@raspberrypi.local /tmp/rpi-rs-crosscompile
+</span><span class=go>Warning: Permanently added the ED25519 host key for IP address &#39;...&#39; to the list of known hosts.
+</span><span class=go> __________________________
+</span><span class=go>&lt; Hello fellow Rustaceans! &gt;
+</span><span class=go> --------------------------
+</span><span class=go>        \
+</span><span class=go>         \
+</span><span class=go>            _~^~^~_
+</span><span class=go>        \) /  o o  \ (/
+</span><span class=go>          &#39;_   -   _&#39;
+</span><span class=go>          / &#39;-----&#39; \
+</span></code></pre></div><p>As you can see, all commands executed by the Python scripts are shown as well.</p>
+<h2 id=debugging-the-application-on-the-command-line>Debugging the application on the Command Line</h2>
+<p>You can switch to the debugging configuration by changing the runner accordingly</p>
+<p><strong>Linux</strong>:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-toml data-lang=toml><span class=c># Requires Python3 installation. Takes care of transferring and running the application</span>
+<span class=c># to the Raspberry Pi</span>
+<span class=c># runner = &#34;py bld-deploy-remote.py -t -r --source&#34;</span>
+<span class=c># runner = &#34;python3 bld-deploy-remote.py -t -r --source&#34;</span>
+<span class=p>...</span>
+<span class=c># runner = &#34;py bld-deploy-remote.py -t -d --source&#34;</span>
+<span class=c># runner = &#34;python3 bld-deploy-remote.py -t -d --source&#34;</span>
+<span class=p>...</span>
+<span class=c># runner = &#34;py bld-deploy-remote.py -t -d -s --gdb arm-linux-gnueabihf-gdb --source&#34;</span>
+<span class=nx>runner</span> <span class=p>=</span> <span class=s2>&#34;python3 bld-deploy-remote.py -t -d --source&#34;</span>
+</code></pre></div><p>Console output:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=go>[Raspberry Pi 4] rmueller@power-pinguin:~/Rust/rpi-rs-crosscompile(main)$ cargo run
+</span><span class=go>    Finished dev [unoptimized + debuginfo] target(s) in 0.00s
+</span><span class=go>     Running `python3 bld-deploy-remote.py -t -d -s --source target/armv7-unknown-linux-gnueabihf/debug/rpi-rs-crosscompile`
+</span><span class=go>Running transfer command: sshpass  scp target/armv7-unknown-linux-gnueabihf/debug/rpi-rs-crosscompile pi@raspberrypi.local:&#34;/tmp/rpi-rs-crosscompile&#34;
+</span><span class=go>Running debug command: sshpass  ssh -f -L 17777:localhost:17777 pi@raspberrypi.local &#34;sh -c &#39;killall -q gdbserver; gdbserver *:17777 /tmp/rpi-rs-crosscompile&#39;&#34;
+</span><span class=go>Process /tmp/rpi-rs-crosscompile created; pid = 7343
+</span><span class=go>Listening on port 17777
+</span><span class=go>Running start command: gdb-multiarch -q -x gdb.gdb target/armv7-unknown-linux-gnueabihf/debug/rpi-rs-crosscompile
+</span><span class=go>Reading symbols from target/armv7-unknown-linux-gnueabihf/debug/rpi-rs-crosscompile...
+</span><span class=go>warning: Missing auto-load script at offset 0 in section .debug_gdb_scripts
+</span><span class=go>of file /home/rmueller/Rust/rpi-rs-crosscompile/target/armv7-unknown-linux-gnueabihf/debug/rpi-rs-crosscompile.
+</span><span class=go>Use `info auto-load python-scripts [REGEXP]&#39; to list them.
+</span><span class=go>Remote debugging from host 127.0.0.1
+</span><span class=go>Reading /lib/ld-linux-armhf.so.3 from remote target...
+</span><span class=go>warning: File transfers from remote targets can be slow. Use &#34;set sysroot&#34; to access files locally instead.
+</span><span class=go>Reading /lib/ld-linux-armhf.so.3 from remote target...
+</span><span class=go>...
+</span><span class=go>0xb6fcea30 in ?? () from target:/lib/ld-linux-armhf.so.3
+</span><span class=go>Breakpoint 1 at 0x40ce70: main. (2 locations)
+</span><span class=go>Reading /usr/lib/arm-linux-gnueabihf/libarmmem-v7l.so from remote target...
+</span><span class=go>...
+</span><span class=go></span><span class=err>
+</span><span class=err></span><span class=go>Breakpoint 1, 0x0040cf48 in main ()
+</span><span class=go>(gdb) c
+</span><span class=go>Continuing.
+</span><span class=go></span><span class=err>
+</span><span class=err></span><span class=go>Breakpoint 1, rpi_rs_crosscompile::main () at src/main.rs:5
+</span><span class=go>5       let out = b&#34;Hello fellow Rustaceans!&#34;;
+</span><span class=go>(gdb) c
+</span><span class=go>Continuing.
+</span><span class=go> __________________________
+</span><span class=go>&lt; Hello fellow Rustaceans! &gt;
+</span><span class=go> --------------------------
+</span><span class=go>        \
+</span><span class=go>         \
+</span><span class=go>            _~^~^~_
+</span><span class=go>        \) /  o o  \ (/
+</span><span class=go>          &#39;_   -   _&#39;
+</span><span class=go>          / &#39;-----&#39; \
+</span><span class=go></span><span class=err>
+</span><span class=err></span><span class=go>Child exited with status 0
+</span><span class=go>[Inferior 1 (process 7343) exited normally]
+</span><span class=go>(gdb) 
+</span></code></pre></div><p><strong>Windows</strong>:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-toml data-lang=toml><span class=c># Requires Python3 installation. Takes care of transferring and running the application</span>
+<span class=c># to the Raspberry Pi</span>
+<span class=nx>runner</span> <span class=p>=</span> <span class=s2>&#34;py bld-deploy-remote.py -t -r --source&#34;</span>
+<span class=c># runner = &#34;python3 bld-deploy-remote.py -t -r --source&#34;</span>
+<span class=p>...</span>
+<span class=c># runner = &#34;py bld-deploy-remote.py -t -d --source&#34;</span>
+<span class=c># runner = &#34;python3 bld-deploy-remote.py -t -d --source&#34;</span>
+<span class=p>...</span>
+<span class=nx>runner</span> <span class=p>=</span> <span class=s2>&#34;py bld-deploy-remote.py -t -d -s --gdb arm-linux-gnueabihf-gdb --source&#34;</span>
+<span class=c># runner = &#34;python3 bld-deploy-remote.py -t -d --source&#34;</span>
+</code></pre></div><p>Now, you can use <code>cargo run</code> like before, but this time the Python helper program will
+start a GDB server on the Pi and then launch a GDB application locally to debug the program.</p>
+<p>Console Output, using <code>git bash</code> here with <code>scp</code> and <code>ssh</code> installed via MinGW64:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=go>Robin@DESKTOP-7KSTH01 MSYS ~/Documents/Rust/rpi-rs-crosscompile (main)
+</span><span class=go></span><span class=gp>$ </span>cargo run
+<span class=go>    Finished dev [unoptimized + debuginfo] target(s) in 0.01s
+</span><span class=go>     Running `py bld-deploy-remote.py -t -d -s --gdb arm-linux-gnueabihf-gdb --source &#39;target\armv7-unknown-linux-gnueabihf\debug\rpi-rs-crosscompile&#39;`
+</span><span class=go>Running transfer command:  scp target\armv7-unknown-linux-gnueabihf\debug\rpi-rs-crosscompile pi@raspberrypi.local:&#34;/tmp/rpi-rs-crosscompile&#34;
+</span><span class=go>Enter passphrase for key &#39;/c/Users/Robin/.ssh/id_rsa&#39;:
+</span><span class=go>target\armv7-unknown-linux-gnueabihf\debug\rpi-rs-crosscompile                        100% 4448KB   5.4MB/s   00:00
+</span><span class=go>Running debug command:  ssh -f -L 17777:localhost:17777 pi@raspberrypi.local &#34;sh -c &#39;killall -q gdbserver; gdbserver *:17777 /tmp/rpi-rs-crosscompile&#39;&#34;
+</span><span class=go>Enter passphrase for key &#39;/c/Users/Robin/.ssh/id_rsa&#39;:
+</span><span class=go>Process /tmp/rpi-rs-crosscompile created; pid = 29621
+</span><span class=go>Listening on port 17777
+</span><span class=go>Running start command: arm-linux-gnueabihf-gdb -q -x gdb.gdb target\armv7-unknown-linux-gnueabihf\debug\rpi-rs-crosscompile
+</span><span class=go>Reading symbols from target\armv7-unknown-linux-gnueabihf\debug\rpi-rs-crosscompile...done.
+</span><span class=go>warning: Unsupported auto-load script at offset 0 in section .debug_gdb_scripts
+</span><span class=go>of file C:\Users\Robin\Documents\Rust\rpi-rs-crosscompile\target\armv7-unknown-linux-gnueabihf\debug\rpi-rs-crosscompile.
+</span><span class=go>Use `info auto-load python-scripts [REGEXP]&#39; to list them.
+</span><span class=go>Remote debugging from host 127.0.0.1
+</span><span class=go>0xb6fcea30 in ?? () from c:\sysgcc\raspberry\arm-linux-gnueabihf\sysroot/lib/ld-linux-armhf.so.3
+</span><span class=go>Breakpoint 1 at 0x40a7e4
+</span><span class=go></span><span class=err>
+</span><span class=err></span><span class=go>Breakpoint 1, 0x0040a7e4 in main ()
+</span><span class=go>(gdb) b 6
+</span><span class=go>Breakpoint 2 at 0x40a718: file src\main.rs, line 6.
+</span><span class=go>(gdb) c
+</span><span class=go>Continuing.
+</span><span class=go></span><span class=err>
+</span><span class=err></span><span class=go>Breakpoint 2, rpi_rs_crosscompile::main () at src\main.rs:6
+</span><span class=go>6           let width = 24;
+</span><span class=go>(gdb) s
+</span><span class=go>8           let mut writer = BufWriter::new(stdout());
+</span><span class=go>(gdb) c
+</span><span class=go>Continuing.
+</span><span class=go> __________________________
+</span><span class=go>&lt; Hello fellow Rustaceans! &gt;
+</span><span class=go> --------------------------
+</span><span class=go>        \
+</span><span class=go>         \
+</span><span class=go>            _~^~^~_
+</span><span class=go>        \) /  o o  \ (/
+</span><span class=go>          &#39;_   -   _&#39;
+</span><span class=go>          / &#39;-----&#39; \
+</span><span class=go></span><span class=err>
+</span><span class=err></span><span class=go>Child exited with status 0
+</span><span class=go>[Inferior 1 (process 29621) exited normally]
+</span><span class=go>(gdb)
+</span></code></pre></div><h2 id=debugging-the-application-with-vs-code-and-codelldb>Debugging the application with VS Code and <code>CodeLLDB</code></h2>
+<p>I think the best debugging experience is still provided by GUI tools like Eclipse or VS Code.
+The following examples are shown for Linux. The second one should work for Windows as well,
+but I had issues getting the first configuration to work on Windows.</p>
+<h3 id=gdb-server-started-by-vs-code>GDB server started by VS Code</h3>
+<p>Unfortunately, I have not found a way to get the debug output produced by an application
+when starting the GDB server with VS code. Feel free to investigate how this could be solved
+using VS Code tasks.</p>
+<p>You can simply select and run the <code>Remote Debugging With Server</code> configuration
+in VS Code. The result should look something like the following:</p>
+<center>
+<div class=box>
+<figure itemprop=associatedMedia itemscope itemtype=http://schema.org/ImageObject>
+<div class=img>
+<img itemprop=thumbnail src=/img/rpi-rs-crosscompile/debug-vscode-with-server.png alt="Debugging with VS Code with GDB Server started by VS Code">
+</div>
+<a href=/img/rpi-rs-crosscompile/debug-vscode-with-server.png itemprop=contentUrl></a>
+<figcaption>
+<p>Debugging with VS Code with GDB Server started by VS Code</p>
+</figcaption>
+</figure>
+</div>
+</center>
+<h3 id=gdb-server-started-externally>GDB server started externally</h3>
+<p>The only difference is that the GDB server is now started in an external shell
+instance, which also allows to see debug output produced by the application.
+Configuring <code>.cargo/config.toml</code> correctlys allows simply using <code>cargo run</code>:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-toml data-lang=toml><span class=c># Requires Python3 installation. Takes care of transferring and running the application</span>
+<span class=c># to the Raspberry Pi</span>
+<span class=c># runner = &#34;py bld-deploy-remote.py -t -r --source&#34;</span>
+<span class=c># runner = &#34;python3 bld-deploy-remote.py -t -r --source&#34;</span>
+<span class=p>...</span>
+<span class=c># runner = &#34;py bld-deploy-remote.py -t -d --source&#34;</span>
+<span class=nx>runner</span> <span class=p>=</span> <span class=s2>&#34;python3 bld-deploy-remote.py -t -d --source&#34;</span>
+<span class=p>...</span>
+<span class=c># runner = &#34;py bld-deploy-remote.py -t -d -s --gdb arm-linux-gnueabihf-gdb --source&#34;</span>
+<span class=c># runner = &#34;python3 bld-deploy-remote.py -t -d --source&#34;</span>
+</code></pre></div><p>After using <code>cargo run</code>, you can run the <code>Remote Debugging External Server</code>
+configuration in VS Code. The result should look something like the following:</p>
+<center>
+<div class=box>
+<figure itemprop=associatedMedia itemscope itemtype=http://schema.org/ImageObject>
+<div class=img>
+<img itemprop=thumbnail src=/img/rpi-rs-crosscompile/debug-vscode-external-server.png alt="Debugging with VS Code with externally startred GDB server">
+</div>
+<a href=/img/rpi-rs-crosscompile/debug-vscode-external-server.png itemprop=contentUrl></a>
+<figcaption>
+<p>Debugging with VS Code with externally startred GDB server</p>
+</figcaption>
+</figure>
+</div>
+</center>
+<h2 id=under-the-hood>Under the hood</h2>
+<p>If you&rsquo;re interested how exactly this is done in VS Code, you can have a look at the
+<a href=https://github.com/robamu-org/rpi-rs-crosscompile/blob/main/.vscode/launch.json><code>launch.json</code></a>
+and <a href=https://github.com/robamu-org/rpi-rs-crosscompile/blob/main/.vscode/tasks.json><code>tasks.json</code></a>
+provided in the <a href=https://github.com/robamu-org/rpi-rs-crosscompile/tree/main/.vscode>template repository</a>.</p>
+<p>These generally call the <code>bld-deploy-remote.py</code> script, which can be found
+<a href=https://github.com/robamu-org/rpi-rs-crosscompile/blob/main/bld-deploy-remote.py>here</a>.
+This script automates one to all of the following steps which are generally required to deploy and
+debug a cross-compiled application:</p>
+<ol>
+<li>Build the application. When using a Cargo runner, Cargo will take care of this step</li>
+<li>Transfer the application to the Raspberry Pi using the <code>-t</code> flag. The default destination
+is the <code>/tmp</code> folder, but this can be customized with the <code>--dest</code> flag</li>
+<li>Start the <code>gdbserver</code> on the Raspberry Pi. The script also sets up port forwarding on the port
+17777 so that the development host can simply connect to <code>localhost:17777</code></li>
+<li>Start the GDB application to debug the software</li>
+</ol>
+<p>Using Python to perform these steps provides a little bit more flexiblity and portability in
+my opinion. It also makes it easier to adapt the script to custom requirements, because
+Python has the most easiest and most readable syntax of all automation tools I have worked with.</p>
+<p>This script can also be easily ported to other Embedded Linux board by tweaking the
+<code>DEFAULT_*</code> parameters found at the top of the Python script.</p>
+<h2 id=room-for-impovements>Room for Impovements</h2>
+<p>I have not really looked into how tools like <a href=https://github.com/rust-embedded/cross><code>cross</code></a>
+could be used to simplify this process. I think some steps might become easier but using <code>cross</code>
+also requires <code>docker</code>. I think the ways to run and deploy cross-compiled software shown here
+are sufficient for most use-cases. I might try out cross in the future though.</p>
+<div class=blog-tags>
+<a href=https://robamu.github.io/tags/rust/>rust</a>&nbsp;
+<a href=https://robamu.github.io/tags/cross-compile/>cross-compile</a>&nbsp;
+<a href=https://robamu.github.io/tags/vscode/>vscode</a>&nbsp;
+<a href=https://robamu.github.io/tags/cli/>cli</a>&nbsp;
+<a href=https://robamu.github.io/tags/raspberrypi/>raspberrypi</a>&nbsp;
+</div>
+<hr>
+<section id=social-share>
+<div class="list-inline footer-links">
+<div class=share-box aria-hidden=true>
+<ul class=share>
+<li>
+<a href="//twitter.com/share?url=https%3a%2f%2frobamu.github.io%2fpost%2fcross-compile-rust-rpi%2f&text=Cross-Compile%20and%20Debug%20Rust%20Applications%20for%20the%20Raspberry%20Pi&via=" target=_blank title="Share on Twitter">
+<i class="fab fa-twitter"></i>
+</a>
+</li>
+<li>
+<a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2frobamu.github.io%2fpost%2fcross-compile-rust-rpi%2f" target=_blank title="Share on Facebook">
+<i class="fab fa-facebook"></i>
+</a>
+</li>
+<li>
+<a href="//reddit.com/submit?url=https%3a%2f%2frobamu.github.io%2fpost%2fcross-compile-rust-rpi%2f&title=Cross-Compile%20and%20Debug%20Rust%20Applications%20for%20the%20Raspberry%20Pi" target=_blank title="Share on Reddit">
+<i class="fab fa-reddit"></i>
+</a>
+</li>
+<li>
+<a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2frobamu.github.io%2fpost%2fcross-compile-rust-rpi%2f&title=Cross-Compile%20and%20Debug%20Rust%20Applications%20for%20the%20Raspberry%20Pi" target=_blank title="Share on LinkedIn">
+<i class="fab fa-linkedin"></i>
+</a>
+</li>
+<li>
+<a href="//www.stumbleupon.com/submit?url=https%3a%2f%2frobamu.github.io%2fpost%2fcross-compile-rust-rpi%2f&title=Cross-Compile%20and%20Debug%20Rust%20Applications%20for%20the%20Raspberry%20Pi" target=_blank title="Share on StumbleUpon">
+<i class="fab fa-stumbleupon"></i>
+</a>
+</li>
+<li>
+<a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2frobamu.github.io%2fpost%2fcross-compile-rust-rpi%2f&description=Cross-Compile%20and%20Debug%20Rust%20Applications%20for%20the%20Raspberry%20Pi" target=_blank title="Share on Pinterest">
+<i class="fab fa-pinterest"></i>
+</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+<h4 class=see-also>See also</h4>
+<ul>
+<li><a href=/post/max11619-driver-rust/>Rust driver for the 10-bit MAX11619 ADCs</a></li>
+<li><a href=/post/rust-ecosystem/>Bringing Rust to Space - Setting up a Rust ecosystem for the VA108XX MCU family</a></li>
+</ul>
+</article>
+<ul class="pager blog-pager">
+<li class=previous>
+<a href=https://robamu.github.io/post/max11619-driver-rust/ data-toggle=tooltip data-placement=top title="Rust driver for the 10-bit MAX11619 ADCs">&larr; Previous Post</a>
+</li>
+</ul>
+<div class=disqus-comments>
+<button id=show-comments class="btn btn-default" type=button>Show <span class=disqus-comment-count data-disqus-url=https://robamu.github.io/post/cross-compile-rust-rpi>comments</span></button>
+<div id=disqus_thread></div>
+<script type=text/javascript>var disqus_config=function(){this.page.url='https://robamu.github.io/post/cross-compile-rust-rpi'}</script>
+</div>
+</div>
+</div>
+</div>
 <footer>
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <ul class="list-inline text-center footer-links">
-          
-              <li>
-                <a href="https://github.com/robamu" title="GitHub">
-                  <span class="fa-stack fa-lg">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
-                  </span>
-                </a>
-              </li>
-              <li>
-                <a href="https://linkedin.com/in/robin-mueller-m" title="LinkedIn">
-                  <span class="fa-stack fa-lg">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
-                  </span>
-                </a>
-              </li>
-          
-        </ul>
-        <p class="credits copyright text-muted">
-          
-            
-              Robin Mueller
-            
-          
-
-          &nbsp;&bull;&nbsp;&copy;
-          
-            2021
-          
-
-          
-            &nbsp;&bull;&nbsp;
-            <a href="https://robamu.github.io">robs blog</a>
-          
-        </p>
-        
-        <p class="credits theme-by text-muted">
-          <a href="https://gohugo.io">Hugo v0.91.2</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
-          
-        </p>
-      </div>
-    </div>
-  </div>
-</footer><script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.js" integrity="sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/contrib/auto-render.min.js" integrity="sha384-kmZOZB5ObwgQnS/DuDg6TScgOiWWBiVt0plIRkZCmE6rDZGrEOQeHM5PcHi+nyqe" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
-<script src="https://robamu.github.io/js/main.js"></script><script> renderMathInElement(document.body); </script><script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script src="https://robamu.github.io/js/load-photoswipe.js"></script>
-
-
-
-<script>
-  (function() {
-    var cx = '49f27010d1fda4554';
-    var gcse = document.createElement('script');
-    gcse.type = 'text/javascript';
-    gcse.async = true;
-    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(gcse, s);
-  })();
-</script>
-
-
-
-
-
-
-<script type="text/javascript">
-$(function(){
-  $('#show-comments').on('click', function(){
-    var disqus_shortname = 'https-robamu-github-io';
-      
-    (function() {
-      var disqus = document.createElement('script'); 
-      disqus.type = 'text/javascript'; 
-      disqus.async = true;
-      disqus.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(disqus);
-    })();
-      
-    $(this).hide(); 
-    });
-  });
-      
-</script>
-<script id="dsq-count-scr" src="//https-robamu-github-io.disqus.com/count.js" async></script>
-
-
-
-
-    
-  </body>
+<div class=container>
+<div class=row>
+<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+<ul class="list-inline text-center footer-links">
+<li>
+<a href=https://github.com/robamu title=GitHub>
+<span class="fa-stack fa-lg">
+<i class="fas fa-circle fa-stack-2x"></i>
+<i class="fab fa-github fa-stack-1x fa-inverse"></i>
+</span>
+</a>
+</li>
+<li>
+<a href=https://linkedin.com/in/robin-mueller-m title=LinkedIn>
+<span class="fa-stack fa-lg">
+<i class="fas fa-circle fa-stack-2x"></i>
+<i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+</span>
+</a>
+</li>
+</ul>
+<p class="credits copyright text-muted">
+Robin Mueller
+&nbsp;&bull;&nbsp;&copy;
+2021
+&nbsp;&bull;&nbsp;
+<a href=https://robamu.github.io>robs blog</a>
+</p>
+<p class="credits theme-by text-muted">
+<a href=https://gohugo.io>Hugo v0.91.2</a> powered &nbsp;&bull;&nbsp; Theme <a href=https://github.com/halogenica/beautifulhugo>Beautiful Hugo</a> adapted from <a href=https://deanattali.com/beautiful-jekyll/>Beautiful Jekyll</a>
+&nbsp;&bull;&nbsp;[<a href=false0c652144ac9b838f60fcc4e0c21c528ef48a1b04>0c652144</a>]
+</p>
+</div>
+</div>
+</div>
+</footer><script src=https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.js integrity=sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx crossorigin=anonymous></script>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/contrib/auto-render.min.js integrity=sha384-kmZOZB5ObwgQnS/DuDg6TScgOiWWBiVt0plIRkZCmE6rDZGrEOQeHM5PcHi+nyqe crossorigin=anonymous></script>
+<script src=https://code.jquery.com/jquery-1.12.4.min.js integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin=anonymous></script>
+<script src=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js integrity=sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa crossorigin=anonymous></script>
+<script src=https://robamu.github.io/js/main.js></script>
+<script src=https://robamu.github.io/js/highlight.min.js></script>
+<script>hljs.initHighlightingOnLoad()</script>
+<script>$(document).ready(function(){$("pre.chroma").css("padding","0")})</script><script>renderMathInElement(document.body)</script><script src=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js integrity=sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy crossorigin=anonymous></script>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js integrity=sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q crossorigin=anonymous></script><script src=https://robamu.github.io/js/load-photoswipe.js></script>
+<script>(function(){var c='49f27010d1fda4554',a=document.createElement('script'),b;a.type='text/javascript',a.async=!0,a.src='https://cse.google.com/cse.js?cx='+c,b=document.getElementsByTagName('script')[0],b.parentNode.insertBefore(a,b)})()</script>
+<script type=text/javascript>$(function(){$('#show-comments').on('click',function(){var a='https-robamu-github-io';(function(){var b=document.createElement('script');b.type='text/javascript',b.async=!0,b.src='//'+a+'.disqus.com/embed.js',(document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(b)})(),$(this).hide()})})</script>
+<script id=dsq-count-scr src=//https-robamu-github-io.disqus.com/count.js async></script>
+</body>
 </html>
-

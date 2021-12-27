@@ -1,21 +1,2 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>cross-compile on robs blog</title>
-    <link>https://robamu.github.io/tags/cross-compile/</link>
-    <description>Recent content in cross-compile on robs blog</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Mon, 27 Dec 2021 12:31:51 +0100</lastBuildDate><atom:link href="https://robamu.github.io/tags/cross-compile/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Cross-Compile Rust for the Raspberry Pi</title>
-      <link>https://robamu.github.io/post/cross-compile-rust-rpi/</link>
-      <pubDate>Mon, 27 Dec 2021 12:31:51 +0100</pubDate>
-      
-      <guid>https://robamu.github.io/post/cross-compile-rust-rpi/</guid>
-      <description>After exploring Rust for smaller bare-metal systems like Cortex-M based microcontrollers, I am trying to learn using Rust when using a Linux runtime. The most common example for this is the Raspberry Pi, but there are a lot of other boards out there which support Embedded Linux, for example the Beagle Bone Black or Xilinx hybrid CPU / FPGA solutions like the Zynq 7020.
-Some Background Information If you&amp;rsquo;re only interested in the result and on how to quickly cross-develop applications for your Linux board, go to the next section.</description>
-    </item>
-    
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>cross-compile on robs blog</title><link>https://robamu.github.io/tags/cross-compile/</link><description>Recent content in cross-compile on robs blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 27 Dec 2021 12:31:51 +0100</lastBuildDate><atom:link href="https://robamu.github.io/tags/cross-compile/index.xml" rel="self" type="application/rss+xml"/><item><title>Cross-Compile and Debug Rust Applications for the Raspberry Pi</title><link>https://robamu.github.io/post/cross-compile-rust-rpi/</link><pubDate>Mon, 27 Dec 2021 12:31:51 +0100</pubDate><guid>https://robamu.github.io/post/cross-compile-rust-rpi/</guid><description>After exploring Rust for smaller bare-metal systems like Cortex-M based microcontrollers, I am trying to learn using Rust when using a Linux runtime. The most common example for this is the Raspberry Pi, but there are a lot of other boards out there which support Embedded Linux, for example the Beagle Bone Black or Xilinx hybrid CPU / FPGA solutions like the Zynq 7020.
+Embedded Linux Boards: Raspberry Pi</description></item></channel></rss>
