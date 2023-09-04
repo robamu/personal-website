@@ -1,138 +1,284 @@
-<!doctype html><html lang=en itemscope itemtype=http://schema.org/WebPage>
-<head>
-<meta charset=utf-8>
-<meta http-equiv=x-ua-compatible content="IE=edge">
-<meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>Bringing Rust to Space - Setting up a Rust ecosystem for the VA108XX MCU family - robs blog</title>
-<meta name=description content="The last few weeks I have been busy diving into the Rust ecosystem and learning the language through practical projects. I finishing the excellent Rust book and the Rust Embedded Book first and then tinkered with Rust on some STM32 MCUs. As a next step, I was looking for practical projects to further learn the language. I&rsquo;ve tried to combine this with the usual activities at the research institute I work now as well.">
-<meta name=author content="Robin Mueller"><script type=application/ld+json>{"@context":"http://schema.org","@type":"WebSite","name":"robs blog","url":"https:\/\/robamu.github.io"}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"Organization","name":"","url":"https:\/\/robamu.github.io"}</script>
-<script type=application/ld+json>{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"https:\/\/robamu.github.io","name":"home"}},{"@type":"ListItem","position":3,"item":{"@id":"https:\/\/robamu.github.io\/post\/rust-ecosystem\/","name":"Bringing rust to space setting up a rust ecosystem for the va108 xx MC u family"}}]}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"Article","author":{"name":"Robin Mueller"},"headline":"Bringing Rust to Space - Setting up a Rust ecosystem for the VA108XX MCU family","description":"The last few weeks I have been busy diving into the Rust ecosystem and learning the language through practical projects. I finishing the excellent Rust book and the Rust Embedded Book first and then tinkered with Rust on some STM32 MCUs. As a next step, I was looking for practical projects to further learn the language. I\u0026rsquo;ve tried to combine this with the usual activities at the research institute I work now as well.","inLanguage":"en","wordCount":1076,"datePublished":"2021-12-15T23:31:00","dateModified":"2021-12-15T23:31:00","image":"https:\/\/robamu.github.io","keywords":["rust, embedded, space, va10820"],"mainEntityOfPage":"https:\/\/robamu.github.io\/post\/rust-ecosystem\/","publisher":{"@type":"Organization","name":"https:\/\/robamu.github.io","logo":{"@type":"ImageObject","url":"https:\/\/robamu.github.io","height":60,"width":60}}}</script>
-<meta property="og:title" content="Bringing Rust to Space - Setting up a Rust ecosystem for the VA108XX MCU family">
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Bringing Rust to Space - Setting up a Rust ecosystem for the VA108XX MCU family - robs blog</title>
+  <meta name="description" content="The last few weeks I have been busy diving into the Rust ecosystem and learning the language through practical projects. I finishing the excellent Rust book and the Rust Embedded Book first and then tinkered with Rust on some STM32 MCUs. As a next step, I was looking for practical projects to further learn the language. I&rsquo;ve tried to combine this with the usual activities at the research institute I work now as well.">
+  <meta name="author" content="Robin Mueller"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "robs blog",
+    
+    "url": "https:\/\/robamu.github.io"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/robamu.github.io"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/robamu.github.io",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/robamu.github.io\/post\/rust-ecosystem\/",
+          "name": "Bringing rust to space setting up a rust ecosystem for the va108 xx MC u family"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "Robin Mueller"
+  },
+  "headline": "Bringing Rust to Space - Setting up a Rust ecosystem for the VA108XX MCU family",
+  "description" : "The last few weeks I have been busy diving into the Rust ecosystem and learning the language through practical projects. I finishing the excellent Rust book and the Rust Embedded Book first and then tinkered with Rust on some STM32 MCUs. As a next step, I was looking for practical projects to further learn the language. I\u0026rsquo;ve tried to combine this with the usual activities at the research institute I work now as well.",
+  "inLanguage" : "en",
+  "wordCount":  1076 ,
+  "datePublished" : "2021-12-15T23:31:00",
+  "dateModified" : "2021-12-15T23:31:00",
+  "image" : "https:\/\/robamu.github.io",
+  "keywords" : [ "rust, embedded, space, va10820" ],
+  "mainEntityOfPage" : "https:\/\/robamu.github.io\/post\/rust-ecosystem\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/robamu.github.io",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/robamu.github.io",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+<meta property="og:title" content="Bringing Rust to Space - Setting up a Rust ecosystem for the VA108XX MCU family" />
 <meta property="og:description" content="The last few weeks I have been busy diving into the Rust ecosystem and learning the language through practical projects. I finishing the excellent Rust book and the Rust Embedded Book first and then tinkered with Rust on some STM32 MCUs. As a next step, I was looking for practical projects to further learn the language. I&rsquo;ve tried to combine this with the usual activities at the research institute I work now as well.">
-<meta property="og:url" content="https://robamu.github.io/post/rust-ecosystem/">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="robs blog">
-<meta name=twitter:title content="Bringing Rust to Space - Setting up a Rust ecosystem for the VA108XX …">
-<meta name=twitter:description content="The last few weeks I have been busy diving into the Rust ecosystem and learning the language through practical projects. I finishing the excellent Rust book and the Rust Embedded Book first and then …">
-<meta name=twitter:card content="summary">
-<meta name=generator content="Hugo 0.91.2">
-<link rel=alternate href=https://robamu.github.io/index.xml type=application/rss+xml title="robs blog"><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css integrity=sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y crossorigin=anonymous>
-<link rel=stylesheet href=https://use.fontawesome.com/releases/v5.5.0/css/all.css integrity=sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU crossorigin=anonymous>
-<link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css integrity=sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u crossorigin=anonymous><link rel=stylesheet href=https://robamu.github.io/css/main.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic">
-<link rel=stylesheet href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800">
-<link rel=stylesheet href=https://robamu.github.io/css/highlight.min.css><link rel=stylesheet href=https://robamu.github.io/css/codeblock.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css integrity=sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh crossorigin=anonymous>
-<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css integrity=sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R crossorigin=anonymous>
-</head>
-<body>
-<nav class="navbar navbar-default navbar-fixed-top navbar-custom">
-<div class=container-fluid>
-<div class=navbar-header>
-<button type=button class=navbar-toggle data-toggle=collapse data-target=#main-navbar>
-<span class=sr-only>Toggle navigation</span>
-<span class=icon-bar></span>
-<span class=icon-bar></span>
-<span class=icon-bar></span>
-</button>
-<a class=navbar-brand href=https://robamu.github.io>robs blog</a>
-</div>
-<div class="collapse navbar-collapse" id=main-navbar>
-<ul class="nav navbar-nav navbar-right">
-<li>
-<a title=Home href=/>Home</a>
-</li>
-<li>
-<a title=About href=/about>About</a>
-</li>
-<li>
-<a title=Contact href=/contact>Contact</a>
-</li>
-<li>
-<a href=#modalSearch data-toggle=modal data-target=#modalSearch style=outline:none>
-<span class="hidden-sm hidden-md hidden-lg">Search</span> <span id=searchGlyph class="glyphicon glyphicon-search"></span>
-</a>
-</li>
-</ul>
-</div>
-</div>
+<meta property="og:url" content="https://robamu.github.io/post/rust-ecosystem/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="robs blog" />
+
+  <meta name="twitter:title" content="Bringing Rust to Space - Setting up a Rust ecosystem for the VA108XX …" />
+  <meta name="twitter:description" content="The last few weeks I have been busy diving into the Rust ecosystem and learning the language through practical projects. I finishing the excellent Rust book and the Rust Embedded Book first and then …">
+  <meta name="twitter:card" content="summary" />
+  <meta name="generator" content="Hugo 0.91.2" />
+  <link rel="alternate" href="https://robamu.github.io/index.xml" type="application/rss+xml" title="robs blog"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><link rel="stylesheet" href="https://robamu.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="https://robamu.github.io/css/highlight.min.css" /><link rel="stylesheet" href="https://robamu.github.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://robamu.github.io">robs blog</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Home" href="/">Home</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about">About</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Contact" href="/contact">Contact</a>
+            </li>
+          
+        
+
+        
+
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+
+    
+
+  </div>
 </nav>
-<div id=modalSearch class="modal fade" role=dialog>
-<div class=modal-dialog>
-<div class=modal-content>
-<div class=modal-header>
-<button type=button class=close data-dismiss=modal>&#215;</button>
-<h4 class=modal-title>Search robs blog</h4>
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search robs blog</h4>
+        </div>
+        <div class="modal-body">
+          <gcse:search></gcse:search>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
 </div>
-<div class=modal-body>
-<gcse:search></gcse:search>
-</div>
-<div class=modal-footer>
-<button type=button class="btn btn-default" data-dismiss=modal>Close</button>
-</div>
-</div>
-</div>
-</div>
-<div class=pswp tabindex=-1 role=dialog aria-hidden=true>
-<div class=pswp__bg></div>
-<div class=pswp__scroll-wrap>
-<div class=pswp__container>
-<div class=pswp__item></div>
-<div class=pswp__item></div>
-<div class=pswp__item></div>
-</div>
-<div class="pswp__ui pswp__ui--hidden">
-<div class=pswp__top-bar>
-<div class=pswp__counter></div>
-<button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-<button class="pswp__button pswp__button--share" title=Share></button>
-<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-<div class=pswp__preloader>
-<div class=pswp__preloader__icn>
-<div class=pswp__preloader__cut>
-<div class=pswp__preloader__donut></div>
-</div>
-</div>
-</div>
-</div>
-<div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-<div class=pswp__share-tooltip></div>
-</div>
-<button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-</button>
-<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-</button>
-<div class=pswp__caption>
-<div class=pswp__caption__center></div>
-</div>
-</div>
-</div>
-</div>
-<header class=header-section>
-<div class="intro-header no-img">
-<div class=container>
-<div class=row>
-<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-<div class=post-heading>
-<h1>Bringing Rust to Space - Setting up a Rust ecosystem for the VA108XX MCU family</h1>
-<span class=post-meta>
-<i class="fas fa-calendar"></i>&nbsp;Posted on December 15, 2021
-&nbsp;(Last modified on December 27, 2021)
-&nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;6&nbsp;minutes
-&nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Robin Mueller
+
+
+  
+  
+  
+
+
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+              
+                <h1>Bringing Rust to Space - Setting up a Rust ecosystem for the VA108XX MCU family</h1>
+              
+              
+              
+              
+                <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on December 15, 2021
+  
+    &nbsp;(Last modified on December 27, 2021)
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;6&nbsp;minutes
+  
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Robin Mueller
+    
+  
+  
 </span>
-</div>
-</div>
-</div>
-</div>
-</div>
-</header>
-<div class=container role=main>
-<div class=row>
-<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-<article role=main class=blog-post>
-<p>The last few weeks I have been busy diving into the Rust ecosystem and learning the language
+
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <p>The last few weeks I have been busy diving into the Rust ecosystem and learning the language
 through practical projects. I finishing the excellent
-<a href=https://doc.rust-lang.org/book/>Rust book</a> and the <a href=https://docs.rust-embedded.org/book/>Rust Embedded Book</a>
+<a href="https://doc.rust-lang.org/book/">Rust book</a> and the <a href="https://docs.rust-embedded.org/book/">Rust Embedded Book</a>
 first and then tinkered with Rust on some STM32 MCUs. As a next step, I was looking for practical
 projects to further learn the language. I&rsquo;ve tried to combine this with the usual activities at
 the research institute I work now as well.</p>
@@ -148,132 +294,137 @@ libraries for these MCUs yet. I thought this was an excellent opportunity to lea
 aspects of Embedded Rust. The Rust book had an excellent picture of what a ecosystem for a particular
 MCU family or board might look like</p>
 <center>
-<link rel=stylesheet href=https://robamu.github.io/css/hugo-easy-gallery.css>
-<div class=box>
-<figure itemprop=associatedMedia itemscope itemtype=http://schema.org/ImageObject>
-<div class=img>
-<img itemprop=thumbnail src=/img/rust-ecosystem/crates.png alt="Embedded Rust Abstraction Layers">
+
+<link rel="stylesheet" href="https://robamu.github.io/css/hugo-easy-gallery.css" />
+<div class="box" >
+  <figure  itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+    <div class="img">
+      <img itemprop="thumbnail" src="/img/rust-ecosystem/crates.png" alt="Embedded Rust Abstraction Layers"/>
+    </div>
+    <a href="/img/rust-ecosystem/crates.png" itemprop="contentUrl"></a>
+      <figcaption>
+          <p>Embedded Rust Abstraction Layers</p>
+      </figcaption>
+  </figure>
 </div>
-<a href=/img/rust-ecosystem/crates.png itemprop=contentUrl></a>
-<figcaption>
-<p>Embedded Rust Abstraction Layers</p>
-</figcaption>
-</figure>
-</div>
+
 </center>
 <p>I started with the lowest necessary level to build higher level abstractions:
 The Peripheral Access Crate (PAC). After a few tweaks to the vendor supplied SVD file and the
 <code>svd2rust</code> tool, I was able to generate my first own PAC.</p>
 <p>I then set up the blinky application as the classical first application for a new MCU to test
 my PAC. This is what it looks like</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-rs data-lang=rs><span class=cp>#![no_main]</span><span class=w>
-</span><span class=w></span><span class=cp>#![no_std]</span><span class=w>
-</span><span class=w>
-</span><span class=w></span><span class=k>use</span><span class=w> </span><span class=n>cortex_m_rt</span>::<span class=n>entry</span><span class=p>;</span><span class=w>
-</span><span class=w></span><span class=k>use</span><span class=w> </span><span class=n>panic_halt</span><span class=w> </span><span class=k>as</span><span class=w> </span><span class=n>_</span><span class=p>;</span><span class=w>
-</span><span class=w></span><span class=k>use</span><span class=w> </span><span class=n>va108xx</span><span class=w> </span><span class=k>as</span><span class=w> </span><span class=n>pac</span><span class=p>;</span><span class=w>
-</span><span class=w>
-</span><span class=w></span><span class=c1>// REB LED pin definitions. All on port A
-</span><span class=c1></span><span class=k>const</span><span class=w> </span><span class=n>LED_D2</span>: <span class=kt>u32</span> <span class=o>=</span><span class=w> </span><span class=mi>1</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=mi>10</span><span class=p>;</span><span class=w>
-</span><span class=w></span><span class=k>const</span><span class=w> </span><span class=n>LED_D3</span>: <span class=kt>u32</span> <span class=o>=</span><span class=w> </span><span class=mi>1</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=mi>7</span><span class=p>;</span><span class=w>
-</span><span class=w></span><span class=k>const</span><span class=w> </span><span class=n>LED_D4</span>: <span class=kt>u32</span> <span class=o>=</span><span class=w> </span><span class=mi>1</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=mi>6</span><span class=p>;</span><span class=w>
-</span><span class=w>
-</span><span class=w></span><span class=cp>#[entry]</span><span class=w>
-</span><span class=w></span><span class=k>fn</span> <span class=nf>main</span><span class=p>()</span><span class=w> </span>-&gt; <span class=o>!</span><span class=w> </span><span class=p>{</span><span class=w>
-</span><span class=w>    </span><span class=kd>let</span><span class=w> </span><span class=n>dp</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>pac</span>::<span class=n>Peripherals</span>::<span class=n>take</span><span class=p>().</span><span class=n>unwrap</span><span class=p>();</span><span class=w>
-</span><span class=w>    </span><span class=c1>// Enable all peripheral clocks
-</span><span class=c1></span><span class=w>    </span><span class=n>dp</span><span class=p>.</span><span class=n>SYSCONFIG</span><span class=w>
-</span><span class=w>        </span><span class=p>.</span><span class=n>peripheral_clk_enable</span><span class=w>
-</span><span class=w>        </span><span class=p>.</span><span class=n>modify</span><span class=p>(</span><span class=o>|</span><span class=n>_</span><span class=p>,</span><span class=w> </span><span class=n>w</span><span class=o>|</span><span class=w> </span><span class=k>unsafe</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=n>w</span><span class=p>.</span><span class=n>bits</span><span class=p>(</span><span class=mh>0xffffffff</span><span class=p>)</span><span class=w> </span><span class=p>});</span><span class=w>
-</span><span class=w>    </span><span class=n>dp</span><span class=p>.</span><span class=n>PORTA</span><span class=w>
-</span><span class=w>        </span><span class=p>.</span><span class=n>dir</span><span class=p>()</span><span class=w>
-</span><span class=w>        </span><span class=p>.</span><span class=n>modify</span><span class=p>(</span><span class=o>|</span><span class=n>_</span><span class=p>,</span><span class=w> </span><span class=n>w</span><span class=o>|</span><span class=w> </span><span class=k>unsafe</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=n>w</span><span class=p>.</span><span class=n>bits</span><span class=p>(</span><span class=n>LED_D2</span><span class=w> </span><span class=o>|</span><span class=w> </span><span class=n>LED_D3</span><span class=w> </span><span class=o>|</span><span class=w> </span><span class=n>LED_D4</span><span class=p>)</span><span class=w> </span><span class=p>});</span><span class=w>
-</span><span class=w>    </span><span class=n>dp</span><span class=p>.</span><span class=n>PORTA</span><span class=w>
-</span><span class=w>        </span><span class=p>.</span><span class=n>datamask</span><span class=p>()</span><span class=w>
-</span><span class=w>        </span><span class=p>.</span><span class=n>modify</span><span class=p>(</span><span class=o>|</span><span class=n>_</span><span class=p>,</span><span class=w> </span><span class=n>w</span><span class=o>|</span><span class=w> </span><span class=k>unsafe</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=n>w</span><span class=p>.</span><span class=n>bits</span><span class=p>(</span><span class=n>LED_D2</span><span class=w> </span><span class=o>|</span><span class=w> </span><span class=n>LED_D3</span><span class=w> </span><span class=o>|</span><span class=w> </span><span class=n>LED_D4</span><span class=p>)</span><span class=w> </span><span class=p>});</span><span class=w>
-</span><span class=w>    </span><span class=k>for</span><span class=w> </span><span class=n>_</span><span class=w> </span><span class=k>in</span><span class=w> </span><span class=mi>0</span><span class=o>..</span><span class=mi>10</span><span class=w> </span><span class=p>{</span><span class=w>
-</span><span class=w>        </span><span class=n>dp</span><span class=p>.</span><span class=n>PORTA</span><span class=w>
-</span><span class=w>            </span><span class=p>.</span><span class=n>clrout</span><span class=p>()</span><span class=w>
-</span><span class=w>            </span><span class=p>.</span><span class=n>write</span><span class=p>(</span><span class=o>|</span><span class=n>w</span><span class=o>|</span><span class=w> </span><span class=k>unsafe</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=n>w</span><span class=p>.</span><span class=n>bits</span><span class=p>(</span><span class=n>LED_D2</span><span class=w> </span><span class=o>|</span><span class=w> </span><span class=n>LED_D3</span><span class=w> </span><span class=o>|</span><span class=w> </span><span class=n>LED_D4</span><span class=p>)</span><span class=w> </span><span class=p>});</span><span class=w>
-</span><span class=w>        </span><span class=n>cortex_m</span>::<span class=n>asm</span>::<span class=n>delay</span><span class=p>(</span><span class=mi>5_000_000</span><span class=p>);</span><span class=w>
-</span><span class=w>        </span><span class=n>dp</span><span class=p>.</span><span class=n>PORTA</span><span class=w>
-</span><span class=w>            </span><span class=p>.</span><span class=n>setout</span><span class=p>()</span><span class=w>
-</span><span class=w>            </span><span class=p>.</span><span class=n>write</span><span class=p>(</span><span class=o>|</span><span class=n>w</span><span class=o>|</span><span class=w> </span><span class=k>unsafe</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=n>w</span><span class=p>.</span><span class=n>bits</span><span class=p>(</span><span class=n>LED_D2</span><span class=w> </span><span class=o>|</span><span class=w> </span><span class=n>LED_D3</span><span class=w> </span><span class=o>|</span><span class=w> </span><span class=n>LED_D4</span><span class=p>)</span><span class=w> </span><span class=p>});</span><span class=w>
-</span><span class=w>        </span><span class=n>cortex_m</span>::<span class=n>asm</span>::<span class=n>delay</span><span class=p>(</span><span class=mi>5_000_000</span><span class=p>);</span><span class=w>
-</span><span class=w>    </span><span class=p>}</span><span class=w>
-</span><span class=w>    </span><span class=k>loop</span><span class=w> </span><span class=p>{</span><span class=w>
-</span><span class=w>        </span><span class=n>dp</span><span class=p>.</span><span class=n>PORTA</span><span class=w>
-</span><span class=w>            </span><span class=p>.</span><span class=n>togout</span><span class=p>()</span><span class=w>
-</span><span class=w>            </span><span class=p>.</span><span class=n>write</span><span class=p>(</span><span class=o>|</span><span class=n>w</span><span class=o>|</span><span class=w> </span><span class=k>unsafe</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=n>w</span><span class=p>.</span><span class=n>bits</span><span class=p>(</span><span class=n>LED_D2</span><span class=w> </span><span class=o>|</span><span class=w> </span><span class=n>LED_D3</span><span class=w> </span><span class=o>|</span><span class=w> </span><span class=n>LED_D4</span><span class=p>)</span><span class=w> </span><span class=p>});</span><span class=w>
-</span><span class=w>        </span><span class=n>cortex_m</span>::<span class=n>asm</span>::<span class=n>delay</span><span class=p>(</span><span class=mi>25_000_000</span><span class=p>);</span><span class=w>
-</span><span class=w>    </span><span class=p>}</span><span class=w>
-</span><span class=w></span><span class=p>}</span><span class=w>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-rs" data-lang="rs"><span class="cp">#![no_main]</span><span class="w">
+</span><span class="w"></span><span class="cp">#![no_std]</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span><span class="k">use</span><span class="w"> </span><span class="n">cortex_m_rt</span>::<span class="n">entry</span><span class="p">;</span><span class="w">
+</span><span class="w"></span><span class="k">use</span><span class="w"> </span><span class="n">panic_halt</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">_</span><span class="p">;</span><span class="w">
+</span><span class="w"></span><span class="k">use</span><span class="w"> </span><span class="n">va108xx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">pac</span><span class="p">;</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span><span class="c1">// REB LED pin definitions. All on port A
+</span><span class="c1"></span><span class="k">const</span><span class="w"> </span><span class="n">LED_D2</span>: <span class="kt">u32</span> <span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">
+</span><span class="w"></span><span class="k">const</span><span class="w"> </span><span class="n">LED_D3</span>: <span class="kt">u32</span> <span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">7</span><span class="p">;</span><span class="w">
+</span><span class="w"></span><span class="k">const</span><span class="w"> </span><span class="n">LED_D4</span>: <span class="kt">u32</span> <span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">6</span><span class="p">;</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span><span class="cp">#[entry]</span><span class="w">
+</span><span class="w"></span><span class="k">fn</span> <span class="nf">main</span><span class="p">()</span><span class="w"> </span>-&gt; <span class="o">!</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span><span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">dp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pac</span>::<span class="n">Peripherals</span>::<span class="n">take</span><span class="p">().</span><span class="n">unwrap</span><span class="p">();</span><span class="w">
+</span><span class="w">    </span><span class="c1">// Enable all peripheral clocks
+</span><span class="c1"></span><span class="w">    </span><span class="n">dp</span><span class="p">.</span><span class="n">SYSCONFIG</span><span class="w">
+</span><span class="w">        </span><span class="p">.</span><span class="n">peripheral_clk_enable</span><span class="w">
+</span><span class="w">        </span><span class="p">.</span><span class="n">modify</span><span class="p">(</span><span class="o">|</span><span class="n">_</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="o">|</span><span class="w"> </span><span class="k">unsafe</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">bits</span><span class="p">(</span><span class="mh">0xffffffff</span><span class="p">)</span><span class="w"> </span><span class="p">});</span><span class="w">
+</span><span class="w">    </span><span class="n">dp</span><span class="p">.</span><span class="n">PORTA</span><span class="w">
+</span><span class="w">        </span><span class="p">.</span><span class="n">dir</span><span class="p">()</span><span class="w">
+</span><span class="w">        </span><span class="p">.</span><span class="n">modify</span><span class="p">(</span><span class="o">|</span><span class="n">_</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="o">|</span><span class="w"> </span><span class="k">unsafe</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">bits</span><span class="p">(</span><span class="n">LED_D2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">LED_D3</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">LED_D4</span><span class="p">)</span><span class="w"> </span><span class="p">});</span><span class="w">
+</span><span class="w">    </span><span class="n">dp</span><span class="p">.</span><span class="n">PORTA</span><span class="w">
+</span><span class="w">        </span><span class="p">.</span><span class="n">datamask</span><span class="p">()</span><span class="w">
+</span><span class="w">        </span><span class="p">.</span><span class="n">modify</span><span class="p">(</span><span class="o">|</span><span class="n">_</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="o">|</span><span class="w"> </span><span class="k">unsafe</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">bits</span><span class="p">(</span><span class="n">LED_D2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">LED_D3</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">LED_D4</span><span class="p">)</span><span class="w"> </span><span class="p">});</span><span class="w">
+</span><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">_</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">0</span><span class="o">..</span><span class="mi">10</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span><span class="w">        </span><span class="n">dp</span><span class="p">.</span><span class="n">PORTA</span><span class="w">
+</span><span class="w">            </span><span class="p">.</span><span class="n">clrout</span><span class="p">()</span><span class="w">
+</span><span class="w">            </span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="o">|</span><span class="n">w</span><span class="o">|</span><span class="w"> </span><span class="k">unsafe</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">bits</span><span class="p">(</span><span class="n">LED_D2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">LED_D3</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">LED_D4</span><span class="p">)</span><span class="w"> </span><span class="p">});</span><span class="w">
+</span><span class="w">        </span><span class="n">cortex_m</span>::<span class="n">asm</span>::<span class="n">delay</span><span class="p">(</span><span class="mi">5_000_000</span><span class="p">);</span><span class="w">
+</span><span class="w">        </span><span class="n">dp</span><span class="p">.</span><span class="n">PORTA</span><span class="w">
+</span><span class="w">            </span><span class="p">.</span><span class="n">setout</span><span class="p">()</span><span class="w">
+</span><span class="w">            </span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="o">|</span><span class="n">w</span><span class="o">|</span><span class="w"> </span><span class="k">unsafe</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">bits</span><span class="p">(</span><span class="n">LED_D2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">LED_D3</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">LED_D4</span><span class="p">)</span><span class="w"> </span><span class="p">});</span><span class="w">
+</span><span class="w">        </span><span class="n">cortex_m</span>::<span class="n">asm</span>::<span class="n">delay</span><span class="p">(</span><span class="mi">5_000_000</span><span class="p">);</span><span class="w">
+</span><span class="w">    </span><span class="p">}</span><span class="w">
+</span><span class="w">    </span><span class="k">loop</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span><span class="w">        </span><span class="n">dp</span><span class="p">.</span><span class="n">PORTA</span><span class="w">
+</span><span class="w">            </span><span class="p">.</span><span class="n">togout</span><span class="p">()</span><span class="w">
+</span><span class="w">            </span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="o">|</span><span class="n">w</span><span class="o">|</span><span class="w"> </span><span class="k">unsafe</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">bits</span><span class="p">(</span><span class="n">LED_D2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">LED_D3</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">LED_D4</span><span class="p">)</span><span class="w"> </span><span class="p">});</span><span class="w">
+</span><span class="w">        </span><span class="n">cortex_m</span>::<span class="n">asm</span>::<span class="n">delay</span><span class="p">(</span><span class="mi">25_000_000</span><span class="p">);</span><span class="w">
+</span><span class="w">    </span><span class="p">}</span><span class="w">
+</span><span class="w"></span><span class="p">}</span><span class="w">
 </span></code></pre></div><p>With the JLink tools installed and a few helper files in place you can find in my
-<a href=https://egit.irs.uni-stuttgart.de/rust/va108xx-workspace>workspace</a>, I started the <code>JLinkGDBServer</code>
+<a href="https://egit.irs.uni-stuttgart.de/rust/va108xx-workspace">workspace</a>, I started the <code>JLinkGDBServer</code>
 and then flashed the board with</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>cargo run -p va108xx-hal --example blinky-pac
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh">cargo run -p va108xx-hal --example blinky-pac
 </code></pre></div><center>
-<div class=box>
-<figure itemprop=associatedMedia itemscope itemtype=http://schema.org/ImageObject>
-<div class=img>
-<img itemprop=thumbnail src=/gif/rust-ecosystem/vor-blinky.gif alt="Blinky GIF">
+
+
+<div class="box" >
+  <figure  itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+    <div class="img">
+      <img itemprop="thumbnail" src="/gif/rust-ecosystem/vor-blinky.gif" alt="Blinky GIF"/>
+    </div>
+    <a href="/gif/rust-ecosystem/vor-blinky.gif" itemprop="contentUrl"></a>
+      <figcaption>
+          <p>Blinky in action</p>
+      </figcaption>
+  </figure>
 </div>
-<a href=/gif/rust-ecosystem/vor-blinky.gif itemprop=contentUrl></a>
-<figcaption>
-<p>Blinky in action</p>
-</figcaption>
-</figure>
-</div>
+
 </center>
 <p>Looking good!</p>
 <p>Now, the next challenge was to write the next level of abstraction: A Hardware Abstraction
 Layer (HAL) crate. I started browsing some of the HALs like the
-<a href=https://github.com/stm32-rs/stm32f1xx-hal/blob/master/src/gpio.rs>stm32f1xx-hal</a> and intially
+<a href="https://github.com/stm32-rs/stm32f1xx-hal/blob/master/src/gpio.rs">stm32f1xx-hal</a> and intially
 felt overwhelmed by all the new syntax, macros and ways to write Rust code I have not seen before.
 But I also thought that implementing this for a new MCU family would be an excellent way to learn
 a lot.</p>
 <p>You can find the first version I eventually was able to hack together
-<a href=https://github.com/robamu-org/va108xx-hal-rs/blob/v0.1.0/src/gpio.rs>here</a>.
+<a href="https://github.com/robamu-org/va108xx-hal-rs/blob/v0.1.0/src/gpio.rs">here</a>.
 The most challenging task was to wrap around my head around the typesystem and the macro system.
 Since then, I refactored the GPIO library to use even more type-level features based on the
-excellent <a href=https://docs.rs/atsamd-hal/latest/atsamd_hal/gpio/v2/index.html>atsamd HAL</a>.</p>
+excellent <a href="https://docs.rs/atsamd-hal/latest/atsamd_hal/gpio/v2/index.html">atsamd HAL</a>.</p>
 <p>The blinky example using the hardware abstraction layer looks like this</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-rs data-lang=rs><span class=cp>#![no_main]</span><span class=w>
-</span><span class=w></span><span class=cp>#![no_std]</span><span class=w>
-</span><span class=w></span><span class=k>use</span><span class=w> </span><span class=n>cortex_m_rt</span>::<span class=n>entry</span><span class=p>;</span><span class=w>
-</span><span class=w></span><span class=k>use</span><span class=w> </span><span class=n>embedded_hal</span>::<span class=n>digital</span>::<span class=n>v2</span>::<span class=n>ToggleableOutputPin</span><span class=p>;</span><span class=w>
-</span><span class=w></span><span class=k>use</span><span class=w> </span><span class=n>panic_halt</span><span class=w> </span><span class=k>as</span><span class=w> </span><span class=n>_</span><span class=p>;</span><span class=w>
-</span><span class=w></span><span class=k>use</span><span class=w> </span><span class=n>va108xx_hal</span>::<span class=p>{</span><span class=n>gpio</span>::<span class=n>PinsA</span><span class=p>,</span><span class=w> </span><span class=n>pac</span><span class=p>,</span><span class=w> </span><span class=n>prelude</span>::<span class=o>*</span><span class=p>};</span><span class=w>
-</span><span class=w></span><span class=cp>#[entry]</span><span class=w>
-</span><span class=w></span><span class=k>fn</span> <span class=nf>main</span><span class=p>()</span><span class=w> </span>-&gt; <span class=o>!</span><span class=w> </span><span class=p>{</span><span class=w>
-</span><span class=w>    </span><span class=kd>let</span><span class=w> </span><span class=k>mut</span><span class=w> </span><span class=n>dp</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>pac</span>::<span class=n>Peripherals</span>::<span class=n>take</span><span class=p>().</span><span class=n>unwrap</span><span class=p>();</span><span class=w>
-</span><span class=w>    </span><span class=kd>let</span><span class=w> </span><span class=n>porta</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>PinsA</span>::<span class=n>new</span><span class=p>(</span><span class=o>&amp;</span><span class=k>mut</span><span class=w> </span><span class=n>dp</span><span class=p>.</span><span class=n>SYSCONFIG</span><span class=p>,</span><span class=w> </span><span class=nb>Some</span><span class=p>(</span><span class=n>dp</span><span class=p>.</span><span class=n>IOCONFIG</span><span class=p>),</span><span class=w> </span><span class=n>dp</span><span class=p>.</span><span class=n>PORTA</span><span class=p>);</span><span class=w>
-</span><span class=w>    </span><span class=kd>let</span><span class=w> </span><span class=k>mut</span><span class=w> </span><span class=n>led1</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>porta</span><span class=p>.</span><span class=n>pa10</span><span class=p>.</span><span class=n>into_push_pull_output</span><span class=p>();</span><span class=w>
-</span><span class=w>    </span><span class=kd>let</span><span class=w> </span><span class=k>mut</span><span class=w> </span><span class=n>led2</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>porta</span><span class=p>.</span><span class=n>pa7</span><span class=p>.</span><span class=n>into_push_pull_output</span><span class=p>();</span><span class=w>
-</span><span class=w>    </span><span class=kd>let</span><span class=w> </span><span class=k>mut</span><span class=w> </span><span class=n>led3</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>porta</span><span class=p>.</span><span class=n>pa6</span><span class=p>.</span><span class=n>into_push_pull_output</span><span class=p>();</span><span class=w>
-</span><span class=w>    </span><span class=k>for</span><span class=w> </span><span class=n>_</span><span class=w> </span><span class=k>in</span><span class=w> </span><span class=mi>0</span><span class=o>..</span><span class=mi>10</span><span class=w> </span><span class=p>{</span><span class=w>
-</span><span class=w>        </span><span class=n>led1</span><span class=p>.</span><span class=n>set_low</span><span class=p>().</span><span class=n>ok</span><span class=p>();</span><span class=w>
-</span><span class=w>        </span><span class=n>led2</span><span class=p>.</span><span class=n>set_low</span><span class=p>().</span><span class=n>ok</span><span class=p>();</span><span class=w>
-</span><span class=w>        </span><span class=n>led3</span><span class=p>.</span><span class=n>set_low</span><span class=p>().</span><span class=n>ok</span><span class=p>();</span><span class=w>
-</span><span class=w>        </span><span class=n>cortex_m</span>::<span class=n>asm</span>::<span class=n>delay</span><span class=p>(</span><span class=mi>5_000_000</span><span class=p>);</span><span class=w>
-</span><span class=w>        </span><span class=n>led1</span><span class=p>.</span><span class=n>set_high</span><span class=p>().</span><span class=n>ok</span><span class=p>();</span><span class=w>
-</span><span class=w>        </span><span class=n>led2</span><span class=p>.</span><span class=n>set_high</span><span class=p>().</span><span class=n>ok</span><span class=p>();</span><span class=w>
-</span><span class=w>        </span><span class=n>led3</span><span class=p>.</span><span class=n>set_high</span><span class=p>().</span><span class=n>ok</span><span class=p>();</span><span class=w>
-</span><span class=w>        </span><span class=n>cortex_m</span>::<span class=n>asm</span>::<span class=n>delay</span><span class=p>(</span><span class=mi>5_000_000</span><span class=p>);</span><span class=w>
-</span><span class=w>    </span><span class=p>}</span><span class=w>
-</span><span class=w>    </span><span class=k>loop</span><span class=w> </span><span class=p>{</span><span class=w>
-</span><span class=w>        </span><span class=n>led1</span><span class=p>.</span><span class=n>toggle</span><span class=p>().</span><span class=n>ok</span><span class=p>();</span><span class=w>
-</span><span class=w>        </span><span class=n>cortex_m</span>::<span class=n>asm</span>::<span class=n>delay</span><span class=p>(</span><span class=mi>5_000_000</span><span class=p>);</span><span class=w>
-</span><span class=w>        </span><span class=n>led2</span><span class=p>.</span><span class=n>toggle</span><span class=p>().</span><span class=n>ok</span><span class=p>();</span><span class=w>
-</span><span class=w>        </span><span class=n>cortex_m</span>::<span class=n>asm</span>::<span class=n>delay</span><span class=p>(</span><span class=mi>5_000_000</span><span class=p>);</span><span class=w>
-</span><span class=w>        </span><span class=n>led3</span><span class=p>.</span><span class=n>toggle</span><span class=p>().</span><span class=n>ok</span><span class=p>();</span><span class=w>
-</span><span class=w>        </span><span class=n>cortex_m</span>::<span class=n>asm</span>::<span class=n>delay</span><span class=p>(</span><span class=mi>5_000_000</span><span class=p>);</span><span class=w>
-</span><span class=w>    </span><span class=p>}</span><span class=w>
-</span><span class=w></span><span class=p>}</span><span class=w>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-rs" data-lang="rs"><span class="cp">#![no_main]</span><span class="w">
+</span><span class="w"></span><span class="cp">#![no_std]</span><span class="w">
+</span><span class="w"></span><span class="k">use</span><span class="w"> </span><span class="n">cortex_m_rt</span>::<span class="n">entry</span><span class="p">;</span><span class="w">
+</span><span class="w"></span><span class="k">use</span><span class="w"> </span><span class="n">embedded_hal</span>::<span class="n">digital</span>::<span class="n">v2</span>::<span class="n">ToggleableOutputPin</span><span class="p">;</span><span class="w">
+</span><span class="w"></span><span class="k">use</span><span class="w"> </span><span class="n">panic_halt</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">_</span><span class="p">;</span><span class="w">
+</span><span class="w"></span><span class="k">use</span><span class="w"> </span><span class="n">va108xx_hal</span>::<span class="p">{</span><span class="n">gpio</span>::<span class="n">PinsA</span><span class="p">,</span><span class="w"> </span><span class="n">pac</span><span class="p">,</span><span class="w"> </span><span class="n">prelude</span>::<span class="o">*</span><span class="p">};</span><span class="w">
+</span><span class="w"></span><span class="cp">#[entry]</span><span class="w">
+</span><span class="w"></span><span class="k">fn</span> <span class="nf">main</span><span class="p">()</span><span class="w"> </span>-&gt; <span class="o">!</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span><span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">dp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pac</span>::<span class="n">Peripherals</span>::<span class="n">take</span><span class="p">().</span><span class="n">unwrap</span><span class="p">();</span><span class="w">
+</span><span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">porta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PinsA</span>::<span class="n">new</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="n">dp</span><span class="p">.</span><span class="n">SYSCONFIG</span><span class="p">,</span><span class="w"> </span><span class="nb">Some</span><span class="p">(</span><span class="n">dp</span><span class="p">.</span><span class="n">IOCONFIG</span><span class="p">),</span><span class="w"> </span><span class="n">dp</span><span class="p">.</span><span class="n">PORTA</span><span class="p">);</span><span class="w">
+</span><span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">led1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">porta</span><span class="p">.</span><span class="n">pa10</span><span class="p">.</span><span class="n">into_push_pull_output</span><span class="p">();</span><span class="w">
+</span><span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">led2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">porta</span><span class="p">.</span><span class="n">pa7</span><span class="p">.</span><span class="n">into_push_pull_output</span><span class="p">();</span><span class="w">
+</span><span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">led3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">porta</span><span class="p">.</span><span class="n">pa6</span><span class="p">.</span><span class="n">into_push_pull_output</span><span class="p">();</span><span class="w">
+</span><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">_</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">0</span><span class="o">..</span><span class="mi">10</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span><span class="w">        </span><span class="n">led1</span><span class="p">.</span><span class="n">set_low</span><span class="p">().</span><span class="n">ok</span><span class="p">();</span><span class="w">
+</span><span class="w">        </span><span class="n">led2</span><span class="p">.</span><span class="n">set_low</span><span class="p">().</span><span class="n">ok</span><span class="p">();</span><span class="w">
+</span><span class="w">        </span><span class="n">led3</span><span class="p">.</span><span class="n">set_low</span><span class="p">().</span><span class="n">ok</span><span class="p">();</span><span class="w">
+</span><span class="w">        </span><span class="n">cortex_m</span>::<span class="n">asm</span>::<span class="n">delay</span><span class="p">(</span><span class="mi">5_000_000</span><span class="p">);</span><span class="w">
+</span><span class="w">        </span><span class="n">led1</span><span class="p">.</span><span class="n">set_high</span><span class="p">().</span><span class="n">ok</span><span class="p">();</span><span class="w">
+</span><span class="w">        </span><span class="n">led2</span><span class="p">.</span><span class="n">set_high</span><span class="p">().</span><span class="n">ok</span><span class="p">();</span><span class="w">
+</span><span class="w">        </span><span class="n">led3</span><span class="p">.</span><span class="n">set_high</span><span class="p">().</span><span class="n">ok</span><span class="p">();</span><span class="w">
+</span><span class="w">        </span><span class="n">cortex_m</span>::<span class="n">asm</span>::<span class="n">delay</span><span class="p">(</span><span class="mi">5_000_000</span><span class="p">);</span><span class="w">
+</span><span class="w">    </span><span class="p">}</span><span class="w">
+</span><span class="w">    </span><span class="k">loop</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span><span class="w">        </span><span class="n">led1</span><span class="p">.</span><span class="n">toggle</span><span class="p">().</span><span class="n">ok</span><span class="p">();</span><span class="w">
+</span><span class="w">        </span><span class="n">cortex_m</span>::<span class="n">asm</span>::<span class="n">delay</span><span class="p">(</span><span class="mi">5_000_000</span><span class="p">);</span><span class="w">
+</span><span class="w">        </span><span class="n">led2</span><span class="p">.</span><span class="n">toggle</span><span class="p">().</span><span class="n">ok</span><span class="p">();</span><span class="w">
+</span><span class="w">        </span><span class="n">cortex_m</span>::<span class="n">asm</span>::<span class="n">delay</span><span class="p">(</span><span class="mi">5_000_000</span><span class="p">);</span><span class="w">
+</span><span class="w">        </span><span class="n">led3</span><span class="p">.</span><span class="n">toggle</span><span class="p">().</span><span class="n">ok</span><span class="p">();</span><span class="w">
+</span><span class="w">        </span><span class="n">cortex_m</span>::<span class="n">asm</span>::<span class="n">delay</span><span class="p">(</span><span class="mi">5_000_000</span><span class="p">);</span><span class="w">
+</span><span class="w">    </span><span class="p">}</span><span class="w">
+</span><span class="w"></span><span class="p">}</span><span class="w">
 </span></code></pre></div><p>A lot more readble and neat that the low level PAC version.</p>
 <p>Equipped with a lot more knowledge, I implemented a HAL for all other peripherals, using
 what I saw in different HALs like the ATSAMD HAL or the STM32 HALs. Writing the basic blocking API
-was mostly straighforward once I got more familiar with writing HAL code. I still have to
+was mostly straighforward once I got more familiar with  writing HAL code. I still have to
 write code which is able to use interrupts to efficiently clear the various FIFOs. Using these FIFOs
 reduces CPU load is the only sensible for peripherals like the UART to efficiently receive all
 arriving RX data.</p>
@@ -281,49 +432,49 @@ arriving RX data.</p>
 board. This also was an excellent way for me to test the I2C implementation because that board
 was equiped with a simple ADT75 I2C temperature sensor device.</p>
 <p>The example application looks like this now</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-rs data-lang=rs><span class=cp>#![no_main]</span><span class=w>
-</span><span class=w></span><span class=cp>#![no_std]</span><span class=w>
-</span><span class=w></span><span class=k>use</span><span class=w> </span><span class=n>cortex_m_rt</span>::<span class=n>entry</span><span class=p>;</span><span class=w>
-</span><span class=w></span><span class=k>use</span><span class=w> </span><span class=n>panic_rtt_target</span><span class=w> </span><span class=k>as</span><span class=w> </span><span class=n>_</span><span class=p>;</span><span class=w>
-</span><span class=w></span><span class=k>use</span><span class=w> </span><span class=n>rtt_target</span>::<span class=p>{</span><span class=n>rprintln</span><span class=p>,</span><span class=w> </span><span class=n>rtt_init_print</span><span class=p>};</span><span class=w>
-</span><span class=w></span><span class=k>use</span><span class=w> </span><span class=n>va108xx_hal</span>::<span class=p>{</span><span class=w>
-</span><span class=w>    </span><span class=n>pac</span>::<span class=p>{</span><span class=bp>self</span><span class=p>,</span><span class=w> </span><span class=n>interrupt</span><span class=p>},</span><span class=w>
-</span><span class=w>    </span><span class=n>prelude</span>::<span class=o>*</span><span class=p>,</span><span class=w>
-</span><span class=w>    </span><span class=n>timer</span>::<span class=p>{</span><span class=n>default_ms_irq_handler</span><span class=p>,</span><span class=w> </span><span class=n>set_up_ms_timer</span><span class=p>,</span><span class=w> </span><span class=n>Delay</span><span class=p>},</span><span class=w>
-</span><span class=w></span><span class=p>};</span><span class=w>
-</span><span class=w></span><span class=k>use</span><span class=w> </span><span class=n>vorago_reb1</span>::<span class=n>temp_sensor</span>::<span class=n>Adt75TempSensor</span><span class=p>;</span><span class=w>
-</span><span class=w>
-</span><span class=w></span><span class=cp>#[entry]</span><span class=w>
-</span><span class=w></span><span class=k>fn</span> <span class=nf>main</span><span class=p>()</span><span class=w> </span>-&gt; <span class=o>!</span><span class=w> </span><span class=p>{</span><span class=w>
-</span><span class=w>    </span><span class=n>rtt_init_print</span><span class=o>!</span><span class=p>();</span><span class=w>
-</span><span class=w>    </span><span class=n>rprintln</span><span class=o>!</span><span class=p>(</span><span class=s>&#34;-- Vorago Temperature Sensor and I2C Example --&#34;</span><span class=p>);</span><span class=w>
-</span><span class=w>    </span><span class=kd>let</span><span class=w> </span><span class=k>mut</span><span class=w> </span><span class=n>dp</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>pac</span>::<span class=n>Peripherals</span>::<span class=n>take</span><span class=p>().</span><span class=n>unwrap</span><span class=p>();</span><span class=w>
-</span><span class=w>    </span><span class=kd>let</span><span class=w> </span><span class=n>tim0</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>set_up_ms_timer</span><span class=p>(</span><span class=w>
-</span><span class=w>        </span><span class=o>&amp;</span><span class=k>mut</span><span class=w> </span><span class=n>dp</span><span class=p>.</span><span class=n>SYSCONFIG</span><span class=p>,</span><span class=w>
-</span><span class=w>        </span><span class=o>&amp;</span><span class=k>mut</span><span class=w> </span><span class=n>dp</span><span class=p>.</span><span class=n>IRQSEL</span><span class=p>,</span><span class=w>
-</span><span class=w>        </span><span class=mf>50.</span><span class=n>mhz</span><span class=p>().</span><span class=n>into</span><span class=p>(),</span><span class=w>
-</span><span class=w>        </span><span class=n>dp</span><span class=p>.</span><span class=n>TIM0</span><span class=p>,</span><span class=w>
-</span><span class=w>        </span><span class=n>interrupt</span>::<span class=n>OC0</span><span class=p>,</span><span class=w>
-</span><span class=w>    </span><span class=p>);</span><span class=w>
-</span><span class=w>    </span><span class=kd>let</span><span class=w> </span><span class=k>mut</span><span class=w> </span><span class=n>delay</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Delay</span>::<span class=n>new</span><span class=p>(</span><span class=n>tim0</span><span class=p>);</span><span class=w>
-</span><span class=w>    </span><span class=k>unsafe</span><span class=w> </span><span class=p>{</span><span class=w>
-</span><span class=w>        </span><span class=n>cortex_m</span>::<span class=n>peripheral</span>::<span class=n>NVIC</span>::<span class=n>unmask</span><span class=p>(</span><span class=n>pac</span>::<span class=n>Interrupt</span>::<span class=n>OC0</span><span class=p>);</span><span class=w>
-</span><span class=w>    </span><span class=p>}</span><span class=w>
-</span><span class=w>    </span><span class=kd>let</span><span class=w> </span><span class=k>mut</span><span class=w> </span><span class=n>temp_sensor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Adt75TempSensor</span>::<span class=n>new</span><span class=p>(</span><span class=n>dp</span><span class=p>.</span><span class=n>I2CA</span><span class=p>,</span><span class=w> </span><span class=mf>50.</span><span class=n>mhz</span><span class=p>(),</span><span class=w> </span><span class=nb>Some</span><span class=p>(</span><span class=o>&amp;</span><span class=k>mut</span><span class=w> </span><span class=n>dp</span><span class=p>.</span><span class=n>SYSCONFIG</span><span class=p>))</span><span class=w>
-</span><span class=w>        </span><span class=p>.</span><span class=n>expect</span><span class=p>(</span><span class=s>&#34;Creating temperature sensor struct failed&#34;</span><span class=p>);</span><span class=w>
-</span><span class=w>    </span><span class=k>loop</span><span class=w> </span><span class=p>{</span><span class=w>
-</span><span class=w>        </span><span class=kd>let</span><span class=w> </span><span class=n>temp</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>temp_sensor</span><span class=w>
-</span><span class=w>            </span><span class=p>.</span><span class=n>read_temperature</span><span class=p>()</span><span class=w>
-</span><span class=w>            </span><span class=p>.</span><span class=n>expect</span><span class=p>(</span><span class=s>&#34;Failed reading temperature&#34;</span><span class=p>);</span><span class=w>
-</span><span class=w>        </span><span class=n>rprintln</span><span class=o>!</span><span class=p>(</span><span class=s>&#34;Temperature in Celcius: {}&#34;</span><span class=p>,</span><span class=w> </span><span class=n>temp</span><span class=p>);</span><span class=w>
-</span><span class=w>        </span><span class=n>delay</span><span class=p>.</span><span class=n>delay_ms</span><span class=p>(</span><span class=mi>500</span><span class=p>);</span><span class=w>
-</span><span class=w>    </span><span class=p>}</span><span class=w>
-</span><span class=w></span><span class=p>}</span><span class=w>
-</span><span class=w>
-</span><span class=w></span><span class=cp>#[interrupt]</span><span class=w>
-</span><span class=w></span><span class=k>fn</span> <span class=nf>OC0</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
-</span><span class=w>    </span><span class=n>default_ms_irq_handler</span><span class=p>();</span><span class=w>
-</span><span class=w></span><span class=p>}</span><span class=w>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-rs" data-lang="rs"><span class="cp">#![no_main]</span><span class="w">
+</span><span class="w"></span><span class="cp">#![no_std]</span><span class="w">
+</span><span class="w"></span><span class="k">use</span><span class="w"> </span><span class="n">cortex_m_rt</span>::<span class="n">entry</span><span class="p">;</span><span class="w">
+</span><span class="w"></span><span class="k">use</span><span class="w"> </span><span class="n">panic_rtt_target</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">_</span><span class="p">;</span><span class="w">
+</span><span class="w"></span><span class="k">use</span><span class="w"> </span><span class="n">rtt_target</span>::<span class="p">{</span><span class="n">rprintln</span><span class="p">,</span><span class="w"> </span><span class="n">rtt_init_print</span><span class="p">};</span><span class="w">
+</span><span class="w"></span><span class="k">use</span><span class="w"> </span><span class="n">va108xx_hal</span>::<span class="p">{</span><span class="w">
+</span><span class="w">    </span><span class="n">pac</span>::<span class="p">{</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">interrupt</span><span class="p">},</span><span class="w">
+</span><span class="w">    </span><span class="n">prelude</span>::<span class="o">*</span><span class="p">,</span><span class="w">
+</span><span class="w">    </span><span class="n">timer</span>::<span class="p">{</span><span class="n">default_ms_irq_handler</span><span class="p">,</span><span class="w"> </span><span class="n">set_up_ms_timer</span><span class="p">,</span><span class="w"> </span><span class="n">Delay</span><span class="p">},</span><span class="w">
+</span><span class="w"></span><span class="p">};</span><span class="w">
+</span><span class="w"></span><span class="k">use</span><span class="w"> </span><span class="n">vorago_reb1</span>::<span class="n">temp_sensor</span>::<span class="n">Adt75TempSensor</span><span class="p">;</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span><span class="cp">#[entry]</span><span class="w">
+</span><span class="w"></span><span class="k">fn</span> <span class="nf">main</span><span class="p">()</span><span class="w"> </span>-&gt; <span class="o">!</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span><span class="w">    </span><span class="n">rtt_init_print</span><span class="o">!</span><span class="p">();</span><span class="w">
+</span><span class="w">    </span><span class="n">rprintln</span><span class="o">!</span><span class="p">(</span><span class="s">&#34;-- Vorago Temperature Sensor and I2C Example --&#34;</span><span class="p">);</span><span class="w">
+</span><span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">dp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pac</span>::<span class="n">Peripherals</span>::<span class="n">take</span><span class="p">().</span><span class="n">unwrap</span><span class="p">();</span><span class="w">
+</span><span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">tim0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">set_up_ms_timer</span><span class="p">(</span><span class="w">
+</span><span class="w">        </span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="n">dp</span><span class="p">.</span><span class="n">SYSCONFIG</span><span class="p">,</span><span class="w">
+</span><span class="w">        </span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="n">dp</span><span class="p">.</span><span class="n">IRQSEL</span><span class="p">,</span><span class="w">
+</span><span class="w">        </span><span class="mf">50.</span><span class="n">mhz</span><span class="p">().</span><span class="n">into</span><span class="p">(),</span><span class="w">
+</span><span class="w">        </span><span class="n">dp</span><span class="p">.</span><span class="n">TIM0</span><span class="p">,</span><span class="w">
+</span><span class="w">        </span><span class="n">interrupt</span>::<span class="n">OC0</span><span class="p">,</span><span class="w">
+</span><span class="w">    </span><span class="p">);</span><span class="w">
+</span><span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">delay</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Delay</span>::<span class="n">new</span><span class="p">(</span><span class="n">tim0</span><span class="p">);</span><span class="w">
+</span><span class="w">    </span><span class="k">unsafe</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span><span class="w">        </span><span class="n">cortex_m</span>::<span class="n">peripheral</span>::<span class="n">NVIC</span>::<span class="n">unmask</span><span class="p">(</span><span class="n">pac</span>::<span class="n">Interrupt</span>::<span class="n">OC0</span><span class="p">);</span><span class="w">
+</span><span class="w">    </span><span class="p">}</span><span class="w">
+</span><span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">temp_sensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Adt75TempSensor</span>::<span class="n">new</span><span class="p">(</span><span class="n">dp</span><span class="p">.</span><span class="n">I2CA</span><span class="p">,</span><span class="w"> </span><span class="mf">50.</span><span class="n">mhz</span><span class="p">(),</span><span class="w"> </span><span class="nb">Some</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="n">dp</span><span class="p">.</span><span class="n">SYSCONFIG</span><span class="p">))</span><span class="w">
+</span><span class="w">        </span><span class="p">.</span><span class="n">expect</span><span class="p">(</span><span class="s">&#34;Creating temperature sensor struct failed&#34;</span><span class="p">);</span><span class="w">
+</span><span class="w">    </span><span class="k">loop</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span><span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="n">temp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">temp_sensor</span><span class="w">
+</span><span class="w">            </span><span class="p">.</span><span class="n">read_temperature</span><span class="p">()</span><span class="w">
+</span><span class="w">            </span><span class="p">.</span><span class="n">expect</span><span class="p">(</span><span class="s">&#34;Failed reading temperature&#34;</span><span class="p">);</span><span class="w">
+</span><span class="w">        </span><span class="n">rprintln</span><span class="o">!</span><span class="p">(</span><span class="s">&#34;Temperature in Celcius: {}&#34;</span><span class="p">,</span><span class="w"> </span><span class="n">temp</span><span class="p">);</span><span class="w">
+</span><span class="w">        </span><span class="n">delay</span><span class="p">.</span><span class="n">delay_ms</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span><span class="w">
+</span><span class="w">    </span><span class="p">}</span><span class="w">
+</span><span class="w"></span><span class="p">}</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span><span class="cp">#[interrupt]</span><span class="w">
+</span><span class="w"></span><span class="k">fn</span> <span class="nf">OC0</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span><span class="w">    </span><span class="n">default_ms_irq_handler</span><span class="p">();</span><span class="w">
+</span><span class="w"></span><span class="p">}</span><span class="w">
 </span></code></pre></div><p>In my opinion, all the abstractions made this code really neat a brief. In this example, one
 can also see a few more features being used:</p>
 <ol>
@@ -336,201 +487,329 @@ I set up default setup functions and IRQ handlers like seen in the code above.</
 concise.</li>
 </ol>
 <p>And this is what the output looks like after flashing the board with</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-rs data-lang=rs><span class=n>cargo</span><span class=w> </span><span class=n>run</span><span class=w> </span><span class=o>--</span><span class=n>example</span><span class=w> </span><span class=n>adt75</span><span class=o>-</span><span class=n>temp</span><span class=o>-</span><span class=n>sensor</span><span class=w>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-rs" data-lang="rs"><span class="n">cargo</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">--</span><span class="n">example</span><span class="w"> </span><span class="n">adt75</span><span class="o">-</span><span class="n">temp</span><span class="o">-</span><span class="n">sensor</span><span class="w">
 </span></code></pre></div><center>
-<div class=box>
-<figure itemprop=associatedMedia itemscope itemtype=http://schema.org/ImageObject>
-<div class=img>
-<img itemprop=thumbnail src=/img/rust-ecosystem/temp-sensor.png alt="Reading a temperature sensor in Rust">
+
+
+<div class="box" >
+  <figure  itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+    <div class="img">
+      <img itemprop="thumbnail" src="/img/rust-ecosystem/temp-sensor.png" alt="Reading a temperature sensor in Rust"/>
+    </div>
+    <a href="/img/rust-ecosystem/temp-sensor.png" itemprop="contentUrl"></a>
+      <figcaption>
+          <p>Reading a temperature sensor in Rust</p>
+      </figcaption>
+  </figure>
 </div>
-<a href=/img/rust-ecosystem/temp-sensor.png itemprop=contentUrl></a>
-<figcaption>
-<p>Reading a temperature sensor in Rust</p>
-</figcaption>
-</figure>
-</div>
+
 </center>
 <p>I would also like to write a bit about the development workflow I am using. It is possible doing
 debugging using a graphical user interface which is important for any application which is more
 complex in my opinion. I am using VS code for this and I&rsquo;m really happy with the development
 workflow. All that is required is the <code>Cortex-Debug</code> plugin.</p>
 <p>An example <code>launch.json</code> file for VS code looks like this</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=p>{</span>
-    <span class=nt>&#34;version&#34;</span><span class=p>:</span> <span class=s2>&#34;0.2.0&#34;</span><span class=p>,</span>
-    <span class=nt>&#34;configurations&#34;</span><span class=p>:</span> <span class=p>[</span>
-        <span class=p>{</span>
-            <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;cortex-debug&#34;</span><span class=p>,</span>
-            <span class=nt>&#34;request&#34;</span><span class=p>:</span> <span class=s2>&#34;launch&#34;</span><span class=p>,</span>
-            <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;Debug Blinky&#34;</span><span class=p>,</span>
-            <span class=nt>&#34;servertype&#34;</span><span class=p>:</span> <span class=s2>&#34;jlink&#34;</span><span class=p>,</span>
-            <span class=nt>&#34;cwd&#34;</span><span class=p>:</span> <span class=s2>&#34;${workspaceRoot}&#34;</span><span class=p>,</span>
-            <span class=nt>&#34;device&#34;</span><span class=p>:</span> <span class=s2>&#34;VA10820&#34;</span><span class=p>,</span>
-            <span class=nt>&#34;svdFile&#34;</span><span class=p>:</span> <span class=s2>&#34;../va108xx-rs/va108xx.svd&#34;</span><span class=p>,</span>
-            <span class=nt>&#34;preLaunchTask&#34;</span><span class=p>:</span> <span class=s2>&#34;rust: cargo build minimal blinky&#34;</span><span class=p>,</span>
-            <span class=nt>&#34;executable&#34;</span><span class=p>:</span> <span class=s2>&#34;${workspaceFolder}/target/thumbv6m-none-eabi/debug/examples/blinky-leds&#34;</span><span class=p>,</span>
-            <span class=nt>&#34;interface&#34;</span><span class=p>:</span> <span class=s2>&#34;jtag&#34;</span><span class=p>,</span>
-            <span class=nt>&#34;runToMain&#34;</span><span class=p>:</span> <span class=kc>true</span><span class=p>,</span>
-        <span class=p>},</span>
-    <span class=p>]</span>
-<span class=p>}</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span>
+    <span class="nt">&#34;version&#34;</span><span class="p">:</span> <span class="s2">&#34;0.2.0&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;configurations&#34;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;cortex-debug&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;request&#34;</span><span class="p">:</span> <span class="s2">&#34;launch&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;Debug Blinky&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;servertype&#34;</span><span class="p">:</span> <span class="s2">&#34;jlink&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;cwd&#34;</span><span class="p">:</span> <span class="s2">&#34;${workspaceRoot}&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;device&#34;</span><span class="p">:</span> <span class="s2">&#34;VA10820&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;svdFile&#34;</span><span class="p">:</span> <span class="s2">&#34;../va108xx-rs/va108xx.svd&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;preLaunchTask&#34;</span><span class="p">:</span> <span class="s2">&#34;rust: cargo build minimal blinky&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;executable&#34;</span><span class="p">:</span> <span class="s2">&#34;${workspaceFolder}/target/thumbv6m-none-eabi/debug/examples/blinky-leds&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;interface&#34;</span><span class="p">:</span> <span class="s2">&#34;jtag&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;runToMain&#34;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">]</span>
+<span class="p">}</span>
 </code></pre></div><p>and an example <code>tasks.json</code> file like this</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=p>{</span>
-    <span class=nt>&#34;version&#34;</span><span class=p>:</span> <span class=s2>&#34;2.0.0&#34;</span><span class=p>,</span>
-    <span class=nt>&#34;tasks&#34;</span><span class=p>:</span> <span class=p>[</span>
-        <span class=p>{</span>
-            <span class=nt>&#34;label&#34;</span><span class=p>:</span> <span class=s2>&#34;rust: cargo build blinky&#34;</span><span class=p>,</span>
-            <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;shell&#34;</span><span class=p>,</span>
-            <span class=nt>&#34;command&#34;</span><span class=p>:</span> <span class=s2>&#34;~/.cargo/bin/cargo&#34;</span><span class=p>,</span> <span class=c1>// note: full path to the cargo
-</span><span class=c1></span>            <span class=nt>&#34;args&#34;</span><span class=p>:</span> <span class=p>[</span>
-                <span class=s2>&#34;build&#34;</span><span class=p>,</span> <span class=s2>&#34;--example&#34;</span><span class=p>,</span> <span class=s2>&#34;blinky-leds&#34;</span><span class=p>,</span>
-            <span class=p>],</span>
-            <span class=nt>&#34;group&#34;</span><span class=p>:</span> <span class=p>{</span>
-                <span class=nt>&#34;kind&#34;</span><span class=p>:</span> <span class=s2>&#34;build&#34;</span><span class=p>,</span>
-                <span class=nt>&#34;isDefault&#34;</span><span class=p>:</span> <span class=kc>true</span>
-            <span class=p>}</span>
-        <span class=p>},</span>
-    <span class=p>]</span>
-<span class=p>}</span>
-</code></pre></div><p>with this, we can soon use the Run & Debug tab of VS code to debug our applications</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span>
+    <span class="nt">&#34;version&#34;</span><span class="p">:</span> <span class="s2">&#34;2.0.0&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;tasks&#34;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">&#34;label&#34;</span><span class="p">:</span> <span class="s2">&#34;rust: cargo build blinky&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;shell&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;command&#34;</span><span class="p">:</span> <span class="s2">&#34;~/.cargo/bin/cargo&#34;</span><span class="p">,</span> <span class="c1">// note: full path to the cargo
+</span><span class="c1"></span>            <span class="nt">&#34;args&#34;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s2">&#34;build&#34;</span><span class="p">,</span> <span class="s2">&#34;--example&#34;</span><span class="p">,</span> <span class="s2">&#34;blinky-leds&#34;</span><span class="p">,</span>
+            <span class="p">],</span>
+            <span class="nt">&#34;group&#34;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="nt">&#34;kind&#34;</span><span class="p">:</span> <span class="s2">&#34;build&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;isDefault&#34;</span><span class="p">:</span> <span class="kc">true</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div><p>with this, we can soon use the Run &amp; Debug tab of VS code to debug our applications</p>
 <center>
-<div class=box>
-<figure itemprop=associatedMedia itemscope itemtype=http://schema.org/ImageObject>
-<div class=img>
-<img itemprop=thumbnail src=/img/rust-ecosystem/vs-code.png alt="Debugging with VS Code">
+
+
+<div class="box" >
+  <figure  itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+    <div class="img">
+      <img itemprop="thumbnail" src="/img/rust-ecosystem/vs-code.png" alt="Debugging with VS Code"/>
+    </div>
+    <a href="/img/rust-ecosystem/vs-code.png" itemprop="contentUrl"></a>
+      <figcaption>
+          <p>Debugging with VS Code</p>
+      </figcaption>
+  </figure>
 </div>
-<a href=/img/rust-ecosystem/vs-code.png itemprop=contentUrl></a>
-<figcaption>
-<p>Debugging with VS Code</p>
-</figcaption>
-</figure>
-</div>
+
 </center>
 <p>Implementing a full Rust ecosystem for the VA10820 has been a challenging but satisfying task. I
 think Rust offers excellent features which are really useful to write safe code for space
 applications and I hope that some of the code I have written will be used to run awesome missions
 soon.</p>
 <p>In the meantime, I also managed to procure a
-<a href=https://www.voragotech.com/products/peb1va416x0-development-kit>PEB1 development board</a> for
-the <a href=https://www.voragotech.com/products/va416xx/bga>VA416xx familyof devices</a>. I also want to
-thank <a href=https://www.thalesgroup.com/en/global/activities/space>Thales Alenia Space</a> for providing
+<a href="https://www.voragotech.com/products/peb1va416x0-development-kit">PEB1 development board</a> for
+the <a href="https://www.voragotech.com/products/va416xx/bga">VA416xx familyof devices</a>. I also want to
+thank <a href="https://www.thalesgroup.com/en/global/activities/space">Thales Alenia Space</a> for providing
 me with this expensive hardware.
 I am also trying to get the industry version of the
-<a href=http://ww1.microchip.com/downloads/en/DeviceDoc/00003161A.pdf>SAMRH71</a> MCU. Time to write more
+<a href="http://ww1.microchip.com/downloads/en/DeviceDoc/00003161A.pdf">SAMRH71</a> MCU. Time to write more
 Rust code!</p>
-<div class=blog-tags>
-<a href=https://robamu.github.io/tags/rust/>rust</a>&nbsp;
-<a href=https://robamu.github.io/tags/embedded/>embedded</a>&nbsp;
-<a href=https://robamu.github.io/tags/space/>space</a>&nbsp;
-<a href=https://robamu.github.io/tags/va10820/>va10820</a>&nbsp;
+
+
+        
+          <div class="blog-tags">
+            
+              <a href="https://robamu.github.io/tags/rust/">rust</a>&nbsp;
+            
+              <a href="https://robamu.github.io/tags/embedded/">embedded</a>&nbsp;
+            
+              <a href="https://robamu.github.io/tags/space/">space</a>&nbsp;
+            
+              <a href="https://robamu.github.io/tags/va10820/">va10820</a>&nbsp;
+            
+          </div>
+        
+
+        
+            <hr/>
+            <section id="social-share">
+              <div class="list-inline footer-links">
+                
+
+<div class="share-box" aria-hidden="true">
+    <ul class="share">
+      
+      <li>
+        <a href="//twitter.com/share?url=https%3a%2f%2frobamu.github.io%2fpost%2frust-ecosystem%2f&amp;text=Bringing%20Rust%20to%20Space%20-%20Setting%20up%20a%20Rust%20ecosystem%20for%20the%20VA108XX%20MCU%20family&amp;via=" target="_blank" title="Share on Twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2frobamu.github.io%2fpost%2frust-ecosystem%2f" target="_blank" title="Share on Facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//reddit.com/submit?url=https%3a%2f%2frobamu.github.io%2fpost%2frust-ecosystem%2f&amp;title=Bringing%20Rust%20to%20Space%20-%20Setting%20up%20a%20Rust%20ecosystem%20for%20the%20VA108XX%20MCU%20family" target="_blank" title="Share on Reddit">
+          <i class="fab fa-reddit"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2frobamu.github.io%2fpost%2frust-ecosystem%2f&amp;title=Bringing%20Rust%20to%20Space%20-%20Setting%20up%20a%20Rust%20ecosystem%20for%20the%20VA108XX%20MCU%20family" target="_blank" title="Share on LinkedIn">
+          <i class="fab fa-linkedin"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.stumbleupon.com/submit?url=https%3a%2f%2frobamu.github.io%2fpost%2frust-ecosystem%2f&amp;title=Bringing%20Rust%20to%20Space%20-%20Setting%20up%20a%20Rust%20ecosystem%20for%20the%20VA108XX%20MCU%20family" target="_blank" title="Share on StumbleUpon">
+          <i class="fab fa-stumbleupon"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2frobamu.github.io%2fpost%2frust-ecosystem%2f&amp;description=Bringing%20Rust%20to%20Space%20-%20Setting%20up%20a%20Rust%20ecosystem%20for%20the%20VA108XX%20MCU%20family" target="_blank" title="Share on Pinterest">
+          <i class="fab fa-pinterest"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+  
+
+              </div>
+            </section>
+        
+
+        
+          
+            
+          
+
+          
+                  <h4 class="see-also">See also</h4>
+                  <ul>
+                
+                
+                    <li><a href="/post/cross-compile-rust-rpi/">Cross-Compile and Debug Rust Applications for the Raspberry Pi</a></li>
+                
+                    <li><a href="/post/max11619-driver-rust/">Rust driver for the 10-bit MAX11619 ADCs</a></li>
+                
+              </ul>
+
+          
+        
+      </article>
+
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://robamu.github.io/post/gsoc-post/" data-toggle="tooltip" data-placement="top" title="Throwback - GSoC 2020 | Device handler development for the SOURCE project">&larr; Previous Post</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="https://robamu.github.io/post/max11619-driver-rust/" data-toggle="tooltip" data-placement="top" title="Rust driver for the 10-bit MAX11619 ADCs">Next Post &rarr;</a>
+            </li>
+          
+        </ul>
+      
+
+
+      
+        
+          
+          <div class="disqus-comments">                  
+            <button id="show-comments" class="btn btn-default" type="button">Show <span class="disqus-comment-count" data-disqus-url="https://robamu.github.io/post/rust-ecosystem">comments</span></button>
+            <div id="disqus_thread"></div>
+
+            <script type="text/javascript">
+              var disqus_config = function () {
+              this.page.url = 'https:\/\/robamu.github.io\/post\/rust-ecosystem';
+            };
+
+          </script>
+          </div>
+          
+        
+        
+      
+
+    </div>
+  </div>
 </div>
-<hr>
-<section id=social-share>
-<div class="list-inline footer-links">
-<div class=share-box aria-hidden=true>
-<ul class=share>
-<li>
-<a href="//twitter.com/share?url=https%3a%2f%2frobamu.github.io%2fpost%2frust-ecosystem%2f&text=Bringing%20Rust%20to%20Space%20-%20Setting%20up%20a%20Rust%20ecosystem%20for%20the%20VA108XX%20MCU%20family&via=" target=_blank title="Share on Twitter">
-<i class="fab fa-twitter"></i>
-</a>
-</li>
-<li>
-<a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2frobamu.github.io%2fpost%2frust-ecosystem%2f" target=_blank title="Share on Facebook">
-<i class="fab fa-facebook"></i>
-</a>
-</li>
-<li>
-<a href="//reddit.com/submit?url=https%3a%2f%2frobamu.github.io%2fpost%2frust-ecosystem%2f&title=Bringing%20Rust%20to%20Space%20-%20Setting%20up%20a%20Rust%20ecosystem%20for%20the%20VA108XX%20MCU%20family" target=_blank title="Share on Reddit">
-<i class="fab fa-reddit"></i>
-</a>
-</li>
-<li>
-<a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2frobamu.github.io%2fpost%2frust-ecosystem%2f&title=Bringing%20Rust%20to%20Space%20-%20Setting%20up%20a%20Rust%20ecosystem%20for%20the%20VA108XX%20MCU%20family" target=_blank title="Share on LinkedIn">
-<i class="fab fa-linkedin"></i>
-</a>
-</li>
-<li>
-<a href="//www.stumbleupon.com/submit?url=https%3a%2f%2frobamu.github.io%2fpost%2frust-ecosystem%2f&title=Bringing%20Rust%20to%20Space%20-%20Setting%20up%20a%20Rust%20ecosystem%20for%20the%20VA108XX%20MCU%20family" target=_blank title="Share on StumbleUpon">
-<i class="fab fa-stumbleupon"></i>
-</a>
-</li>
-<li>
-<a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2frobamu.github.io%2fpost%2frust-ecosystem%2f&description=Bringing%20Rust%20to%20Space%20-%20Setting%20up%20a%20Rust%20ecosystem%20for%20the%20VA108XX%20MCU%20family" target=_blank title="Share on Pinterest">
-<i class="fab fa-pinterest"></i>
-</a>
-</li>
-</ul>
-</div>
-</div>
-</section>
-<h4 class=see-also>See also</h4>
-<ul>
-<li><a href=/post/cross-compile-rust-rpi/>Cross-Compile and Debug Rust Applications for the Raspberry Pi</a></li>
-<li><a href=/post/max11619-driver-rust/>Rust driver for the 10-bit MAX11619 ADCs</a></li>
-</ul>
-</article>
-<ul class="pager blog-pager">
-<li class=previous>
-<a href=https://robamu.github.io/post/gsoc-post/ data-toggle=tooltip data-placement=top title="Throwback - GSoC 2020 | Device handler development for the SOURCE project">&larr; Previous Post</a>
-</li>
-<li class=next>
-<a href=https://robamu.github.io/post/max11619-driver-rust/ data-toggle=tooltip data-placement=top title="Rust driver for the 10-bit MAX11619 ADCs">Next Post &rarr;</a>
-</li>
-</ul>
-<div class=disqus-comments>
-<button id=show-comments class="btn btn-default" type=button>Show <span class=disqus-comment-count data-disqus-url=https://robamu.github.io/post/rust-ecosystem>comments</span></button>
-<div id=disqus_thread></div>
-<script type=text/javascript>var disqus_config=function(){this.page.url='https://robamu.github.io/post/rust-ecosystem'}</script>
-</div>
-</div>
-</div>
-</div>
+
+      
 <footer>
-<div class=container>
-<div class=row>
-<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-<ul class="list-inline text-center footer-links">
-<li>
-<a href=https://github.com/robamu title=GitHub>
-<span class="fa-stack fa-lg">
-<i class="fas fa-circle fa-stack-2x"></i>
-<i class="fab fa-github fa-stack-1x fa-inverse"></i>
-</span>
-</a>
-</li>
-<li>
-<a href=https://linkedin.com/in/robin-mueller-m title=LinkedIn>
-<span class="fa-stack fa-lg">
-<i class="fas fa-circle fa-stack-2x"></i>
-<i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
-</span>
-</a>
-</li>
-</ul>
-<p class="credits copyright text-muted">
-Robin Mueller
-&nbsp;&bull;&nbsp;&copy;
-2021
-&nbsp;&bull;&nbsp;
-<a href=https://robamu.github.io>robs blog</a>
-</p>
-<p class="credits theme-by text-muted">
-<a href=https://gohugo.io>Hugo v0.91.2</a> powered &nbsp;&bull;&nbsp; Theme <a href=https://github.com/halogenica/beautifulhugo>Beautiful Hugo</a> adapted from <a href=https://deanattali.com/beautiful-jekyll/>Beautiful Jekyll</a>
-&nbsp;&bull;&nbsp;[<a href=false91f3d9b9a0efbf1bc8886d95e1c94f0c68d0f923>91f3d9b9</a>]
-</p>
-</div>
-</div>
-</div>
-</footer><script src=https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.js integrity=sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx crossorigin=anonymous></script>
-<script src=https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/contrib/auto-render.min.js integrity=sha384-kmZOZB5ObwgQnS/DuDg6TScgOiWWBiVt0plIRkZCmE6rDZGrEOQeHM5PcHi+nyqe crossorigin=anonymous></script>
-<script src=https://code.jquery.com/jquery-1.12.4.min.js integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin=anonymous></script>
-<script src=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js integrity=sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa crossorigin=anonymous></script>
-<script src=https://robamu.github.io/js/main.js></script>
-<script src=https://robamu.github.io/js/highlight.min.js></script>
-<script>hljs.initHighlightingOnLoad()</script>
-<script>$(document).ready(function(){$("pre.chroma").css("padding","0")})</script><script>renderMathInElement(document.body)</script><script src=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js integrity=sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy crossorigin=anonymous></script>
-<script src=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js integrity=sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q crossorigin=anonymous></script><script src=https://robamu.github.io/js/load-photoswipe.js></script>
-<script>(function(){var c='49f27010d1fda4554',a=document.createElement('script'),b;a.type='text/javascript',a.async=!0,a.src='https://cse.google.com/cse.js?cx='+c,b=document.getElementsByTagName('script')[0],b.parentNode.insertBefore(a,b)})()</script>
-<script type=text/javascript>$(function(){$('#show-comments').on('click',function(){var a='https-robamu-github-io';(function(){var b=document.createElement('script');b.type='text/javascript',b.async=!0,b.src='//'+a+'.disqus.com/embed.js',(document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(b)})(),$(this).hide()})})</script>
-<script id=dsq-count-scr src=//https-robamu-github-io.disqus.com/count.js async></script>
-</body>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="https://github.com/robamu" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/robin-mueller-m" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              Robin Mueller
+            
+          
+
+          &nbsp;&bull;&nbsp;&copy;
+          
+            2021
+          
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://robamu.github.io">robs blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="https://gohugo.io">Hugo v0.91.2</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          &nbsp;&bull;&nbsp;[<a href="false91f3d9b9a0efbf1bc8886d95e1c94f0c68d0f923">91f3d9b9</a>]
+        </p>
+      </div>
+    </div>
+  </div>
+</footer><script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.js" integrity="sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/contrib/auto-render.min.js" integrity="sha384-kmZOZB5ObwgQnS/DuDg6TScgOiWWBiVt0plIRkZCmE6rDZGrEOQeHM5PcHi+nyqe" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script src="https://robamu.github.io/js/main.js"></script>
+<script src="https://robamu.github.io/js/highlight.min.js"></script>
+<script> hljs.initHighlightingOnLoad(); </script>
+<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script> renderMathInElement(document.body); </script><script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script src="https://robamu.github.io/js/load-photoswipe.js"></script>
+
+
+
+<script>
+  (function() {
+    var cx = '49f27010d1fda4554';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+$(function(){
+  $('#show-comments').on('click', function(){
+    var disqus_shortname = 'https-robamu-github-io';
+      
+    (function() {
+      var disqus = document.createElement('script'); 
+      disqus.type = 'text/javascript'; 
+      disqus.async = true;
+      disqus.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(disqus);
+    })();
+      
+    $(this).hide(); 
+    });
+  });
+      
+</script>
+<script id="dsq-count-scr" src="//https-robamu-github-io.disqus.com/count.js" async></script>
+
+
+
+
+    
+  </body>
 </html>
+
