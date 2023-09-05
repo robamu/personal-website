@@ -1,0 +1,388 @@
+<!doctype html><html lang=en itemscope itemtype=http://schema.org/WebPage><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><title>Packaging Python Projects in 2023 -</title><meta name=description content="Clean package management with Pyhon is still a tricky subject even though there are a lot of resources available online. This is also because a lot of the resources found online still make recommendations which are becoming slowly obsolete, for example by still using setup.py. I think there is also a lack of resources which cover all topics which might be relevant for setting up a new package. In this post, I will show how to set up a new package in Python from scratch with all features I consider useful and important for a good Python package."><meta name=author content="Robin Mueller"><script type=application/ld+json>{"@context":"http://schema.org","@type":"WebSite","name":"robs blog","url":"https:\/\/robamu.github.io"}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"Organization","name":"","url":"https:\/\/robamu.github.io"}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"https:\/\/robamu.github.io","name":"home"}},{"@type":"ListItem","position":3,"item":{"@id":"https:\/\/robamu.github.io\/posts\/packaging-python-in-2023\/","name":"Packaging python projects in 2023"}}]}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"Article","author":{"name":"Robin Mueller"},"headline":"Packaging Python Projects in 2023","description":"Clean package management with Pyhon is still a tricky subject even though there are a lot of resources available online. This is also because a lot of the resources found online still make recommendations which are becoming slowly obsolete, for example by still using setup.py. I think there is also a lack of resources which cover all topics which might be relevant for setting up a new package. In this post, I will show how to set up a new package in Python from scratch with all features I consider useful and important for a good Python package.","inLanguage":"en","wordCount":2245,"datePublished":"2023-09-04T16:32:41","dateModified":"2023-09-04T16:32:41","image":"https:\/\/robamu.github.io","keywords":[""],"mainEntityOfPage":"https:\/\/robamu.github.io\/posts\/packaging-python-in-2023\/","publisher":{"@type":"Organization","name":"https:\/\/robamu.github.io","logo":{"@type":"ImageObject","url":"https:\/\/robamu.github.io","height":60,"width":60}}}</script><meta property="og:title" content="Packaging Python Projects in 2023"><meta property="og:description" content="Clean package management with Pyhon is still a tricky subject even though there are a lot of resources available online. This is also because a lot of the resources found online still make recommendations which are becoming slowly obsolete, for example by still using setup.py. I think there is also a lack of resources which cover all topics which might be relevant for setting up a new package. In this post, I will show how to set up a new package in Python from scratch with all features I consider useful and important for a good Python package."><meta property="og:url" content="https://robamu.github.io/posts/packaging-python-in-2023/"><meta property="og:type" content="website"><meta property="og:site_name" content="robs blog"><meta name=twitter:title content="Packaging Python Projects in 2023"><meta name=twitter:description content="Clean package management with Pyhon is still a tricky subject even though there are a lot of resources available online. This is also because a lot of the resources found online still make …"><meta name=twitter:card content="summary_large_image"><meta name=generator content="Hugo 0.118.2"><link rel=alternate href=https://robamu.github.io/index.xml type=application/rss+xml title="robs blog"><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css integrity=sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI crossorigin=anonymous><link rel=stylesheet href=https://use.fontawesome.com/releases/v5.5.0/css/all.css integrity=sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css integrity=sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu crossorigin=anonymous><link rel=stylesheet href=https://robamu.github.io/css/main.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"><link rel=stylesheet href=https://robamu.github.io/css/highlight.min.css><link rel=stylesheet href=https://robamu.github.io/css/codeblock.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css integrity=sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh crossorigin=anonymous><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css integrity=sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R crossorigin=anonymous></head><body><nav class="navbar navbar-default navbar-fixed-top navbar-custom"><div class=container-fluid><div class=navbar-header><button type=button class=navbar-toggle data-toggle=collapse data-target=#main-navbar>
+<span class=sr-only>Toggle navigation</span>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+<span class=icon-bar></span></button>
+<a class=navbar-brand href=https://robamu.github.io>robs blog</a></div><div class="collapse navbar-collapse" id=main-navbar><ul class="nav navbar-nav navbar-right"><li><a title=Home href=/>Home</a></li><li><a title=About href=/about>About</a></li><li><a title=Contact href=/contact>Contact</a></li><li><a href=#modalSearch data-toggle=modal data-target=#modalSearch style=outline:none><span class="hidden-sm hidden-md hidden-lg">Search</span> <span id=searchGlyph class="glyphicon glyphicon-search"></span></a></li></ul></div></div></nav><div id=modalSearch class="modal fade" role=dialog><div class=modal-dialog><div class=modal-content><div class=modal-header><button type=button class=close data-dismiss=modal>&#215;</button><h4 class=modal-title>Search robs blog</h4></div><div class=modal-body><gcse:search></gcse:search></div><div class=modal-footer><button type=button class="btn btn-default" data-dismiss=modal>Close</button></div></div></div></div><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><header class=header-section><div class="intro-header no-img"><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class=posts-heading><h1>Packaging Python Projects in 2023</h1><hr class=small></div></div></div></div></div></header><div class=container role=main><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><article role=main class=blog-post><p>Clean package management with Pyhon is still a tricky subject even though there are a lot of
+resources available online. This is also because a lot of the resources found online
+still make recommendations which are becoming slowly obsolete, for example by still using
+<code>setup.py</code>. I think there is also a lack of resources which cover all topics which might be relevant
+for setting up a new package. In this post, I will show how to set up a new package in Python from
+scratch with all features I consider useful and important for a good Python package. I really like
+the packaging blogpost <a href=https://venthur.de/2022-12-18-python-packaging.html>Bastian Venthur</a> about
+the current best practices of Python packaging, whch is worth a read as well.</p><p>The package will have following properties, which can be adapted based on preference and use-case:</p><ul><li>Uses <code>pyproject.toml</code>, which is now the recommended standard by PyPA, and makes integration with
+other tools inside the Pyton ecosystem a lot easier.</li><li>Uses <a href=https://setuptools.pypa.io/en/latest/setuptools.html><code>setuptools</code></a> as the distibution
+and build tool.</li><li>Uses <a href=https://www.sphinx-doc.org/en/master/><code>Sphinx</code></a>, <a href=https://docutils.sourceforge.io/rst.html><code>reStructuredText</code></a>
+and the <a href=https://pypi.org/project/sphinx-rtd-theme/><code>sphinx-rtd-theme</code></a> for writing, building
+and rendering the documentation.</li><li>Has a single-sourced version inside the <code>pyproject.toml</code> file.</li><li>Has a <code>CHANGELOG</code> to list all changes between versions.</li><li>Has a unittest folder with tests which can be executed with <code>pytest</code> or any other test framework.</li><li>Has examples inside the documentation which can also be automatically tested using <code>doctest</code>.</li><li>Has a <code>.flake8</code> configuration to be used with the <a href=https://flake8.pycqa.org/en/latest/><code>flake8</code></a> linter.</li><li>Has a working GitHub CI/CD configuration.</li><li>Uses a uniform line width of 100 for both <a href=https://github.com/psf/black><code>black</code></a> (my preferred
+auto-formatter) and <code>flake8</code>.</li></ul><p>All the shell instructions were written for an Ubuntu system, so those might need adaptions
+if your are using Windows or another OS.</p><h2 id=writing-the-source-code>Writing the source code</h2><p>We will write a <code>Catlifier</code> class first which is then packaged. The <code>Catlifier</code> uses the <code>crcmod</code>
+package because I would also like to showcase cross-referencing other libraries in the
+documentation at a later stage.</p><p>Let&rsquo;s create the project folder and some python code first:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>mkdir catlifier-py
+</span></span><span class=line><span class=cl>cd catlifier-py
+</span></span><span class=line><span class=cl>touch catlifier.py
+</span></span></code></pre></div><p>Here is the python code:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-py data-lang=py><span class=line><span class=cl><span class=kn>from</span> <span class=nn>__future__</span> <span class=kn>import</span> <span class=n>annotations</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>crcmod.predefined</span> <span class=kn>import</span> <span class=n>PredefinedCrc</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>get_catlifier_crc_calculator</span><span class=p>()</span> <span class=o>-&gt;</span> <span class=n>PredefinedCrc</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>PredefinedCrc</span><span class=p>(</span><span class=s2>&#34;crc-ccitt-false&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>class</span> <span class=nc>Catlifier</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>base_text</span><span class=p>:</span> <span class=nb>str</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>base_text</span> <span class=o>=</span> <span class=n>base_text</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>crc_calculator</span> <span class=o>=</span> <span class=n>PredefinedCrc</span><span class=p>(</span><span class=s2>&#34;crc-ccitt-false&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=nf>catlify</span><span class=p>(</span><span class=bp>self</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=nb>str</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;&#34;&#34;&#34;Catlify a given string. Also updates internal CRC calculator with catlified data.&#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=n>catlified</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>base_text</span> <span class=o>+</span> <span class=s2>&#34;🐈&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>crc_calculator</span><span class=o>.</span><span class=n>new</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>crc_calculator</span><span class=o>.</span><span class=n>update</span><span class=p>(</span><span class=n>catlified</span><span class=o>.</span><span class=n>encode</span><span class=p>())</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>catlified</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=nd>@classmethod</span>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=nf>uncatlify</span><span class=p>(</span><span class=bp>cls</span><span class=p>,</span> <span class=n>catlified_text</span><span class=p>:</span> <span class=nb>str</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=n>Catlifier</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;&#34;&#34;Generates a new :py:class:`Catlifier` instance from a catlified text.
+</span></span></span><span class=line><span class=cl><span class=s2>        &#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=n>stripped_text</span> <span class=o>=</span> <span class=n>catlified_text</span><span class=o>.</span><span class=n>rstrip</span><span class=p>(</span><span class=s2>&#34;🐈&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>instance</span> <span class=o>=</span> <span class=bp>cls</span><span class=p>(</span><span class=n>stripped_text</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>instance</span><span class=o>.</span><span class=n>crc_calculator</span><span class=o>.</span><span class=n>update</span><span class=p>(</span><span class=n>catlified_text</span><span class=o>.</span><span class=n>encode</span><span class=p>())</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>instance</span>
+</span></span></code></pre></div><p>First, we need to convert our directory structure into a format which can be used by something
+like <code>setuptools</code>. We use the source layout. You can read more about the distinction between
+source layout and flat layout <a href=https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/>here</a>. We also add a <code>__init__.py</code> to mark the directory as a package directory.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>mkdir src
+</span></span><span class=line><span class=cl>mv catlifier.py src
+</span></span><span class=line><span class=cl>touch __init__.py
+</span></span></code></pre></div><h2 id=writing-the-package-configuration-file>Writing the package configuration file</h2><p>As the next step, we create the <code>pyproject.toml</code> package configuration file.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-toml data-lang=toml><span class=line><span class=cl><span class=p>[</span><span class=nx>build-system</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=nx>requires</span> <span class=p>=</span> <span class=p>[</span><span class=s2>&#34;setuptools&gt;=61.0&#34;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=nx>build-backend</span> <span class=p>=</span> <span class=s2>&#34;setuptools.build_meta&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=nx>project</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=nx>name</span> <span class=p>=</span> <span class=s2>&#34;catlifier&#34;</span>
+</span></span><span class=line><span class=cl><span class=nx>description</span> <span class=p>=</span> <span class=s2>&#34;My catlifier library&#34;</span>
+</span></span><span class=line><span class=cl><span class=nx>readme</span> <span class=p>=</span> <span class=s2>&#34;README.md&#34;</span>
+</span></span><span class=line><span class=cl><span class=nx>version</span> <span class=p>=</span> <span class=s2>&#34;0.1.0&#34;</span>
+</span></span><span class=line><span class=cl><span class=nx>requires-python</span> <span class=p>=</span> <span class=s2>&#34;&gt;=3.8&#34;</span>
+</span></span><span class=line><span class=cl><span class=nx>license</span> <span class=p>=</span> <span class=p>{</span><span class=nx>text</span> <span class=p>=</span> <span class=s2>&#34;Apache-2.0&#34;</span><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=nx>authors</span> <span class=p>=</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>  <span class=p>{</span><span class=nx>name</span> <span class=p>=</span> <span class=s2>&#34;Robin Mueller&#34;</span><span class=p>,</span> <span class=nx>email</span> <span class=p>=</span> <span class=s2>&#34;robin.mueller.m@gmail.com&#34;</span><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=nx>keywords</span> <span class=p>=</span> <span class=p>[</span><span class=s2>&#34;cats&#34;</span><span class=p>,</span> <span class=s2>&#34;purr&#34;</span><span class=p>,</span> <span class=s2>&#34;packaging&#34;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=nx>classifiers</span> <span class=p>=</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;Development Status :: 5 - Production/Stable&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;License :: OSI Approved :: Apache Software License&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;Natural Language :: English&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;Operating System :: POSIX&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;Operating System :: Microsoft :: Windows&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;Programming Language :: Python :: 3&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;Programming Language :: Python :: 3.8&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;Programming Language :: Python :: 3.9&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;Topic :: Communications&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;Topic :: Software Development :: Libraries&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;Topic :: Software Development :: Libraries :: Python Modules&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=nx>dependencies</span> <span class=p>=</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;crcmod~=1.7&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=p>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=nx>project</span><span class=p>.</span><span class=nx>urls</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=s2>&#34;Homepage&#34;</span> <span class=p>=</span> <span class=s2>&#34;https://github.com/robamu/catlifier&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=nx>tool</span><span class=p>.</span><span class=nx>black</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=nx>line-length</span> <span class=p>=</span> <span class=mi>100</span>
+</span></span></code></pre></div><p>There are various ways of single-sourcing the Python version, and the most common ways
+were listed <a href=https://packaging.python.org/en/latest/guides/single-sourcing-package-version/>here</a>.</p><p>I really like the variant 5, which puts the version information into the package configuration
+and uses the new <a href=https://docs.python.org/3/library/importlib.metadata.html><code>import.metadata</code></a> API
+to retrieve the version if this becomes necessary. This means I don&rsquo;t have to make changes inside
+the source code for version bumps anymore.</p><p>The directory tree should look like this now:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>catlifier-py
+</span></span><span class=line><span class=cl>├── pyproject.toml
+</span></span><span class=line><span class=cl>└── src
+</span></span><span class=line><span class=cl>   └── catlifier.py
+</span></span><span class=line><span class=cl>   └── __init__.py
+</span></span></code></pre></div><p>This is all that is required for a package which can be re-distributed and uploaded to a package
+index! You can test building your package using <code>build</code>. We also set up a virtual environment
+inside a <code>venv</code> folder to keep the system python clean:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>python3 -m venv venv
+</span></span><span class=line><span class=cl>. venv/bin/activate
+</span></span><span class=line><span class=cl>pip install build
+</span></span><span class=line><span class=cl>python3 -m build .
+</span></span></code></pre></div><p>All following shell commands will assume an active virtual environment.</p><p>I still add a <code>requirements.txt</code> file to the package, but I simply forward the requirements
+to <code>pyproject.toml</code> because this is a pure library. If your are working on a project with a binary
+where exact pinning of dependency versions is important, for example for a deployment, you should
+adapt the <code>requirements.txt</code> for your needs.</p><p>The content of the <code>requirements.txt</code> file for my case is simple:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>.
+</span></span></code></pre></div><p>I usually also add the <a href=https://github.com/github/gitignore/blob/main/Python.gitignore>GitHub Python <code>.gitignore</code></a>
+to my Python projects, which contains everything that should not be part of version control.</p><p>All of my projects also have a <code>.flake8</code> linter configuraion file to my projects. Ideally, I would
+like this configuration to be part of the <code>pyproject.toml</code>, similarly to how <code>black</code> is configured
+there as well. However, <code>.flake8</code> still does not support specifying configuration there. However,
+this might change in the future. You can track
+<a href=https://github.com/PyCQA/flake8/issues/234>corrensponding GitHub issue</a> for the state of
+<code>pyproject.toml</code> support.</p><p><code>.flake8</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-txt data-lang=txt><span class=line><span class=cl>[flake8]
+</span></span><span class=line><span class=cl>max-line-length = 100
+</span></span><span class=line><span class=cl>ignore = D203, W503
+</span></span><span class=line><span class=cl>per-file-ignores =
+</span></span><span class=line><span class=cl>    */__init__.py: F401
+</span></span><span class=line><span class=cl>exclude =
+</span></span><span class=line><span class=cl>    .git,
+</span></span><span class=line><span class=cl>    __pycache__,
+</span></span><span class=line><span class=cl>    docs/conf.py,
+</span></span><span class=line><span class=cl>    old,
+</span></span><span class=line><span class=cl>    build,
+</span></span><span class=line><span class=cl>    dist,
+</span></span><span class=line><span class=cl>    venv
+</span></span><span class=line><span class=cl>max-complexity = 10
+</span></span><span class=line><span class=cl>extend-ignore =
+</span></span><span class=line><span class=cl>    # See https://github.com/PyCQA/pycodestyle/issues/373
+</span></span><span class=line><span class=cl>    E203,
+</span></span></code></pre></div><h2 id=adding-unittests>Adding unittests</h2><p>Next, we add some tests for out catlifier module. These will also be automatically executed
+by the CI at a later stage. We will keep our tests outside the source code.
+The <a href=https://docs.pytest.org/en/stable/explanation/goodpractices.html>pytest documentation</a> provides
+a bit of reasoning why it makes sense to keep the tests seperated from the source code.</p><p>Please note that the <code>test_</code> prefix for the test module names is necessary for <code>pytest</code> to
+find the test modules. The <code>__init__.py</code> module specifier is optional for <code>pytest</code>, but is
+useful for other test frameworks like <code>unittest</code> to find all the tests.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>mkdir tests
+</span></span><span class=line><span class=cl>touch test_catlifier.py
+</span></span><span class=line><span class=cl>touch __init__.py
+</span></span></code></pre></div><p>Here is the test code for <code>test_catlifier.py</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-py data-lang=py><span class=line><span class=cl><span class=kn>from</span> <span class=nn>unittest</span> <span class=kn>import</span> <span class=n>TestCase</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>catlifier</span> <span class=kn>import</span> <span class=n>Catlifier</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>class</span> <span class=nc>TestCatlifier</span><span class=p>(</span><span class=n>TestCase</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=nf>setUp</span><span class=p>(</span><span class=bp>self</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=kc>None</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>test_str</span> <span class=o>=</span> <span class=s2>&#34;hello world&#34;</span>
+</span></span><span class=line><span class=cl>        
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=nf>test_catlify</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=n>catlifier</span> <span class=o>=</span> <span class=n>Catlifier</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>test_str</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>catlified</span> <span class=o>=</span> <span class=n>catlifier</span><span class=o>.</span><span class=n>catlify</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>assertEqual</span><span class=p>(</span><span class=n>catlifier</span><span class=o>.</span><span class=n>base_text</span><span class=p>,</span> <span class=bp>self</span><span class=o>.</span><span class=n>test_str</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>assertEqual</span><span class=p>(</span><span class=n>catlified</span><span class=p>,</span> <span class=bp>self</span><span class=o>.</span><span class=n>test_str</span> <span class=o>+</span> <span class=s2>&#34;🐈&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=nf>test_uncatlify</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=n>catlified</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>test_str</span> <span class=o>+</span> <span class=s2>&#34;🐈&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=n>catlifier</span> <span class=o>=</span> <span class=n>Catlifier</span><span class=o>.</span><span class=n>uncatlify</span><span class=p>(</span><span class=n>catlified</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>assertEqual</span><span class=p>(</span><span class=n>catlifier</span><span class=o>.</span><span class=n>base_text</span><span class=p>,</span> <span class=bp>self</span><span class=o>.</span><span class=n>test_str</span><span class=p>)</span>
+</span></span></code></pre></div><p>We install <code>pytest</code> first:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>pip install pytest
+</span></span></code></pre></div><p>You can test your package using the following command</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>python3 -m pytest .
+</span></span></code></pre></div><p>Pytest should be able to find all the tests inside the <code>tests</code> directory as long as they
+use the <code>test_*</code> naming convention.</p><h2 id=adding-sphinx-documentation>Adding Sphinx documentation</h2><p>Next, we set up Sphinx to generate documentation for out Catlifier from the source code
+automatically. This can be done using the
+<a href=https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html><code>autodoc</code></a> extension. We also
+want to use the <a href=https://www.sphinx-doc.org/en/master/usage/extensions/intersphinx.html><code>intersphinx</code></a>
+extension to provide cross-referencing to external packages like <code>crcmod</code> and the
+<a href=https://www.sphinx-doc.org/en/master/usage/extensions/doctest.html><code>doctest</code></a> extension to
+automatically test code examples inside the documentation which we marked specifically.</p><p>Finally, I also added the <a href=https://sphinx-rtd-theme.readthedocs.io/en/stable/><code>shinx_rtd_theme</code></a>
+which is a bit cleaner and and more readable than the default <a href=https://alabaster.readthedocs.io/en/latest/><code>Alabaster</code></a>
+theme provided by Sphinx by default in my opinion.</p><p>We create a documentation folder first and install all required packages.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>pip install sphinx-rtd-theme
+</span></span><span class=line><span class=cl>mkdir docs
+</span></span><span class=line><span class=cl><span class=nb>cd</span> docs
+</span></span><span class=line><span class=cl>sphinx-quickstart --no-sep -p <span class=s2>&#34;Catlifier&#34;</span> -a <span class=s2>&#34;Robin Mueller&#34;</span> -r <span class=s2>&#34;0.1.0&#34;</span> -l en
+</span></span></code></pre></div><p>This gives us a good starting point with a <code>conf.py</code> lookling like this:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-py data-lang=py><span class=line><span class=cl><span class=c1># Configuration file for the Sphinx documentation builder.</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># For the full list of built-in configuration values, see the documentation:</span>
+</span></span><span class=line><span class=cl><span class=c1># https://www.sphinx-doc.org/en/master/usage/configuration.html</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># -- Project information -----------------------------------------------------</span>
+</span></span><span class=line><span class=cl><span class=c1># https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>importlib.metadata</span> <span class=kn>import</span> <span class=n>version</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>project</span> <span class=o>=</span> <span class=s1>&#39;Catlifier&#39;</span>
+</span></span><span class=line><span class=cl><span class=n>copyright</span> <span class=o>=</span> <span class=s1>&#39;2023, Robin Mueller&#39;</span>
+</span></span><span class=line><span class=cl><span class=n>author</span> <span class=o>=</span> <span class=s1>&#39;Robin Mueller&#39;</span>
+</span></span><span class=line><span class=cl><span class=n>release</span> <span class=o>=</span> <span class=s2>&#34;0.1.0&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># -- General configuration ---------------------------------------------------</span>
+</span></span><span class=line><span class=cl><span class=c1># https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>extensions</span> <span class=o>=</span> <span class=p>[]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>templates_path</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;_templates&#39;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>exclude_patterns</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;_build&#39;</span><span class=p>,</span> <span class=s1>&#39;Thumbs.db&#39;</span><span class=p>,</span> <span class=s1>&#39;.DS_Store&#39;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>language</span> <span class=o>=</span> <span class=s1>&#39;en&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># -- Options for HTML output -------------------------------------------------</span>
+</span></span><span class=line><span class=cl><span class=c1># https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>html_theme</span> <span class=o>=</span> <span class=s1>&#39;alabaster&#39;</span>
+</span></span><span class=line><span class=cl><span class=n>html_static_path</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;_static&#39;</span><span class=p>]</span>
+</span></span></code></pre></div><p>Next, we make all the necessary adaptions to the configuration file:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-py data-lang=py><span class=line><span class=cl><span class=c1># Configuration file for the Sphinx documentation builder.</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># For the full list of built-in configuration values, see the documentation:</span>
+</span></span><span class=line><span class=cl><span class=c1># https://www.sphinx-doc.org/en/master/usage/configuration.html</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># -- Project information -----------------------------------------------------</span>
+</span></span><span class=line><span class=cl><span class=c1># https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>importlib.metadata</span> <span class=kn>import</span> <span class=n>version</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>project</span> <span class=o>=</span> <span class=s1>&#39;Catlifier&#39;</span>
+</span></span><span class=line><span class=cl><span class=n>copyright</span> <span class=o>=</span> <span class=s1>&#39;2023, Robin Mueller&#39;</span>
+</span></span><span class=line><span class=cl><span class=n>author</span> <span class=o>=</span> <span class=s1>&#39;Robin Mueller&#39;</span>
+</span></span><span class=line><span class=cl><span class=c1># Use importlib.metadata API to extract version automatically</span>
+</span></span><span class=line><span class=cl><span class=n>version</span> <span class=o>=</span> <span class=n>release</span> <span class=o>=</span> <span class=n>version</span><span class=p>(</span><span class=s2>&#34;catlifier&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># -- General configuration ---------------------------------------------------</span>
+</span></span><span class=line><span class=cl><span class=c1># https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>extensions</span> <span class=o>=</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;sphinx.ext.autodoc&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;sphinx.ext.intersphinx&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;sphinx.ext.doctest&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;sphinx_rtd_theme&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=p>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Disable the doctests of the full package because those would require the explicit specification</span>
+</span></span><span class=line><span class=cl><span class=c1># of imports. The doctests inside the source code are covered by pytest, using the --doctest-modules</span>
+</span></span><span class=line><span class=cl><span class=c1># configuration option.</span>
+</span></span><span class=line><span class=cl><span class=n>doctest_test_doctest_blocks</span> <span class=o>=</span> <span class=s2>&#34;&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>templates_path</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;_templates&#39;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>exclude_patterns</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;_build&#39;</span><span class=p>,</span> <span class=s1>&#39;Thumbs.db&#39;</span><span class=p>,</span> <span class=s1>&#39;.DS_Store&#39;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Mapping for external packages</span>
+</span></span><span class=line><span class=cl><span class=n>intersphinx_mapping</span> <span class=o>=</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;python&#34;</span><span class=p>:</span> <span class=p>(</span><span class=s2>&#34;https://docs.python.org/3&#34;</span><span class=p>,</span> <span class=kc>None</span><span class=p>),</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;crcmod&#34;</span><span class=p>:</span> <span class=p>(</span><span class=s2>&#34;https://crcmod.sourceforge.net/&#34;</span><span class=p>,</span> <span class=kc>None</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>language</span> <span class=o>=</span> <span class=s1>&#39;en&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># -- Options for HTML output -------------------------------------------------</span>
+</span></span><span class=line><span class=cl><span class=c1># https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>html_theme</span> <span class=o>=</span> <span class=s2>&#34;sphinx_rtd_theme&#34;</span>
+</span></span><span class=line><span class=cl><span class=n>html_static_path</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;_static&#39;</span><span class=p>]</span>
+</span></span></code></pre></div><p>Next, we add example code, which will be automatically tested by the <code>doctest</code> extension.
+We create a new <code>examples.rst</code> inside the <code>docs</code> folder with the following content:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-rst data-lang=rst><span class=line><span class=cl><span class=gh>Examples</span>
+</span></span><span class=line><span class=cl><span class=gh>===========</span>
+</span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>Example usage<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=p>..</span> <span class=ow>testcode</span><span class=p>::</span> catlifier<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>    from catlifier import Catlifier<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>    test_string = &#34;hello world&#34; <span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>    catlifier = Catlifier(test_string)<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>    print(catlifier.catlify())<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>Output:<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=p>..</span> <span class=ow>testoutput</span><span class=p>::</span> catlifier<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>    hello world🐈<span class=err>
+</span></span></span></code></pre></div><p><code>doctest</code> will automatically <code>testcode</code> sections and verify their output against the
+<code>testoutput</code> section. You can also add <a href=https://docs.python.org/3/library/doctest.html>doctests</a>
+inside the documentation blocks of your source code, but for those it might be better to test
+them with another tool like <code>pytest</code>.</p><p>We would also like to document our API, and generate that documentation automatically
+from the source code. For this, we create a new <code>api.rst</code> with the following content:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-rst data-lang=rst><span class=line><span class=cl><span class=gh>API</span>
+</span></span><span class=line><span class=cl><span class=gh>====</span>
+</span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=p>..</span> <span class=ow>automodule</span><span class=p>::</span> catlifier<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span> <span class=nc>:members:</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span> <span class=nc>:undoc-members:</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span> <span class=nc>:show-inheritance:</span>
+</span></span></code></pre></div><p>Then, we create a new documentation table of content inside the <code>index.rst</code> file:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-rst data-lang=rst><span class=line><span class=cl><span class=gh>Welcome to Catlifer&#39;s documentation!</span>
+</span></span><span class=line><span class=cl><span class=gh>====================================</span>
+</span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=p>..</span> <span class=ow>toctree</span><span class=p>::</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>   <span class=nc>:maxdepth:</span> <span class=nf>2</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>   <span class=nc>:caption:</span> <span class=nf>Contents:</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=p>..</span> <span class=ow>toctree</span><span class=p>::</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>   <span class=nc>:maxdepth:</span> <span class=nf>3</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>   examples<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>   api<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=gh>Indices and tables</span>
+</span></span><span class=line><span class=cl><span class=gh>==================</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=m>*</span> <span class=na>:ref:</span><span class=nv>`genindex`</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=m>*</span> <span class=na>:ref:</span><span class=nv>`modindex`</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=m>*</span> <span class=na>:ref:</span><span class=nv>`search`</span><span class=err>
+</span></span></span></code></pre></div><p>We can now build the documentation using <code>make html</code> inside the <code>docs</code> folder.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=nb>cd</span> docs
+</span></span><span class=line><span class=cl>make html 
+</span></span><span class=line><span class=cl>firefox _build/html/index.html
+</span></span></code></pre></div><p>If you check the API documentation, you should also see that the <a href=https://crcmod.sourceforge.net/crcmod.predefined.html#crcmod.predefined.PredefinedCrc><code>PredefinedCrc</code></a>
+cross-reference is working properly.</p><p>You can test the examples using</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=nb>cd</span> docs
+</span></span><span class=line><span class=cl>make doctest
+</span></span></code></pre></div><p>The best thing about this is that this can be checked in the CI, so you can catch your examples
+becoming out of data, for example when the API changes.</p><p>This is a good starting point for providing useful documentation for users 🎉. If you work on
+an open-source project, you should also consider a service like <a href=https://docs.readthedocs.io/en/stable/>readthedocs</a>
+where you can host the documentation of your package for free.</p><p>As a final step, I also like to add a <code>docs</code> specific <code>requirements.txt</code> file which only includes
+the dependencies for building the documentation with the following content.</p><p><code>docs/requirements.txt</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-txt data-lang=txt><span class=line><span class=cl>sphinx-rtd-theme==1.2.0
+</span></span></code></pre></div><h2 id=testing-the-upload-of-the-package>Testing the upload of the package</h2><p>Most of the following steps are based on the official <a href=https://packaging.python.org/en/latest/tutorials/packaging-projects/>packaging tutorial</a>.
+We have the most important components of our package and would like to upload it to PyPI now.
+We build the package first like already shown.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>python3 -m build .
+</span></span></code></pre></div><p>After that, you can create an account on <a href=https://test.pypi.org>Test PyPI</a> to test your package
+upload without affecting the normal package index.</p><p>With everything in place, you can upload with</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>python3 -m twine upload --repository testpypi dist/*
+</span></span></code></pre></div><p>If everything goes well, you should see your package on the Test PyPI.</p><p>Before uploading any package and doing releases in general, I really like to add a CHANGELOG to
+a project so it becomes easier for users to figure out what changed between versions. I usually use
+the CHANGELOG format proposed by <a href=https://keepachangelog.com/en/1.1.0/>Keep A Changelog</a>.</p><h2 id=adding-github-ci>Adding GitHub CI</h2><p>Finally, assuming that your project is hosted on GitHub, it is relatively easy to add a CI
+configuration for your Python project.</p><p>Our CI configuration will install the package, run the tests, build the documentation and
+lint the code with <code>flake8</code>. Add a <code>.github/workflows/package.yml</code> file to your project:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yml data-lang=yml><span class=line><span class=cl><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>package</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>on</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=l>push]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>jobs</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>build</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>runs-on</span><span class=p>:</span><span class=w> </span><span class=l>${{ matrix.os }}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>strategy</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>matrix</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>os</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=l>ubuntu-latest, windows-latest]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>python-version</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=s1>&#39;3.8&#39;</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;3.9&#39;</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;3.10&#39;</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;3.11&#39;</span><span class=p>]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>steps</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>uses</span><span class=p>:</span><span class=w> </span><span class=l>actions/checkout@v3</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>Set up Python ${{ matrix.python-version }}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>uses</span><span class=p>:</span><span class=w> </span><span class=l>actions/setup-python@v4</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>with</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>python-version</span><span class=p>:</span><span class=w> </span><span class=l>${{ matrix.python-version }}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>Install dependencies</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>run</span><span class=p>:</span><span class=w> </span><span class=p>|</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>        python3 -m pip install --upgrade pip setuptools wheel
+</span></span></span><span class=line><span class=cl><span class=sd>        pip install flake8
+</span></span></span><span class=line><span class=cl><span class=sd>        pip install -r docs/requirements.txt
+</span></span></span><span class=line><span class=cl><span class=sd>        pip install .</span><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>Build documentation and examples</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>run</span><span class=p>:</span><span class=w> </span><span class=p>|</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>        sphinx-build -b html docs docs/_build
+</span></span></span><span class=line><span class=cl><span class=sd>        sphinx-build -b doctest docs docs/_build</span><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>Lint with flake8</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>run</span><span class=p>:</span><span class=w> </span><span class=p>|</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>        # stop the build if there are Python syntax errors or undefined names
+</span></span></span><span class=line><span class=cl><span class=sd>        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+</span></span></span><span class=line><span class=cl><span class=sd>        # exit-zero treats all errors as warnings.
+</span></span></span><span class=line><span class=cl><span class=sd>        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=100 --statistics</span><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>Run tests and generate coverage data</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>run</span><span class=p>:</span><span class=w> </span><span class=p>|</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>        python3 -m pip install coverage pytest
+</span></span></span><span class=line><span class=cl><span class=sd>        coverage run -m pytest</span><span class=w>        
+</span></span></span></code></pre></div><p>If you push your package to GitHub now, The GitHub code actions CI should trigger automatically.</p><h2 id=conclusion>Conclusion</h2><p>We have written a complete small package contaning all the features I consider important
+for a good Python package. I hope that this mini-workshop can help some people who are considering
+publishing their project to PyPI or are looking for a general guide on how to set up a Python
+package.</p><p>You can find the full resulting source code on <a href=https://github.com/robamu/catlifier-py>GitHub</a>
+as well.</p><hr><section id=social-share><div class="list-inline footer-links"><div class=share-box aria-hidden=true><ul class=share><li><a href="//twitter.com/share?url=https%3a%2f%2frobamu.github.io%2fposts%2fpackaging-python-in-2023%2f&amp;text=Packaging%20Python%20Projects%20in%202023&amp;via=" target=_blank title="Share on Twitter"><i class="fab fa-twitter"></i></a></li><li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2frobamu.github.io%2fposts%2fpackaging-python-in-2023%2f" target=_blank title="Share on Facebook"><i class="fab fa-facebook"></i></a></li><li><a href="//reddit.com/submit?url=https%3a%2f%2frobamu.github.io%2fposts%2fpackaging-python-in-2023%2f&amp;title=Packaging%20Python%20Projects%20in%202023" target=_blank title="Share on Reddit"><i class="fab fa-reddit"></i></a></li><li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2frobamu.github.io%2fposts%2fpackaging-python-in-2023%2f&amp;title=Packaging%20Python%20Projects%20in%202023" target=_blank title="Share on LinkedIn"><i class="fab fa-linkedin"></i></a></li><li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2frobamu.github.io%2fposts%2fpackaging-python-in-2023%2f&amp;title=Packaging%20Python%20Projects%20in%202023" target=_blank title="Share on StumbleUpon"><i class="fab fa-stumbleupon"></i></a></li><li><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2frobamu.github.io%2fposts%2fpackaging-python-in-2023%2f&amp;description=Packaging%20Python%20Projects%20in%202023" target=_blank title="Share on Pinterest"><i class="fab fa-pinterest"></i></a></li></ul></div></div></section></article><ul class="pager blog-pager"><li class=previous><a href=https://robamu.github.io/posts/cross-compile-rust-rpi/ data-toggle=tooltip data-placement=top title="Cross-Compile and Debug Rust Applications for the Raspberry Pi">&larr; Previous Post</a></li></ul><div class=disqus-comments><button id=show-comments class="btn btn-default" type=button>Show <span class=disqus-comment-count data-disqus-url=https://robamu.github.io/posts/packaging-python-in-2023>comments</span></button><div id=disqus_thread></div><script type=text/javascript>var disqus_config=function(){this.page.url="https://robamu.github.io/posts/packaging-python-in-2023"}</script></div></div></div></div><footer><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center footer-links"><li><a href=https://github.com/robamu title=GitHub><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fab fa-github fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://linkedin.com/in/robin-mueller-m title=LinkedIn><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fab fa-linkedin fa-stack-1x fa-inverse"></i></span></a></li></ul><p class="credits copyright text-muted">Robin Mueller
+&nbsp;&bull;&nbsp;&copy;
+2023
+&nbsp;&bull;&nbsp;
+<a href=https://robamu.github.io>robs blog</a></p><p class="credits theme-by text-muted"><a href=https://gohugo.io>Hugo v0.118.2</a> powered &nbsp;&bull;&nbsp; Theme <a href=https://github.com/halogenica/beautifulhugo>Beautiful Hugo</a> adapted from <a href=https://deanattali.com/beautiful-jekyll/>Beautiful Jekyll</a>
+&nbsp;&bull;&nbsp;[<a href=false67c3f388fe4b0a7b3a7ae16de50e3e29733c88c7>67c3f388</a>]</p></div></div></div></footer><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js integrity=sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js integrity=sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05 crossorigin=anonymous onload=renderMathInElement(document.body)></script>
+<script src=https://code.jquery.com/jquery-3.7.0.slim.min.js integrity=sha384-w5y/xIeYixWvfM+A1cEbmHPURnvyqmVg5eVENruEdDjcyRLUSNej7512JQGspFUr crossorigin=anonymous></script>
+<script src=https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js integrity=sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd crossorigin=anonymous></script>
+<script src=https://robamu.github.io/js/main.js></script>
+<script src=https://robamu.github.io/js/highlight.min.js></script>
+<script>hljs.initHighlightingOnLoad()</script><script>$(document).ready(function(){$("pre.chroma").css("padding","0")})</script><script src=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js integrity=sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy crossorigin=anonymous></script>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js integrity=sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q crossorigin=anonymous></script><script src=https://robamu.github.io/js/load-photoswipe.js></script>
+<script>(function(){var t,n="49f27010d1fda4554",e=document.createElement("script");e.type="text/javascript",e.async=!0,e.src="https://cse.google.com/cse.js?cx="+n,t=document.getElementsByTagName("script")[0],t.parentNode.insertBefore(e,t)})()</script><script type=text/javascript>$(function(){$("#show-comments").on("click",function(){var e="https-robamu-github-io";(function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src="//"+e+".disqus.com/embed.js",(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(t)})(),$(this).hide()})})</script><script id=dsq-count-scr src=//https-robamu-github-io.disqus.com/count.js async></script></body></html>
