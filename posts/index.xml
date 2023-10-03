@@ -1,5 +1,69 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Posts on Robins blog</title><link>https://robamu.github.io/posts/</link><description>Recent content in Posts on Robins blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 29 Sep 2023 15:17:13 +0200</lastBuildDate><atom:link href="https://robamu.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Implementing a TCP server for Space Applications in Rust using the Strategy Pattern</title><link>https://robamu.github.io/posts/rust-strategy-pattern/</link><pubDate>Fri, 29 Sep 2023 15:17:13 +0200</pubDate><guid>https://robamu.github.io/posts/rust-strategy-pattern/</guid><description>Even for space systems, TCP/IP is oftentimes an important component in some shape or form because the majority of development might still occur on ground where an internet connection is still available. The special thing about space is that instead of using newline and/or UTF-8 based data, the data is generally in binary format and packet based. The most prevalent of the space packet standards is probably the CCSDS Space Packet Protocol.</description></item><item><title>Packaging Python Projects in 2023</title><link>https://robamu.github.io/posts/packaging-python-in-2023/</link><pubDate>Mon, 04 Sep 2023 16:32:41 +0200</pubDate><guid>https://robamu.github.io/posts/packaging-python-in-2023/</guid><description>Learning clean package management with Pyhon is still a tricky subject even though there are a lot of resources available online. A lot of the resources found online only cover partial topics while others make recommendations which are becoming slowly obsolete, for example by still using setup.py. In this post, I will show how to set up a new package in Python from scratch with all features I consider useful and important for a good Python package.</description></item><item><title>Cross-Compile and Debug Rust Applications for the Raspberry Pi</title><link>https://robamu.github.io/posts/cross-compile-rust-rpi/</link><pubDate>Mon, 27 Dec 2021 12:31:51 +0100</pubDate><guid>https://robamu.github.io/posts/cross-compile-rust-rpi/</guid><description>After exploring Rust for smaller bare-metal systems like Cortex-M based microcontrollers, I am trying to learn using Rust when using a Linux runtime. The most common example for this is the Raspberry Pi, but there are a lot of other boards out there which support Embedded Linux, for example the Beagle Bone Black or Xilinx hybrid CPU / FPGA solutions like the Zynq 7020.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Posts on Robins blog</title>
+    <link>https://robamu.github.io/posts/</link>
+    <description>Recent content in Posts on Robins blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 29 Sep 2023 15:17:13 +0200</lastBuildDate><atom:link href="https://robamu.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Implementing a TCP server for Space Applications in Rust using the Strategy Pattern</title>
+      <link>https://robamu.github.io/posts/rust-strategy-pattern/</link>
+      <pubDate>Fri, 29 Sep 2023 15:17:13 +0200</pubDate>
+      
+      <guid>https://robamu.github.io/posts/rust-strategy-pattern/</guid>
+      <description>Even for space systems, TCP/IP is oftentimes an important component in some shape or form because the majority of development might still occur on ground where an internet connection is still available. The special thing about space is that instead of using newline and/or UTF-8 based data, the data is generally in binary format and packet based. The most prevalent of the space packet standards is probably the CCSDS Space Packet Protocol.</description>
+    </item>
+    
+    <item>
+      <title>Packaging Python Projects in 2023</title>
+      <link>https://robamu.github.io/posts/packaging-python-in-2023/</link>
+      <pubDate>Mon, 04 Sep 2023 16:32:41 +0200</pubDate>
+      
+      <guid>https://robamu.github.io/posts/packaging-python-in-2023/</guid>
+      <description>Learning clean package management with Pyhon is still a tricky subject even though there are a lot of resources available online. A lot of the resources found online only cover partial topics while others make recommendations which are becoming slowly obsolete, for example by still using setup.py. In this post, I will show how to set up a new package in Python from scratch with all features I consider useful and important for a good Python package.</description>
+    </item>
+    
+    <item>
+      <title>Cross-Compile and Debug Rust Applications for the Raspberry Pi</title>
+      <link>https://robamu.github.io/posts/cross-compile-rust-rpi/</link>
+      <pubDate>Mon, 27 Dec 2021 12:31:51 +0100</pubDate>
+      
+      <guid>https://robamu.github.io/posts/cross-compile-rust-rpi/</guid>
+      <description>After exploring Rust for smaller bare-metal systems like Cortex-M based microcontrollers, I am trying to learn using Rust when using a Linux runtime. The most common example for this is the Raspberry Pi, but there are a lot of other boards out there which support Embedded Linux, for example the Beagle Bone Black or Xilinx hybrid CPU / FPGA solutions like the Zynq 7020.
 Embedded Linux Boards: Raspberry Pi
-Image Source</description></item><item><title>Rust driver for the 10-bit MAX11619 ADCs</title><link>https://robamu.github.io/posts/max11619-driver-rust/</link><pubDate>Thu, 16 Dec 2021 22:51:15 +0100</pubDate><guid>https://robamu.github.io/posts/max11619-driver-rust/</guid><description>In my last blog post, I described how I set up a small Rust ecosystem for the Vorago REB1 development board. This development board also has a MAX11619 10-bit ADC device by Maxim devices. I thought this was a good opportunity to develop my first device driver crate because there isn&amp;rsquo;t one for this device yet.
-The REB1 development board also has a 2K potentiometer connected directly to a channel of the ADC which makes testing convenient.</description></item><item><title>Bringing Rust to Space - Setting up a Rust ecosystem for the VA108XX MCU family</title><link>https://robamu.github.io/posts/rust-ecosystem/</link><pubDate>Wed, 15 Dec 2021 23:31:00 +0100</pubDate><guid>https://robamu.github.io/posts/rust-ecosystem/</guid><description>The last few weeks I have been busy diving into the Rust ecosystem and learning the language through practical projects. I finishing the excellent Rust book and the Rust Embedded Book first and then tinkered with Rust on some STM32 MCUs. As a next step, I was looking for practical projects to further learn the language. I&amp;rsquo;ve tried to combine this with the usual activities at the research institute I work now as well.</description></item><item><title>Throwback - GSoC 2020 | Device handler development for the SOURCE project</title><link>https://robamu.github.io/posts/gsoc-post/</link><pubDate>Tue, 14 Dec 2021 19:29:58 +0100</pubDate><guid>https://robamu.github.io/posts/gsoc-post/</guid><description>This is an adapted version of a blog post initially posted on Wordpress as part of my GSoC project. It&amp;rsquo;s a perfect way for me to set up my own first blog which is based on this excellent guide.
-At that point of time, I was an aerospace engineer doing my graduate studies at the University of Stuttgart. I&amp;rsquo;m still active in the small satellite society KSat but I am doing more of a supporting role now that I started working the University as a PhD student.</description></item></channel></rss>
+Image Source</description>
+    </item>
+    
+    <item>
+      <title>Rust driver for the 10-bit MAX11619 ADCs</title>
+      <link>https://robamu.github.io/posts/max11619-driver-rust/</link>
+      <pubDate>Thu, 16 Dec 2021 22:51:15 +0100</pubDate>
+      
+      <guid>https://robamu.github.io/posts/max11619-driver-rust/</guid>
+      <description>In my last blog post, I described how I set up a small Rust ecosystem for the Vorago REB1 development board. This development board also has a MAX11619 10-bit ADC device by Maxim devices. I thought this was a good opportunity to develop my first device driver crate because there isn&amp;rsquo;t one for this device yet.
+The REB1 development board also has a 2K potentiometer connected directly to a channel of the ADC which makes testing convenient.</description>
+    </item>
+    
+    <item>
+      <title>Bringing Rust to Space - Setting up a Rust ecosystem for the VA108XX MCU family</title>
+      <link>https://robamu.github.io/posts/rust-ecosystem/</link>
+      <pubDate>Wed, 15 Dec 2021 23:31:00 +0100</pubDate>
+      
+      <guid>https://robamu.github.io/posts/rust-ecosystem/</guid>
+      <description>The last few weeks I have been busy diving into the Rust ecosystem and learning the language through practical projects. I finishing the excellent Rust book and the Rust Embedded Book first and then tinkered with Rust on some STM32 MCUs. As a next step, I was looking for practical projects to further learn the language. I&amp;rsquo;ve tried to combine this with the usual activities at the research institute I work now as well.</description>
+    </item>
+    
+    <item>
+      <title>Throwback - GSoC 2020 | Device handler development for the SOURCE project</title>
+      <link>https://robamu.github.io/posts/gsoc-post/</link>
+      <pubDate>Tue, 14 Dec 2021 19:29:58 +0100</pubDate>
+      
+      <guid>https://robamu.github.io/posts/gsoc-post/</guid>
+      <description>This is an adapted version of a blog post initially posted on Wordpress as part of my GSoC project. It&amp;rsquo;s a perfect way for me to set up my own first blog which is based on this excellent guide.
+At that point of time, I was an aerospace engineer doing my graduate studies at the University of Stuttgart. I&amp;rsquo;m still active in the small satellite society KSat but I am doing more of a supporting role now that I started working the University as a PhD student.</description>
+    </item>
+    
+  </channel>
+</rss>
