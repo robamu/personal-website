@@ -1,7 +1,0 @@
-Generated with following command
-
-ffmpeg -i vorago-vid.MOV -r 15 -vf "scale=400:-1,transpose=1" -ss 00:00:01 -to 00:00:05 vor-blinky.gif
-
-See more info here: https://askubuntu.com/questions/648603/how-to-create-an-animated-gif-from-mp4-video-via-command-line
-
-Transpost to rotate 90 degrees clockwise
